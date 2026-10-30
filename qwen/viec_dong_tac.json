@@ -1,0 +1,365 @@
+[
+ {
+  "ten": "mam_chay1_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, mid-stride with the front leg reaching forward, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay1_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, mid-stride with the front leg reaching forward, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay1_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, mid-stride with the front leg reaching forward, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay2_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, both legs passing under the body, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay2_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, both legs passing under the body, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay2_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, both legs passing under the body, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay3_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, mid-stride with the back leg pushing off, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay3_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, mid-stride with the back leg pushing off, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chay3_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: running, mid-stride with the back leg pushing off, cloak flowing behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_nhay_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: jumping upward, knees tucked, cloak flaring downward, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_nhay_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: jumping upward, knees tucked, cloak flaring downward, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_nhay_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: jumping upward, knees tucked, cloak flaring downward, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_roi_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: falling down, arms slightly raised, cloak billowing upward, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_roi_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: falling down, arms slightly raised, cloak billowing upward, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_roi_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: falling down, arms slightly raised, cloak billowing upward, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: slashing the net horizontally forward in a wide arc, motion swoosh lines, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: slashing the net horizontally forward in a wide arc, motion swoosh lines, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: slashing the net horizontally forward in a wide arc, motion swoosh lines, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_len_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: slashing the net straight upward overhead, motion swoosh lines, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_len_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: slashing the net straight upward overhead, motion swoosh lines, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_len_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: slashing the net straight upward overhead, motion swoosh lines, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_xuong_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: in mid-air, stabbing the net straight down below the feet, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_xuong_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: in mid-air, stabbing the net straight down below the feet, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_chem_xuong_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: in mid-air, stabbing the net straight down below the feet, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_luot_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: dashing horizontally forward, body leaning far forward, speed lines behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_luot_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: dashing horizontally forward, body leaning far forward, speed lines behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_luot_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: dashing horizontally forward, body leaning far forward, speed lines behind, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_dau_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: flinching backward from a hit, body recoiling, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_dau_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: flinching backward from a hit, body recoiling, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_dau_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: flinching backward from a hit, body recoiling, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_hoi_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: kneeling with head bowed, glowing green leaves swirling around, healing, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_hoi_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: kneeling with head bowed, glowing green leaves swirling around, healing, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ },
+ {
+  "ten": "mam_hoi_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+  ],
+  "prompt": "The same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Pose: kneeling with head bowed, glowing green leaves swirling around, healing, side view facing right. Keep the same face, colors, outfit, proportions and art style as the reference. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow.",
+  "rong": 1024,
+  "cao": 1024
+ }
+]

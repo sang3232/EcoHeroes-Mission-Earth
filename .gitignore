@@ -1,0 +1,13 @@
+# Ảnh thô và ảnh xem thử của Qwen: nặng, game không dùng. Sinh lại được theo qwen/HUONG_DAN.md
+qwen/ra_*/
+qwen/xem/
+qwen/*.log
+
+__pycache__/
+*.pyc
+
+# Cấu hình máy cá nhân
+.claude/
+.vscode/
+Thumbs.db
+desktop.ini

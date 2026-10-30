@@ -1,0 +1,26 @@
+[
+ {
+  "ten": "mam_goc_1",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear, standing in a relaxed idle pose, three-quarter view facing right. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "mam_goc_2",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear, standing in a relaxed idle pose, three-quarter view facing right. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "mam_goc_3",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear, standing in a relaxed idle pose, three-quarter view facing right. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ }
+]

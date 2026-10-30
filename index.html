@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#05070c">
+<title>Hồi Sinh Xanh</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="wrap"><canvas id="game" aria-label="Hồi Sinh Xanh"></canvas></div>
+
+<div id="touch" hidden>
+  <div class="tpad">
+    <button data-a="up" class="tu" aria-label="Lên">▲</button>
+    <button data-a="left" class="tl" aria-label="Trái">◀</button>
+    <button data-a="right" class="tr" aria-label="Phải">▶</button>
+    <button data-a="down" class="td" aria-label="Xuống">▼</button>
+  </div>
+  <div class="tbtns">
+    <button data-a="skill" class="b-skill">Phép</button>
+    <button data-a="heal" class="b-heal">Hồi</button>
+    <button data-a="dash" class="b-dash">Lướt</button>
+    <button data-a="attack" class="b-atk">Chém</button>
+    <button data-a="jump" class="b-jump">Nhảy</button>
+  </div>
+  <button data-a="menu" class="b-menu" aria-label="Menu">☰</button>
+</div>
+<div id="rotate">📱 Xoay ngang điện thoại để chơi</div>
+
+<div id="modal-root"></div>
+<div id="toasts"></div>
+
+<script src="js/data.js"></script>
+<script src="js/levels/m1.js"></script>
+<script src="js/state.js"></script>
+<script src="assets/player/khung.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/systems.js"></script>
+<script src="js/player.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/spirits.js"></script>
+<script src="js/world.js"></script>
+<script src="js/render.js"></script>
+<script src="js/puzzle.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+<!-- Mã gian lận để thử nhanh. Trước khi phát hành: xoá dòng dưới và file js/gian_lan.js -->
+<script src="js/gian_lan.js"></script>
+</body>
+</html>

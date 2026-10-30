@@ -1,0 +1,16 @@
+{
+ "gau": {"goc": 1},
+ "gio": {"goc": 3},
+ "sen": {"goc": 1},
+ "taiche": {"goc": 1},
+ "chai_lan": {"goc": 1},
+ "slime_nilon": {"goc": 2},
+ "cua_lon": {"goc": 3},
+ "luoi_ma": {"goc": 2},
+ "vua_nilon": {"goc": 3},
+ "mam": {"goc": 2, "chay1": 3, "chay2": 2, "chay3": 2, "nhay": 3, "roi": 3, "chem": 1, "chem_len": 2,
+         "chem_xuong": 1, "luot": 3, "dau": 3, "hoi": 1,
+         "bang": {"dung": 3, "chay": 3, "nhay": 1, "chem": 1, "chem_len": 1, "chem_xuong": 1, "luot": 1,
+                  "dau": 1, "hoi": 2}},
+ "nen": {"bai_bien_xa": 3, "bai_bien_gan": 3, "hang_xa": 2, "dao_rac_xa": 3, "o_cat": 1, "o_da": 3}
+}

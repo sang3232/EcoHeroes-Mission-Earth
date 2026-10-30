@@ -1,0 +1,131 @@
+[
+ {
+  "ten": "bai_bien_xa_1",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 101,
+  "prompt": "Far parallax layer: a quiet tropical beach at dawn, calm sea, distant islands on the horizon, soft clouds, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "bai_bien_xa_2",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 202,
+  "prompt": "Far parallax layer: a quiet tropical beach at dawn, calm sea, distant islands on the horizon, soft clouds, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "bai_bien_xa_3",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 303,
+  "prompt": "Far parallax layer: a quiet tropical beach at dawn, calm sea, distant islands on the horizon, soft clouds, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "bai_bien_gan_1",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 101,
+  "prompt": "Near parallax layer: silhouettes of casuarina trees, coastal rocks and low sand dunes along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
+  "trong_suot": true
+ },
+ {
+  "ten": "bai_bien_gan_2",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 202,
+  "prompt": "Near parallax layer: silhouettes of casuarina trees, coastal rocks and low sand dunes along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
+  "trong_suot": true
+ },
+ {
+  "ten": "bai_bien_gan_3",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 303,
+  "prompt": "Near parallax layer: silhouettes of casuarina trees, coastal rocks and low sand dunes along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
+  "trong_suot": true
+ },
+ {
+  "ten": "hang_xa_1",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 101,
+  "prompt": "Far parallax layer: inside a large sea cave, rocky walls, tide pools, faint shafts of light from cracks in the ceiling, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "hang_xa_2",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 202,
+  "prompt": "Far parallax layer: inside a large sea cave, rocky walls, tide pools, faint shafts of light from cracks in the ceiling, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "hang_xa_3",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 303,
+  "prompt": "Far parallax layer: inside a large sea cave, rocky walls, tide pools, faint shafts of light from cracks in the ceiling, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "dao_rac_xa_1",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 101,
+  "prompt": "Far parallax layer: a distant island made of piled plastic trash and rusty barrels under a stormy purple sky, gloomy sea, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "dao_rac_xa_2",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 202,
+  "prompt": "Far parallax layer: a distant island made of piled plastic trash and rusty barrels under a stormy purple sky, gloomy sea, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "dao_rac_xa_3",
+  "rong": 1792,
+  "cao": 768,
+  "hat": 303,
+  "prompt": "Far parallax layer: a distant island made of piled plastic trash and rusty barrels under a stormy purple sky, gloomy sea, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+ },
+ {
+  "ten": "o_cat_1",
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "Seamless tileable texture of packed sand with small pebbles and shell fragments, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+ },
+ {
+  "ten": "o_cat_2",
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "Seamless tileable texture of packed sand with small pebbles and shell fragments, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+ },
+ {
+  "ten": "o_cat_3",
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "Seamless tileable texture of packed sand with small pebbles and shell fragments, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+ },
+ {
+  "ten": "o_da_1",
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "Seamless tileable texture of dark wet sea-cave rock with barnacles, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+ },
+ {
+  "ten": "o_da_2",
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "Seamless tileable texture of dark wet sea-cave rock with barnacles, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+ },
+ {
+  "ten": "o_da_3",
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "Seamless tileable texture of dark wet sea-cave rock with barnacles, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+ }
+]
