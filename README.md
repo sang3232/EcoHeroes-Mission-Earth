@@ -1,6 +1,6 @@
 # Hồi Sinh Xanh
 
-Game hành động 2D kiểu Hollow Knight về bảo vệ môi trường. Bạn điều khiển **Mầm**, Vệ Binh Xanh cuối cùng, dọn rác và giải cứu bốn tinh linh để mang ánh sáng trở lại **Màn 1: Bãi biển nhựa**.
+Game hành động 2D kiểu Hollow Knight về bảo vệ môi trường. Bạn điều khiển **Mầm**, Vệ Binh Xanh cuối cùng, dọn rác và giải cứu bốn tinh linh để mang ánh sáng trở lại **Màn 1: Bãi Biển Nhựa**, rồi đi ngược lên **Màn 2: Rừng Ngập Mặn**. Kịch bản đủ 8 màn; các màn 3 đến 8 đã hiện trên bản đồ thế giới và sẽ làm ở các đợt sau.
 
 ## Chạy game
 
@@ -22,6 +22,9 @@ Bấm đúp `index.html` để mở bằng Chrome hoặc Edge, không cần cài
 | Ngồi Trạm, đọc, trồng cây, nhặt rác | ↑ hoặc E | ↑ |
 | Xuống khỏi bục gỗ | ↓ + Nhảy | |
 | Túi đồ / Bản đồ / Tạm dừng | Tab / M / Esc | Start |
+| Nhìn quanh: rê chuột ra phía mép màn hình, khung nhìn lia theo một phần (chỉnh độ mạnh hoặc tắt trong Cài đặt) | Chuột | |
+
+**Hướng dẫn trong game:** bảng nhỏ giữa phía trên màn hình dạy từng thao tác ngay lúc chơi: chạy, nhảy, nhảy cao, ngồi Trạm, chém, chém lên, giải cứu tinh linh. Phím hiện đúng theo thiết bị đang dùng (bàn phím/chuột, tay cầm, cảm ứng), làm đúng thì tự qua bước, có mũi tên chỉ chỗ cần tới. Trên điện thoại, nút cần bấm sáng lên. Các mẹo khác hiện khi gặp tình huống lần đầu: thấy quái, thấy đống rác, đủ năng lượng để hồi máu, có tinh linh mới, lần đầu nhảy trên gai... Tắt hoặc xem lại từ đầu trong **Cài đặt**.
 
 ## Có gì trong Màn 1
 
@@ -38,7 +41,34 @@ Bấm đúp `index.html` để mở bằng Chrome hoặc Edge, không cần cài
   - Lều bỏ hoang: nhặt rác rồi ném vào đúng thùng.
 - **Quái:** Chai Lăn, Slime Nilon, Cua Lon (vỏ đỡ đòn phía trước), Lưới Ma. Mini-boss Cua Lon Khổng Lồ, boss Vua Túi Nilon 2 pha.
 - **4 Mảnh Lá** giấu trong các phòng, đủ 4 mảnh thì thêm 1 lá máu. Có Nhật ký, Sách Đỏ, thẻ "Bạn có biết?".
+- **Sổ quái vật** (menu → Sổ → Quái vật): quái lọt vào màn hình lần đầu thì ghi tên và bóng đen; hạ lần đầu thì mở hình động, mô tả và cách đánh; hạ đủ số lần (3 với quái thường, 1 với boss) thì mở thẻ kiến thức về loại rác làm ra nó. Boss diễn lần lượt từng động tác trong sổ.
 - **Trồng cây** ở phòng đã sạch, đủ điều kiện thì Còng gió và Rùa biển quay về.
+
+## Cốt truyện và cảnh truyện
+
+Lời thoại theo kịch bản `Hoi_Sinh_Xanh_Kich_Ban.docx`, giữ nguyên tắc của kịch bản: không giảng đạo lý, nhân vật nào cũng có lý do của mình, kể cả boss.
+
+- **Khung lời thoại** có chân dung nhân vật (cắt từ ảnh Qwen), tên, chữ hiện dần; tự đưa lên phía trên khi sẽ che mất Mầm hoặc chỗ camera đang nhìn. Có lời dẫn trên nền đen, thẻ tên màn, viền điện ảnh, camera lia tới chỗ cần xem, bong bóng thoại trên đầu boss giữa trận.
+- **Qua lời**: Chém, Nhảy, E, bấm chuột hoặc chạm màn hình. **Bỏ qua cả cảnh**: Esc, Start hoặc ☰. Mỗi cảnh chỉ chạy một lần trong một save.
+- **Màn 1**: mở đầu Mầm thức dậy giữa đống rác; mỗi tinh linh được cứu đều nói chuyện với Mầm (Hoa Sen: chữa lành, Gió: không khí, Gấu Rừng: rừng là lá chắn, Tái Chế: vòng tuần hoàn); trang sách cổ Luật Bảo vệ môi trường 2020 ở Cổng Phân Loại; Vua Túi Nilon nói trước trận, gầm lên khi nuốt rác sang pha 2, trăn trối khi thua; cảnh bình minh trên bãi biển, Mầm nhận ra rác không tự mọc ra, rồi bảng tổng kết có nút lên đường sang Màn 2.
+- **Màn 2**: tới rừng, gặp Mẹ Đước (bà kể chuyện rừng, dạy trồng đước, cho trụ mầm; nói chuyện lại thì bà cho thêm trụ mầm khi sắp hết và kể chuyện khác), cảnh thấy lạch nước tù, Lưới Ma Khổng Lồ kể nỗi đau của tấm lưới bị bỏ, cá cua thoát ra khi nó buông.
+- Nội dung các cảnh ở `js/cot_truyen.js`, cách chạy cảnh ở `js/hoi_thoai.js`. Cảnh tự chạy khi tới gần một chỗ trong phòng khai báo bằng `story` trong file màn.
+
+## Màn 2: Rừng Ngập Mặn
+
+Mở sau khi hạ Vua Túi Nilon. Rừng ngập mặn bị chặt làm đầm nuôi tôm, nước mặn tràn vào đất liền.
+
+- **10 phòng**: Bến Đước (Trạm), Bờ bao đầm tôm, Rừng chết, Nhà Mẹ Đước (Trạm), Lạch nước, Hang rễ, Đầm bỏ hoang, Rặng bần (nhánh phụ phía trên Rừng chết), Cửa rừng (Trạm), Hang Lưới Ma.
+- **Trồng đước mở lối**: học từ Mẹ Đước, cắm trụ mầm ở bãi bồi, đước lớn thì rễ vươn ra bắc thành cầu qua nước hoặc lên chỗ cao. Đầm bỏ hoang có ba bãi bồi, rễ đước nối các gò đất thành đường qua đầm.
+- **Nước ngập**: rơi xuống là mất máu, Xuồng Phao không đi được. Ở Lạch nước, rác bịt kín cống làm nước tù đọng: đứng lên đống rác, đập xuống (Gấu Rừng) để phá cống, nước rút ra biển, lộ lối xuống Hang rễ. Nước đầm đục lúc đầu, trong dần khi rừng sạch và hồi sinh; lòng hồ có bờ bùn dốc thoai thoải.
+- **Lưới ma giăng**: tấm lưới chắn lối (có cá mắc kẹt), chém 3 nhát thì đứt cả tấm, con vật bị mắc được thả ra.
+- **Quái mới**: Hộp Xốp (chém vỡ thì tách thành hai Mảnh Xốp nhỏ). **Mini-boss Lưới Ma Khổng Lồ** (22 khung hoạt ảnh cho 6 động tác): lượn trên đầu, quăng lưới (trúng thì bị quấn, bấm chém hoặc nhảy liên tục để vùng ra), lao chéo xuống, gọi Lưới Ma nhỏ; còn nửa máu thì quăng hai tấm lưới một lần.
+- **Loài vật quay về**: Cá thòi lòi (3 cây đước trưởng thành, Đầm bỏ hoang sạch rác), Đom đóm (2 cây bần trưởng thành, Rặng bần sạch rác), Cò trắng (Nhà Mẹ Đước sạch rác, cả khu rừng sạch 70%).
+- 4 Mảnh Lá, 2 trang nhật ký (Sổ tay người nuôi tôm, Sổ tay Mẹ Đước), thẻ kiến thức về rừng ngập mặn.
+
+## Bản đồ thế giới và đi lại giữa các màn
+
+Menu tạm dừng → **🌏 Thế giới**: bản đồ vẽ tay cả 8 màn theo kịch bản. Màn đã hồi sinh viền vàng; màn chưa mở hoặc chưa làm có ổ khoá, bấm vào thì biết cần hạ boss nào hay sẽ có ở bản sau. Ngồi ở Trạm Tái Chế → **🧭 Lên đường** để sang màn khác: tới Trạm bạn nghỉ lần cuối ở màn đó (chưa nghỉ lần nào thì tới chỗ bắt đầu màn). Bản đồ phòng (🗺️ Bản đồ) và độ sạch tính riêng từng màn; Sách Đỏ gộp loài vật của mọi màn.
 
 ## Cấu trúc
 
@@ -46,6 +76,9 @@ Bấm đúp `index.html` để mở bằng Chrome hoặc Edge, không cần cài
 |---|---|
 | `js/data.js` | Vật phẩm, công thức, tinh linh, quái, boss, puzzle, kiến thức. Cân bằng game sửa ở đây |
 | `js/levels/m1.js` | 13 phòng Màn 1 vẽ bằng ký tự (ghi chú ký hiệu ở đầu file). Sửa màn không cần đụng code |
+| `js/levels/m2.js` | 10 phòng Màn 2, thêm ký hiệu nước ngập, bãi bồi, cầu rễ, lưới ma, Mẹ Đước (ghi ở đầu file) |
+| `js/hoi_thoai.js` | Khung lời thoại, lời dẫn, thẻ tên màn, bong bóng thoại, bỏ qua cảnh |
+| `js/cot_truyen.js` | Lời thoại và các cảnh truyện Màn 1, Màn 2; lời Mẹ Đước đổi theo tiến trình |
 | `js/engine.js` | Bàn phím, tay cầm, cảm ứng; va chạm với lưới ô |
 | `js/player.js` | Mầm: chạy, nhảy, lướt, chém, hồi máu, đập xuống |
 | `js/enemies.js` | Quái, mini-boss, boss |
@@ -53,7 +86,8 @@ Bấm đúp `index.html` để mở bằng Chrome hoặc Edge, không cần cài
 | `js/world.js` | Phòng, chuyển phòng, đồ rơi, Trạm, lồng, cổng, ánh sáng, camera |
 | `js/render.js` | Vẽ nền, ô gạch, nhân vật, ánh sáng và không khí (xem bên dưới), HUD |
 | `js/systems.js` | Chế tạo, bùa, nâng Vợt, thí nghiệm, cây, sinh vật |
-| `js/ui.js` | Menu tạm dừng, menu Trạm, bản đồ, hộp thoại, nút cảm ứng |
+| `js/ui.js` | Menu tạm dừng, menu Trạm, bản đồ, Sổ (cả Sổ quái vật), hộp thoại, nút cảm ứng |
+| `js/huong_dan.js` | Hướng dẫn từng bước theo thao tác, mẹo theo tình huống |
 | `js/puzzle.js` | Puzzle Cổng Phân Loại |
 | `js/gian_lan.js` | Mã gian lận để thử nhanh, gỡ được (xem bên dưới) |
 | `qwen/` | Công cụ sinh ảnh bằng Qwen Image, xem `qwen/HUONG_DAN.md` |
@@ -61,7 +95,7 @@ Bấm đúp `index.html` để mở bằng Chrome hoặc Edge, không cần cài
 
 ## Kiểm tra
 
-- `node kiem_tra/duong_di.js`: kiểm tra Màn 1 đi được hết theo đúng thứ tự nhận khả năng, mọi vật đều tới được, không phòng nào bị kẹt. Chạy lại mỗi khi sửa `js/levels/m1.js`.
+- `node kiem_tra/duong_di.js`: kiểm tra mọi màn đi được hết theo đúng thứ tự mở đường (Màn 1: nhận tinh linh, công cụ; Màn 2: gặp Mẹ Đước để trồng đước, phá cống cho nước rút), mọi vật đều tới được, không phòng nào bị kẹt, bản đồ đủ hàng đủ cột, cửa hai phòng nối khớp nhau, id phòng không trùng giữa các màn. `node kiem_tra/duong_di.js m2` để kiểm một màn. Chạy lại mỗi khi sửa file trong `js/levels/`.
 - `kiem_tra/thu_trong_trang.js`: bộ thử chạy trong trang game (mô phỏng từng bước vật lý). Hướng dẫn nạp ở đầu file. Nếu đang bật mã gian lận thì gõ `tat` trước khi chạy.
 
 ## Mã gian lận (để thử nhanh)
@@ -86,14 +120,22 @@ Gõ có dấu hay không dấu, có cách hay không đều được: "bất t�
 | `giau` | +20 mỗi nguyên liệu, +30 hạt giống, đầy năng lượng |
 | `tatca` | Gộp `tinhlinh`, `congcu`, `giau`, `mau` |
 | `sach` | Phá hết đống rác cả màn (độ sạch 100%) |
-| `toi <tên phòng>` | Dịch chuyển, ví dụ `toi hang vua`, `toi dao rac`. Gõ `toi` để xem tên các phòng |
+| `toi <tên phòng>` | Dịch chuyển (mọi màn), ví dụ `toi hang vua`, `toi nha me duoc`. Gõ `toi` để xem tên các phòng |
 | `hetquai` | Hạ hết quái trong phòng (không tính boss) |
 | `boss` | Hạ boss của phòng đang đứng |
-| `binhminh` | Coi như đã hạ Vua Túi Nilon, bình minh lên |
+| `binhminh` | Coi như đã hạ Vua Túi Nilon, bình minh lên, Màn 2 mở |
+| `man2` | Mở Màn 2 và đi tới Bến Đước |
+| `trongduoc` | Biết trồng đước ngay (như đã gặp Mẹ Đước), +10 hạt giống |
+| `caylon` | Mọi cây đã trồng lớn ngay, cầu rễ đước mọc liền |
+| `xanuoc` | Phá cống, rút nước ngập trong phòng đang đứng |
+| `truyen <tên cảnh>` | Xem lại một cảnh truyện, ví dụ `truyen mo_dau`. Gõ `truyen` để xem danh sách |
+| `botruyen` | Coi như đã xem hết cảnh truyện, để thử nhanh không bị dừng |
 | `sang <0-100>` | Ép độ sáng để xem không khí, ví dụ `sang 0` (tối nhất), `sang 100`. Gõ `sang` để trả về bình thường |
 | `cham` | Bật/tắt quay chậm ×¼, để xem kỹ hoạt ảnh và đòn đánh |
 | `nhanh` | Bật/tắt chạy nhanh gấp đôi |
 | `hop` | Bật/tắt hiện hộp va chạm: Mầm (xanh), vùng chém (vàng), quái (đỏ), đạn (cam), hướng chuột (trắng) |
+| `soquai` | Mở hết Sổ quái vật |
+| `huongdan` | Cho hướng dẫn chạy lại từ bước đầu |
 | `xoaluu` | Xoá save, chơi lại từ đầu (có hỏi lại) |
 | `tat` | Tắt mọi mã đang bật |
 | `?` | Xem danh sách mã |
@@ -113,8 +155,15 @@ Mỗi khung hình vẽ theo lớp, từ xa tới gần:
 
 Màn càng sạch thì các màu này càng tiến về ban ngày. Màu từng khu nằm ở `MOOD` đầu `js/render.js`, màu viền ở `RIM`.
 
+**Hiệu ứng** (`fxp`, `hitFx`, `deathFx` trong `js/world.js`, vẽ ở `drawFx` trong `js/render.js`):
+- Chém trúng: tia lửa bắn theo hướng chém, vệt chém trắng cắt ngang, vòng sóng, chớp sáng soi cả xung quanh trong phòng tối, màn hình giật nhẹ theo hướng đòn. Năng lượng nhận được bay thành đốm xanh về quả cầu năng lượng, quả cầu lóe sáng khi đốm tới.
+- Quái bị hạ nảy trắng rồi tan: mảnh vụn đúng chất liệu (nhựa trong, nilon, lon gỉ, lưới), khói độc tím, đốm xanh bay lên. Đống rác vỡ văng mảnh rác nhiều màu.
+- Boss: vòng sóng khi bắt đầu trận, khựng lại khi bị xé một lớp túi, gầm lên khi sang pha 2, gục ngã theo khung hoạt ảnh khi bị hạ.
+- Mầm: bụi dưới chân khi chạy, vòng bụi khi rơi từ cao, vệt gió khi lướt, cánh hoa xoáy vào khi hồi máu. Trúng đòn thì viền màn hình chớp đỏ, còn 1 lá máu thì viền đỏ đập theo nhịp tim. Mất lá máu thì lá vỡ rơi xuống, hồi lá thì lá nảy lên.
+- Vệt chém quét nhanh như lưỡi liềm, màu theo cấp Vợt (Thô trắng xanh, Sạch xanh ngọc, Tinh khiết vàng). Rung màn hình mượt thay vì giật ngẫu nhiên.
+
 ## Ảnh
 
-Mầm (37 khung hoạt ảnh cắt từ bảng khung), tinh linh, quái, boss, ảnh nền và mẫu ô gạch đã sinh bằng Qwen. Thiếu ảnh nào thì game tự vẽ thay (Mầm vẽ bằng code, vật phẩm dùng emoji). Muốn đổi hoặc sinh thêm ảnh, xem [qwen/HUONG_DAN.md](qwen/HUONG_DAN.md).
+Mầm (37 khung hoạt ảnh cắt từ bảng khung), ba boss (Vua Túi Nilon 27 khung cho 7 động tác, Cua Lon Khổng Lồ 23 khung cho 6 động tác, Lưới Ma Khổng Lồ 22 khung cho 6 động tác), tinh linh, quái, Mẹ Đước, đồ vật trong màn (đống rác bãi biển và rác đầm tôm, Trạm Tái Chế, lồng, đèn lồng, giá nhật ký, nhà sàn, cây đước), ảnh nền (bãi biển, hang, đảo rác, rừng đước, đầm tôm), mẫu ô gạch (cát, đá, bùn) và bản đồ thế giới đã sinh bằng Qwen. Thiếu ảnh nào thì game tự vẽ thay (Mầm vẽ bằng code, vật phẩm dùng emoji). Muốn đổi hoặc sinh thêm ảnh, xem [qwen/HUONG_DAN.md](qwen/HUONG_DAN.md).
 
 Ảnh trong game sinh bằng Qwen-Image-2.1, model này chỉ được dùng **phi thương mại**. Muốn bán game hoặc kiếm tiền từ game thì phải đổi model hoặc xin giấy phép thương mại.

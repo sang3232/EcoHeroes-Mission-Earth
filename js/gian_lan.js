@@ -75,9 +75,11 @@
     P.place(x, y);
     W.camUpdate(0, true);
   }
+  // Tìm phòng ở mọi màn theo id hoặc tên (có dấu hay không đều được)
   function timPhong(q) {
-    const rooms = L().rooms, k = norm(q).replace(/\s+/g, '');
+    const rooms = {}, k = norm(q).replace(/\s+/g, '');
     if (!k) return null;
+    for (const lv in HSX.LEVELS) Object.assign(rooms, HSX.LEVELS[lv].rooms);
     return Object.keys(rooms).find(id => id === k || id.replace(/_/g, '') === k || norm(rooms[id].name).replace(/\s+/g, '') === k)
       || Object.keys(rooms).find(id => id.replace(/_/g, '').includes(k) || norm(rooms[id].name).replace(/\s+/g, '').includes(k));
   }
@@ -102,12 +104,49 @@
       Sys.checkSpecies();
       return 'độ sạch 100%';
     }],
-    toi: ['toi <tên phòng>: dịch chuyển, ví dụ "toi hang vua". Gõ "toi" để xem tên phòng', arg => {
+    toi: ['toi <tên phòng>: dịch chuyển (mọi màn), ví dụ "toi hang vua", "toi nha me duoc". Gõ "toi" để xem tên phòng', arg => {
       const id = timPhong(arg || '');
-      if (!id) return { loi: 'Phòng: ' + Object.keys(L().rooms).map(k => `${L().rooms[k].name} (${k})`).join(', ') };
+      if (!id) return { loi: 'Phòng: ' + Object.keys(HSX.LEVELS).map(lv => Object.keys(HSX.LEVELS[lv].rooms).map(k => `${HSX.LEVELS[lv].rooms[k].name} (${k})`).join(', ')).join(' · ') };
+      if (HSX.Truyen.active()) HSX.Truyen.skip();
       W.fadeTo = null; W.fade = 0; W.mode = 'play';
+      HSX.S.mo[HSX.roomLevel(id)] = true;
       W.load(id, { start: true });
-      return `tới ${L().rooms[id].name}`;
+      return `tới ${HSX.roomDef(id).name}`;
+    }],
+    man2: ['Mở Màn 2 (như đã hạ Vua Túi Nilon) và đi tới Bến Đước', () => {
+      const S = HSX.S;
+      S.mo.m2 = true;
+      if (HSX.Truyen.active()) HSX.Truyen.skip();
+      W.fadeTo = null; W.fade = 0; W.mode = 'play';
+      W.load(HSX.LEVELS.m2.start, { start: true });
+      return 'tới Màn 2: Rừng Ngập Mặn';
+    }],
+    trongduoc: ['Biết trồng đước ngay (như đã gặp Mẹ Đước), +10 hạt giống', () => {
+      Object.assign(HSX.S.flags, { gapMeDuoc: true, trongDuoc: true });
+      HSX.S.story.gap_me_duoc = true;
+      HSX.S.seeds += 10;
+      return 'biết trồng đước, +10 hạt giống';
+    }],
+    caylon: ['Mọi cây đã trồng lớn ngay (cầu rễ đước mọc liền)', () => {
+      const tr = HSX.S.trees;
+      for (const r in tr) for (const i in tr[r]) tr[r][i].g = Math.max(tr[r][i].g, 0.999);
+      return 'cây sắp lớn hết (lớn trong giây lát)';
+    }],
+    xanuoc: ['Phá cống, rút nước ngập trong phòng này', () => {
+      if (!W.room.def.xa) return { loi: 'Phòng này không có cống bị bịt' };
+      W.xaNuoc();
+      return 'nước đã rút';
+    }],
+    truyen: ['truyen <tên cảnh>: xem lại một cảnh truyện, ví dụ "truyen mo_dau". Gõ "truyen" để xem danh sách', arg => {
+      const id = Object.keys(HSX.CANH).find(k => norm(k).replace(/_/g, '') === norm(arg || '').replace(/[_\s]/g, ''));
+      if (!id) return { loi: 'Cảnh: ' + Object.keys(HSX.CANH).join(', ') };
+      HSX.Truyen.play(id, { lai: true });
+      return `xem cảnh ${id}`;
+    }],
+    botruyen: ['Coi như đã xem hết cảnh truyện (để thử nhanh không bị dừng)', () => {
+      Object.keys(HSX.CANH).forEach(k => { HSX.S.story[k] = true; });
+      if (HSX.Truyen.active()) HSX.Truyen.skip();
+      return 'đã đánh dấu xem hết cảnh truyện';
     }],
     hetquai: ['Hạ hết quái trong phòng (không tính boss)', () => {
       let n = 0;
@@ -121,7 +160,17 @@
       HSX.Enemies.damage(b, 9999, P, 'down');
       return `hạ ${b.def.name}`;
     }],
-    binhminh: ['Coi như đã hạ Vua Túi Nilon: bình minh lên', () => { HSX.S.bosses.vua_nilon = true; HSX.S.dawn = true; W.dawnT = 0; HSX.saveGame(); return 'bình minh'; }],
+    binhminh: ['Coi như đã hạ Vua Túi Nilon: bình minh lên, Màn 2 mở', () => {
+      const S = HSX.S;
+      S.bosses.vua_nilon = true; S.dawn = true; S.xong.m1 = true; S.mo.m2 = true; W.dawnT = 0;
+      HSX.saveGame();
+      return 'bình minh, Màn 2 đã mở';
+    }],
+    soquai: ['Mở hết Sổ quái vật (đã gặp và hạ đủ số lần)', () => {
+      Object.keys(D.soQuai).forEach(id => { HSX.S.quai[id] = { seen: true, kills: Math.max(D.soQuai[id].can, (HSX.S.quai[id] || {}).kills || 0) }; });
+      return 'mở hết Sổ quái vật';
+    }],
+    huongdan: ['Cho hướng dẫn chạy lại từ bước đầu', () => { HSX.HuongDan.lamLai(); return 'hướng dẫn chạy lại từ đầu'; }],
     sang: ['sang <0-100>: ép độ sáng để xem không khí. Gõ "sang" để trả về bình thường', arg => {
       const v = parseFloat(arg);
       on.sang = isNaN(v) ? null : HSX.clamp(v / 100, 0, 1);
@@ -250,10 +299,10 @@
 
   // Bảng nút ở đầu màn hình khi mở game với ?thu=1
   if (/[?&]thu=1/.test(location.search)) {
-    const rooms = L().rooms, el = document.createElement('div');
+    const el = document.createElement('div');
     el.id = 'debug';
     el.innerHTML = `<b>Chế độ thử</b>
-      <select id="dbg-room">${Object.keys(rooms).map(id => `<option value="${id}">${rooms[id].name}</option>`).join('')}</select>
+      <select id="dbg-room">${Object.keys(HSX.LEVELS).map(lv => `<optgroup label="${HSX.LEVELS[lv].name}">${Object.keys(HSX.LEVELS[lv].rooms).map(id => `<option value="${id}">${HSX.LEVELS[lv].rooms[id].name}</option>`).join('')}</optgroup>`).join('')}</select>
       <button data-go="1">Tới phòng</button>
       <button data-ma="tinhlinh">Đủ tinh linh</button><button data-ma="congcu">Công cụ + bùa</button><button data-ma="giau">+ Nguyên liệu</button>
       <button data-ma="sach">Sạch 100%</button><button data-ma="battu">Bất tử</button><button data-ma="bay">Bay</button>

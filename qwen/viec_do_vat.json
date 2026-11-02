@@ -1,0 +1,74 @@
+[
+ {
+  "ten": "dong_rac_dam_1",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "a small messy heap of shrimp-farm trash: broken white styrofoam boxes, empty woven plastic feed sacks, cracked plastic floats and a tangle of old fishing net, piled on a low mound of dark mud. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "dong_rac_dam_2",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "a small messy heap of shrimp-farm trash: broken white styrofoam boxes, empty woven plastic feed sacks, cracked plastic floats and a tangle of old fishing net, piled on a low mound of dark mud. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "dong_rac_dam_3",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "a small messy heap of shrimp-farm trash: broken white styrofoam boxes, empty woven plastic feed sacks, cracked plastic floats and a tangle of old fishing net, piled on a low mound of dark mud. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "nha_san_1",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "a small rustic stilt hut standing on thin wooden poles, a thatched nipa palm roof, woven bamboo walls, a short wooden ladder, a hanging oil lamp glowing warm by the door, a few young mangrove seedlings in pots on the porch. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "nha_san_2",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "a small rustic stilt hut standing on thin wooden poles, a thatched nipa palm roof, woven bamboo walls, a short wooden ladder, a hanging oil lamp glowing warm by the door, a few young mangrove seedlings in pots on the porch. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "nha_san_3",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "a small rustic stilt hut standing on thin wooden poles, a thatched nipa palm roof, woven bamboo walls, a short wooden ladder, a hanging oil lamp glowing warm by the door, a few young mangrove seedlings in pots on the porch. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "cay_duoc_1",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "a young red mangrove tree with glossy green leaves, many arching stilt roots spreading out like legs at the bottom, a few long green seedling pods hanging from the branches. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "cay_duoc_2",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "a young red mangrove tree with glossy green leaves, many arching stilt roots spreading out like legs at the bottom, a few long green seedling pods hanging from the branches. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ },
+ {
+  "ten": "cay_duoc_3",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "a young red mangrove tree with glossy green leaves, many arching stilt roots spreading out like legs at the bottom, a few long green seedling pods hanging from the branches. 2D game prop, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, side view, single object centered, whole object visible, no text, no characters, no ground, no shadow, no background."
+ }
+]

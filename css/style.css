@@ -49,6 +49,9 @@ code { background: #0b1118; padding: 0 4px; border-radius: 4px; }
   font-weight: 700; touch-action: none; -webkit-user-select: none; user-select: none;
 }
 #touch button:active { background: rgba(76, 194, 122, .45); }
+/* hướng dẫn: nút cần bấm sáng lên */
+#touch button.hd-sang { border-color: #9ff0b5; animation: hdSang 1.1s ease-in-out infinite; }
+@keyframes hdSang { 50% { box-shadow: 0 0 0 4px rgba(159, 240, 181, .35), 0 0 22px rgba(159, 240, 181, .6); } }
 .tpad { position: absolute; left: max(14px, env(safe-area-inset-left)); bottom: 16px; width: 168px; height: 168px; }
 .tpad button { width: 58px; height: 58px; font-size: 20px; }
 .tu { left: 55px; top: 0; } .td { left: 55px; bottom: 0; } .tl { left: 0; top: 55px; } .tr { right: 0; top: 55px; }
@@ -133,6 +136,21 @@ button.chip:hover { border-color: var(--green); }
 .reward { background: #12301f; border: 1px solid #2e6b46; border-radius: 10px; padding: 8px 10px; margin: 8px 0; }
 .fact-box { background: #2c2612; border: 1px solid #6b5a22; border-radius: 10px; padding: 8px 10px; margin-top: 8px; font-size: 13px; }
 .journal { border-left: 4px solid #c9a96e; background: #221d14; padding: 8px 12px; border-radius: 8px; margin-top: 8px; }
+/* Sổ quái vật: lưới thẻ bên trái, trang chi tiết bên phải */
+.so-quai { display: grid; grid-template-columns: 230px 1fr; gap: 14px; align-items: start; }
+.sq-luoi { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sq-the { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; border: 1px solid var(--line); border-radius: 10px; background: #0d141c; color: var(--ink); cursor: pointer; font-size: 12px; }
+.sq-the:hover { border-color: var(--green); }
+.sq-the.sel { border-color: var(--green); background: #14261c; }
+.sq-the.trum { grid-column: span 2; flex-direction: row; justify-content: center; }
+.sq-the .ico { width: 56px; height: 56px; object-fit: contain; font-size: 30px; display: flex; align-items: center; justify-content: center; }
+.sq-the.bong img { filter: brightness(0) drop-shadow(0 0 3px rgba(196, 155, 255, .7)); }
+.sq-the.an { opacity: .55; }
+.sq-ok, .sq-so { position: absolute; top: 4px; right: 7px; font-size: 11px; color: var(--green); font-weight: 700; }
+.sq-so { color: var(--muted); }
+#sq-xem { width: 100%; max-width: 400px; aspect-ratio: 8 / 5; border-radius: 10px; display: block; }
+.sq-trong { padding: 30px 10px; text-align: center; }
+@media (max-width: 720px) { .so-quai { grid-template-columns: 1fr; } }
 .journal.dim { border-left-color: #444; background: #161a1f; }
 .journal p, .journal-text { font-style: italic; }
 .big-emo { display: flex; justify-content: center; margin: 4px 0; }
@@ -156,6 +174,31 @@ svg.map { width: 100%; height: auto; max-height: 470px; background: #0b1118; bor
 .mroom { fill: #1d2a35; stroke: #4a6070; stroke-width: 1.5; }
 .mroom.clean { fill: #1d3a2a; stroke: #4cc27a; }
 .mroom.here { stroke: var(--gold); stroke-width: 3; }
+
+/* ---------- Bản đồ thế giới: ảnh bản đồ Qwen, mốc 8 màn, đường nối ---------- */
+.tg { position: relative; width: min(100%, 760px); aspect-ratio: 945 / 540; margin: 0 auto; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line); background: #1b2a22 center / 100% 100% no-repeat; }
+.tg-nen { position: absolute; inset: 0; background:
+  radial-gradient(ellipse 30% 22% at 85% 72%, #2a6f8a 0 60%, transparent 62%),
+  radial-gradient(ellipse 70% 60% at 45% 45%, #4f7a46 0 70%, transparent 72%), #1f4b63; }
+.tg-duong { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.tg-duong polyline { fill: none; stroke: rgba(255, 240, 200, .85); stroke-width: .45; stroke-dasharray: 1.2 1; stroke-linecap: round;
+  filter: drop-shadow(0 0 .4px rgba(0, 0, 0, .9)); }
+.tg-moc { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: none; border: 0; padding: 0; cursor: pointer; }
+.tg-o { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 20px;
+  background: rgba(10, 20, 16, .82); border: 2px solid #9ff0b5; box-shadow: 0 2px 8px rgba(0, 0, 0, .6); }
+.tg-ten { font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; padding: 1px 6px; border-radius: 8px;
+  background: rgba(8, 14, 12, .78); }
+.tg-moc.xong .tg-o { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(230, 184, 74, .35), 0 2px 8px rgba(0, 0, 0, .6); }
+.tg-moc.khoa .tg-o, .tg-moc.sap .tg-o { border-color: #6b7780; filter: grayscale(1); opacity: .85; }
+.tg-moc.khoa .tg-ten, .tg-moc.sap .tg-ten { color: #b8c2c8; }
+.tg-moc.here .tg-o { animation: tgDay 1.4s ease-in-out infinite; }
+.tg-moc.sel .tg-ten { outline: 2px solid #9ff0b5; }
+@keyframes tgDay { 50% { box-shadow: 0 0 0 6px rgba(159, 240, 181, .35), 0 2px 8px rgba(0, 0, 0, .6); } }
+.tg-info { margin-top: 8px; padding: 8px 12px; border-radius: 10px; background: var(--panel2); border: 1px solid var(--line); }
+.tg-info h3 { margin-top: 2px; }
+@media (max-width: 720px) { .tg-ten { font-size: 9.5px; } .tg-o { width: 28px; height: 28px; font-size: 15px; } }
 .mname { fill: #e6efe8; font-size: 10px; text-anchor: middle; font-weight: 600; }
 .msub { fill: #93a39a; font-size: 9px; text-anchor: middle; }
 

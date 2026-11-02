@@ -12,10 +12,13 @@ Ký hiệu bản đồ (mỗi ký tự là một ô 48 px):
   c  Chai Lăn   s  Slime Nilon   k  Cua Lon   g  Lưới Ma   K  Cua Lon Khổng Lồ   V  Vua Túi Nilon
 
 tips: dòng hướng dẫn hiện khi Mầm tới gần ô (x, y). k = chữ cho bàn phím, t = chữ cho cảm ứng.
+story: cảnh truyện (js/cot_truyen.js) tự chạy một lần khi Mầm tới gần ô (x, y) trong r ô.
+goi: cách gọi chung cả màn trong câu chữ ("bãi biển sáng hơn").
 */
 HSX.LEVELS = {
   m1: {
     name: 'Bãi biển nhựa',
+    goi: 'bãi biển',
     start: 'ben_thuyen',
     gateClean: 0.3,
     rooms: {
@@ -284,6 +287,7 @@ HSX.LEVELS = {
       cong: {
         name: 'Cổng Phân Loại', area: 'hang', spirit: 'taiche', cageLock: 'puzzle',
         doors: { 1: ['ghenh_da', 2], 2: ['hang_vua', 1] },
+        story: [{ x: 22, y: 15, r: 7, canh: 'trang_luat', khi: () => !HSX.S.puzzle.solved }],
         tips: [{ x: 25, y: 15, k: '↑ để mở Cổng Phân Loại', t: '▲ để mở Cổng Phân Loại' }],
         map: [
           '######11##########################',

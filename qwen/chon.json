@@ -7,10 +7,19 @@
  "slime_nilon": {"goc": 2},
  "cua_lon": {"goc": 3},
  "luoi_ma": {"goc": 2},
- "vua_nilon": {"goc": 3},
+ "vua_nilon": {"goc": 3, "bang": {"dung": 1, "gam": 1, "nem": 3, "nhay": 1, "lao": 1, "dau": 2, "chet": 1},
+               "bo": {"dau": [1]}},
+ "cua_khong_lo": {"bang": {"dung": 3, "di": 3, "dap": 3, "lao": 2, "choang": 1, "chet": 3}},
+ "me_duoc": {"goc": 2},
+ "hop_xop": {"goc": 2},
+ "luoi_ma_khong_lo": {"goc": 3, "bang": {"dung": 2, "quang": 2, "lao": 2, "goi": 2, "dau": 2, "chet": 1},
+                      "bo": {"quang": [1]}},
  "mam": {"goc": 2, "chay1": 3, "chay2": 2, "chay3": 2, "nhay": 3, "roi": 3, "chem": 1, "chem_len": 2,
          "chem_xuong": 1, "luot": 3, "dau": 3, "hoi": 1,
          "bang": {"dung": 3, "chay": 3, "nhay": 1, "chem": 1, "chem_len": 1, "chem_xuong": 1, "luot": 1,
                   "dau": 1, "hoi": 2}},
- "nen": {"bai_bien_xa": 3, "bai_bien_gan": 3, "hang_xa": 2, "dao_rac_xa": 3, "o_cat": 1, "o_da": 3}
+ "nen": {"bai_bien_xa": 3, "bai_bien_gan": 3, "hang_xa": 2, "dao_rac_xa": 3, "o_cat": 1, "o_da": 3,
+         "rung_xa": 2, "rung_gan": 1, "dam_xa": 2, "o_bun": 1, "the_gioi": 2},
+ "do_vat": {"dong_rac": [1, 3], "tram": 3, "long": 1, "den_long": 2, "nhat_ky": 3,
+            "dong_rac_dam": [1, 3], "nha_san": 2, "cay_duoc": 1}
 }

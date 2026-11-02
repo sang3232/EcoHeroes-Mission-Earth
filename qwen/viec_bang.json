@@ -1,266 +1,200 @@
 [
  {
-  "ten": "mam_bang_dung_1",
+  "ten": "luoi_ma_khong_lo_bang_dung_1",
   "trong_suot": true,
   "hat": 101,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1536,
+  "rong": 1792,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a gentle idle breathing loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: standing relaxed, holding the net forward. Frame 2: breathing in, body rising very slightly. Frame 3: standing relaxed, holding the net forward. Frame 4: breathing out, body sinking very slightly. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a floating idle loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down, net strands dangling below. Frame 2: floating slightly higher, net arms drifting outward, strands swaying. Frame 3: floating in place, net arms hanging down. Frame 4: floating slightly lower, net arms drifting inward, strands swaying the other way. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_dung_2",
+  "ten": "luoi_ma_khong_lo_bang_dung_2",
   "trong_suot": true,
   "hat": 202,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1536,
+  "rong": 1792,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a gentle idle breathing loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: standing relaxed, holding the net forward. Frame 2: breathing in, body rising very slightly. Frame 3: standing relaxed, holding the net forward. Frame 4: breathing out, body sinking very slightly. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a floating idle loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down, net strands dangling below. Frame 2: floating slightly higher, net arms drifting outward, strands swaying. Frame 3: floating in place, net arms hanging down. Frame 4: floating slightly lower, net arms drifting inward, strands swaying the other way. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_dung_3",
+  "ten": "luoi_ma_khong_lo_bang_dung_3",
   "trong_suot": true,
   "hat": 303,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1536,
+  "rong": 1792,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a gentle idle breathing loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: standing relaxed, holding the net forward. Frame 2: breathing in, body rising very slightly. Frame 3: standing relaxed, holding the net forward. Frame 4: breathing out, body sinking very slightly. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a floating idle loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down, net strands dangling below. Frame 2: floating slightly higher, net arms drifting outward, strands swaying. Frame 3: floating in place, net arms hanging down. Frame 4: floating slightly lower, net arms drifting inward, strands swaying the other way. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_nhay_1",
+  "ten": "luoi_ma_khong_lo_bang_quang_1",
   "trong_suot": true,
   "hat": 101,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1920,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 5 animation frames of a jump from take-off to landing, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: crouching to take off, knees bent. Frame 2: launching upward, legs stretched down, cloak trailing below. Frame 3: at the top of the jump, knees tucked up. Frame 4: falling down, cloak billowing upward, legs dangling. Frame 5: landing, knees bent absorbing the impact. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of casting a fishing net attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: pulling both net arms far back behind the body, gathering a big bundle of net. Frame 3: flinging both net arms forward, a wide fishing net flying out and spreading open in front. Frame 4: net arms stretched far forward after the throw, hands open. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_nhay_2",
+  "ten": "luoi_ma_khong_lo_bang_quang_2",
   "trong_suot": true,
   "hat": 202,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1920,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 5 animation frames of a jump from take-off to landing, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: crouching to take off, knees bent. Frame 2: launching upward, legs stretched down, cloak trailing below. Frame 3: at the top of the jump, knees tucked up. Frame 4: falling down, cloak billowing upward, legs dangling. Frame 5: landing, knees bent absorbing the impact. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of casting a fishing net attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: pulling both net arms far back behind the body, gathering a big bundle of net. Frame 3: flinging both net arms forward, a wide fishing net flying out and spreading open in front. Frame 4: net arms stretched far forward after the throw, hands open. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_nhay_3",
+  "ten": "luoi_ma_khong_lo_bang_quang_3",
   "trong_suot": true,
   "hat": 303,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1920,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 5 animation frames of a jump from take-off to landing, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: crouching to take off, knees bent. Frame 2: launching upward, legs stretched down, cloak trailing below. Frame 3: at the top of the jump, knees tucked up. Frame 4: falling down, cloak billowing upward, legs dangling. Frame 5: landing, knees bent absorbing the impact. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of casting a fishing net attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: pulling both net arms far back behind the body, gathering a big bundle of net. Frame 3: flinging both net arms forward, a wide fishing net flying out and spreading open in front. Frame 4: net arms stretched far forward after the throw, hands open. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_1",
+  "ten": "luoi_ma_khong_lo_bang_lao_1",
   "trong_suot": true,
   "hat": 101,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1792,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a horizontal net slash attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: winding up, net pulled back behind the shoulder. Frame 2: swinging the net forward in a wide horizontal arc with a motion swoosh. Frame 3: net fully extended straight forward at the end of the swing. Frame 4: recovering, bringing the net back to the ready position. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a swooping charge, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: leaning back and rising, eyes glowing brighter, about to swoop. Frame 3: swooping forward fast, body stretched horizontally, net strands streaming far behind. Frame 4: slowing down, body upright again, strands settling. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_2",
+  "ten": "luoi_ma_khong_lo_bang_lao_2",
   "trong_suot": true,
   "hat": 202,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1792,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a horizontal net slash attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: winding up, net pulled back behind the shoulder. Frame 2: swinging the net forward in a wide horizontal arc with a motion swoosh. Frame 3: net fully extended straight forward at the end of the swing. Frame 4: recovering, bringing the net back to the ready position. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a swooping charge, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: leaning back and rising, eyes glowing brighter, about to swoop. Frame 3: swooping forward fast, body stretched horizontally, net strands streaming far behind. Frame 4: slowing down, body upright again, strands settling. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_3",
+  "ten": "luoi_ma_khong_lo_bang_lao_3",
   "trong_suot": true,
   "hat": 303,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1792,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a horizontal net slash attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: winding up, net pulled back behind the shoulder. Frame 2: swinging the net forward in a wide horizontal arc with a motion swoosh. Frame 3: net fully extended straight forward at the end of the swing. Frame 4: recovering, bringing the net back to the ready position. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a swooping charge, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: leaning back and rising, eyes glowing brighter, about to swoop. Frame 3: swooping forward fast, body stretched horizontally, net strands streaming far behind. Frame 4: slowing down, body upright again, strands settling. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_len_1",
+  "ten": "luoi_ma_khong_lo_bang_goi_1",
   "trong_suot": true,
   "hat": 101,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
   "rong": 1792,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of an upward net slash attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: crouching slightly, net held low, ready to swing upward. Frame 2: swinging the net upward in an arc with a motion swoosh. Frame 3: net raised straight up overhead. Frame 4: lowering the net back down. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a summoning roar, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: throwing the head back, glowing mouth wide open roaring, net arms spreading wide. Frame 3: roaring with net arms raised high, small floating net ghosts tearing loose from its body. Frame 4: lowering the arms, eyes glowing. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_len_2",
+  "ten": "luoi_ma_khong_lo_bang_goi_2",
   "trong_suot": true,
   "hat": 202,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
   "rong": 1792,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of an upward net slash attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: crouching slightly, net held low, ready to swing upward. Frame 2: swinging the net upward in an arc with a motion swoosh. Frame 3: net raised straight up overhead. Frame 4: lowering the net back down. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a summoning roar, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: throwing the head back, glowing mouth wide open roaring, net arms spreading wide. Frame 3: roaring with net arms raised high, small floating net ghosts tearing loose from its body. Frame 4: lowering the arms, eyes glowing. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_len_3",
+  "ten": "luoi_ma_khong_lo_bang_goi_3",
   "trong_suot": true,
   "hat": 303,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
   "rong": 1792,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of an upward net slash attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: crouching slightly, net held low, ready to swing upward. Frame 2: swinging the net upward in an arc with a motion swoosh. Frame 3: net raised straight up overhead. Frame 4: lowering the net back down. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a summoning roar, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: throwing the head back, glowing mouth wide open roaring, net arms spreading wide. Frame 3: roaring with net arms raised high, small floating net ghosts tearing loose from its body. Frame 4: lowering the arms, eyes glowing. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_xuong_1",
+  "ten": "luoi_ma_khong_lo_bang_dau_1",
   "trong_suot": true,
   "hat": 101,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1152,
+  "rong": 1344,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 3 animation frames of a downward net stab while in mid-air, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: in mid-air, raising the net above the head. Frame 2: in mid-air, thrusting the net straight down below the feet. Frame 3: in mid-air, net pointing straight down, legs tucked up. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 3 animation frames of being hit hard, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: flinching backward from a hit, torn net pieces and a plastic float flying off. Frame 3: recoiling, net arms flailing, angry glowing eyes. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_xuong_2",
+  "ten": "luoi_ma_khong_lo_bang_dau_2",
   "trong_suot": true,
   "hat": 202,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1152,
+  "rong": 1344,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 3 animation frames of a downward net stab while in mid-air, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: in mid-air, raising the net above the head. Frame 2: in mid-air, thrusting the net straight down below the feet. Frame 3: in mid-air, net pointing straight down, legs tucked up. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 3 animation frames of being hit hard, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: flinching backward from a hit, torn net pieces and a plastic float flying off. Frame 3: recoiling, net arms flailing, angry glowing eyes. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_chem_xuong_3",
+  "ten": "luoi_ma_khong_lo_bang_dau_3",
   "trong_suot": true,
   "hat": 303,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1152,
+  "rong": 1344,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 3 animation frames of a downward net stab while in mid-air, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: in mid-air, raising the net above the head. Frame 2: in mid-air, thrusting the net straight down below the feet. Frame 3: in mid-air, net pointing straight down, legs tucked up. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 3 animation frames of being hit hard, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: flinching backward from a hit, torn net pieces and a plastic float flying off. Frame 3: recoiling, net arms flailing, angry glowing eyes. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_luot_1",
+  "ten": "luoi_ma_khong_lo_bang_chet_1",
   "trong_suot": true,
   "hat": 101,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1792,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a fast forward dash, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: leaning forward, about to dash. Frame 2: dashing forward, body leaning almost horizontal, speed lines behind. Frame 3: dashing forward, cloak streaming far behind, speed lines. Frame 4: stopping the dash, leaning back, cloak settling. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a defeat, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating, wounded and sagging. Frame 2: sinking down, the knots coming loose, the glow fading from the eyes. Frame 3: unraveling into loose strands, small fish and a crab slipping free from the net. Frame 4: only a flat heap of old fishing net and broken floats left on the ground. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_luot_2",
+  "ten": "luoi_ma_khong_lo_bang_chet_2",
   "trong_suot": true,
   "hat": 202,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1792,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a fast forward dash, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: leaning forward, about to dash. Frame 2: dashing forward, body leaning almost horizontal, speed lines behind. Frame 3: dashing forward, cloak streaming far behind, speed lines. Frame 4: stopping the dash, leaning back, cloak settling. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a defeat, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating, wounded and sagging. Frame 2: sinking down, the knots coming loose, the glow fading from the eyes. Frame 3: unraveling into loose strands, small fish and a crab slipping free from the net. Frame 4: only a flat heap of old fishing net and broken floats left on the ground. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  },
  {
-  "ten": "mam_bang_luot_3",
+  "ten": "luoi_ma_khong_lo_bang_chet_3",
   "trong_suot": true,
   "hat": 303,
   "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
   ],
-  "rong": 1792,
+  "rong": 2048,
   "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a fast forward dash, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: leaning forward, about to dash. Frame 2: dashing forward, body leaning almost horizontal, speed lines behind. Frame 3: dashing forward, cloak streaming far behind, speed lines. Frame 4: stopping the dash, leaning back, cloak settling. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
- },
- {
-  "ten": "mam_bang_dau_1",
-  "trong_suot": true,
-  "hat": 101,
-  "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
-  ],
-  "rong": 1152,
-  "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 3 animation frames of getting hit, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: hit: flinching backward, head thrown back. Frame 2: staggering backward, arms flung out. Frame 3: regaining balance. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
- },
- {
-  "ten": "mam_bang_dau_2",
-  "trong_suot": true,
-  "hat": 202,
-  "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
-  ],
-  "rong": 1152,
-  "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 3 animation frames of getting hit, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: hit: flinching backward, head thrown back. Frame 2: staggering backward, arms flung out. Frame 3: regaining balance. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
- },
- {
-  "ten": "mam_bang_dau_3",
-  "trong_suot": true,
-  "hat": 303,
-  "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
-  ],
-  "rong": 1152,
-  "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 3 animation frames of getting hit, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: hit: flinching backward, head thrown back. Frame 2: staggering backward, arms flung out. Frame 3: regaining balance. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
- },
- {
-  "ten": "mam_bang_hoi_1",
-  "trong_suot": true,
-  "hat": 101,
-  "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
-  ],
-  "rong": 1536,
-  "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a healing spell, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: kneeling on one knee, head bowed. Frame 2: kneeling, glowing green leaves start swirling around. Frame 3: kneeling, bright green glow and leaves swirling around the whole body. Frame 4: standing back up, the green glow fading. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
- },
- {
-  "ten": "mam_bang_hoi_2",
-  "trong_suot": true,
-  "hat": 202,
-  "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
-  ],
-  "rong": 1536,
-  "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a healing spell, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: kneeling on one knee, head bowed. Frame 2: kneeling, glowing green leaves start swirling around. Frame 3: kneeling, bright green glow and leaves swirling around the whole body. Frame 4: standing back up, the green glow fading. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
- },
- {
-  "ten": "mam_bang_hoi_3",
-  "trong_suot": true,
-  "hat": 303,
-  "dua_vao": [
-   "C:\\game bao ve moi truong\\qwen\\ra_goc\\mam_goc_2.png"
-  ],
-  "rong": 1536,
-  "cao": 576,
-  "prompt": "A sprite sheet of the same character as in the reference image: a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear. Exactly 4 animation frames of a healing spell, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing right in every frame. Frame 1: kneeling on one knee, head bowed. Frame 2: kneeling, glowing green leaves start swirling around. Frame 3: kneeling, bright green glow and leaves swirling around the whole body. Frame 4: standing back up, the green glow fading. Keep the same face mask, colors, outfit and proportions as the reference in every frame. 2D game sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a defeat, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating, wounded and sagging. Frame 2: sinking down, the knots coming loose, the glow fading from the eyes. Frame 3: unraveling into loose strands, small fish and a crab slipping free from the net. Frame 4: only a flat heap of old fishing net and broken floats left on the ground. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
  }
 ]

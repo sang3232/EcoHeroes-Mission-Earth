@@ -1,0 +1,200 @@
+[
+ {
+  "ten": "luoi_ma_khong_lo_bang_dung_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1792,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a floating idle loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down, net strands dangling below. Frame 2: floating slightly higher, net arms drifting outward, strands swaying. Frame 3: floating in place, net arms hanging down. Frame 4: floating slightly lower, net arms drifting inward, strands swaying the other way. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_dung_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1792,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a floating idle loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down, net strands dangling below. Frame 2: floating slightly higher, net arms drifting outward, strands swaying. Frame 3: floating in place, net arms hanging down. Frame 4: floating slightly lower, net arms drifting inward, strands swaying the other way. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_dung_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1792,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a floating idle loop, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down, net strands dangling below. Frame 2: floating slightly higher, net arms drifting outward, strands swaying. Frame 3: floating in place, net arms hanging down. Frame 4: floating slightly lower, net arms drifting inward, strands swaying the other way. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_quang_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of casting a fishing net attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: pulling both net arms far back behind the body, gathering a big bundle of net. Frame 3: flinging both net arms forward, a wide fishing net flying out and spreading open in front. Frame 4: net arms stretched far forward after the throw, hands open. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_quang_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of casting a fishing net attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: pulling both net arms far back behind the body, gathering a big bundle of net. Frame 3: flinging both net arms forward, a wide fishing net flying out and spreading open in front. Frame 4: net arms stretched far forward after the throw, hands open. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_quang_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of casting a fishing net attack, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: pulling both net arms far back behind the body, gathering a big bundle of net. Frame 3: flinging both net arms forward, a wide fishing net flying out and spreading open in front. Frame 4: net arms stretched far forward after the throw, hands open. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_lao_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a swooping charge, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: leaning back and rising, eyes glowing brighter, about to swoop. Frame 3: swooping forward fast, body stretched horizontally, net strands streaming far behind. Frame 4: slowing down, body upright again, strands settling. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_lao_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a swooping charge, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: leaning back and rising, eyes glowing brighter, about to swoop. Frame 3: swooping forward fast, body stretched horizontally, net strands streaming far behind. Frame 4: slowing down, body upright again, strands settling. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_lao_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a swooping charge, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: leaning back and rising, eyes glowing brighter, about to swoop. Frame 3: swooping forward fast, body stretched horizontally, net strands streaming far behind. Frame 4: slowing down, body upright again, strands settling. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_goi_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1792,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a summoning roar, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: throwing the head back, glowing mouth wide open roaring, net arms spreading wide. Frame 3: roaring with net arms raised high, small floating net ghosts tearing loose from its body. Frame 4: lowering the arms, eyes glowing. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_goi_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1792,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a summoning roar, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: throwing the head back, glowing mouth wide open roaring, net arms spreading wide. Frame 3: roaring with net arms raised high, small floating net ghosts tearing loose from its body. Frame 4: lowering the arms, eyes glowing. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_goi_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1792,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a summoning roar, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: throwing the head back, glowing mouth wide open roaring, net arms spreading wide. Frame 3: roaring with net arms raised high, small floating net ghosts tearing loose from its body. Frame 4: lowering the arms, eyes glowing. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_dau_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1344,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 3 animation frames of being hit hard, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: flinching backward from a hit, torn net pieces and a plastic float flying off. Frame 3: recoiling, net arms flailing, angry glowing eyes. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_dau_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1344,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 3 animation frames of being hit hard, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: flinching backward from a hit, torn net pieces and a plastic float flying off. Frame 3: recoiling, net arms flailing, angry glowing eyes. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_dau_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 1344,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 3 animation frames of being hit hard, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating in place, net arms hanging down. Frame 2: flinching backward from a hit, torn net pieces and a plastic float flying off. Frame 3: recoiling, net arms flailing, angry glowing eyes. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_chet_1",
+  "trong_suot": true,
+  "hat": 101,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a defeat, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating, wounded and sagging. Frame 2: sinking down, the knots coming loose, the glow fading from the eyes. Frame 3: unraveling into loose strands, small fish and a crab slipping free from the net. Frame 4: only a flat heap of old fishing net and broken floats left on the ground. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_chet_2",
+  "trong_suot": true,
+  "hat": 202,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a defeat, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating, wounded and sagging. Frame 2: sinking down, the knots coming loose, the glow fading from the eyes. Frame 3: unraveling into loose strands, small fish and a crab slipping free from the net. Frame 4: only a flat heap of old fishing net and broken floats left on the ground. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_bang_chet_3",
+  "trong_suot": true,
+  "hat": 303,
+  "dua_vao": [
+   "C:\\game bao ve moi truong\\qwen\\ra_goc\\luoi_ma_khong_lo_goc_3.png"
+  ],
+  "rong": 2048,
+  "cao": 576,
+  "prompt": "A sprite sheet of the same character as in the reference image: a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow. Exactly 4 animation frames of a defeat, arranged left to right in one single horizontal row, evenly spaced with a clear empty gap between frames, every frame at the same scale on the same ground line, side view facing left in every frame. Frame 1: floating, wounded and sagging. Frame 2: sinking down, the knots coming loose, the glow fading from the eyes. Frame 3: unraveling into loose strands, small fish and a crab slipping free from the net. Frame 4: only a flat heap of old fishing net and broken floats left on the ground. Keep the same face, colors, materials and body shape as the reference in every frame. 2D game boss sprite sheet, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, menacing but kid-friendly, no text, no numbers, no frame borders, no grid lines, no ground, no shadow."
+ }
+]

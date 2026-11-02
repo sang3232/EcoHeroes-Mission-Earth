@@ -1,131 +1,110 @@
 [
  {
-  "ten": "bai_bien_xa_1",
+  "ten": "rung_xa_1",
   "rong": 1792,
   "cao": 768,
   "hat": 101,
-  "prompt": "Far parallax layer: a quiet tropical beach at dawn, calm sea, distant islands on the horizon, soft clouds, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+  "prompt": "Far parallax layer: a misty mangrove forest at the edge of the sea, tall mangrove trees standing on arching stilt roots in calm shallow water, hanging aerial roots, soft morning light through the leaves, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
  },
  {
-  "ten": "bai_bien_xa_2",
+  "ten": "rung_xa_2",
   "rong": 1792,
   "cao": 768,
   "hat": 202,
-  "prompt": "Far parallax layer: a quiet tropical beach at dawn, calm sea, distant islands on the horizon, soft clouds, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+  "prompt": "Far parallax layer: a misty mangrove forest at the edge of the sea, tall mangrove trees standing on arching stilt roots in calm shallow water, hanging aerial roots, soft morning light through the leaves, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
  },
  {
-  "ten": "bai_bien_xa_3",
+  "ten": "rung_xa_3",
   "rong": 1792,
   "cao": 768,
   "hat": 303,
-  "prompt": "Far parallax layer: a quiet tropical beach at dawn, calm sea, distant islands on the horizon, soft clouds, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+  "prompt": "Far parallax layer: a misty mangrove forest at the edge of the sea, tall mangrove trees standing on arching stilt roots in calm shallow water, hanging aerial roots, soft morning light through the leaves, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
  },
  {
-  "ten": "bai_bien_gan_1",
+  "ten": "rung_gan_1",
   "rong": 1792,
   "cao": 768,
   "hat": 101,
-  "prompt": "Near parallax layer: silhouettes of casuarina trees, coastal rocks and low sand dunes along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
+  "prompt": "Near parallax layer: dark silhouettes of mangrove trees with tangled arching stilt roots and thin breathing roots poking up from the mud, along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
   "trong_suot": true
  },
  {
-  "ten": "bai_bien_gan_2",
+  "ten": "rung_gan_2",
   "rong": 1792,
   "cao": 768,
   "hat": 202,
-  "prompt": "Near parallax layer: silhouettes of casuarina trees, coastal rocks and low sand dunes along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
+  "prompt": "Near parallax layer: dark silhouettes of mangrove trees with tangled arching stilt roots and thin breathing roots poking up from the mud, along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
   "trong_suot": true
  },
  {
-  "ten": "bai_bien_gan_3",
+  "ten": "rung_gan_3",
   "rong": 1792,
   "cao": 768,
   "hat": 303,
-  "prompt": "Near parallax layer: silhouettes of casuarina trees, coastal rocks and low sand dunes along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
+  "prompt": "Near parallax layer: dark silhouettes of mangrove trees with tangled arching stilt roots and thin breathing roots poking up from the mud, along the bottom edge only, empty transparent sky above, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text",
   "trong_suot": true
  },
  {
-  "ten": "hang_xa_1",
+  "ten": "dam_xa_1",
   "rong": 1792,
   "cao": 768,
   "hat": 101,
-  "prompt": "Far parallax layer: inside a large sea cave, rocky walls, tide pools, faint shafts of light from cracks in the ceiling, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+  "prompt": "Far parallax layer: abandoned shrimp farm ponds with straight muddy dikes, a broken wooden sluice gate, rusty paddle-wheel aerators, a few dead mangrove stumps, a thin line of surviving mangrove forest on the horizon, overcast sky, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
  },
  {
-  "ten": "hang_xa_2",
+  "ten": "dam_xa_2",
   "rong": 1792,
   "cao": 768,
   "hat": 202,
-  "prompt": "Far parallax layer: inside a large sea cave, rocky walls, tide pools, faint shafts of light from cracks in the ceiling, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+  "prompt": "Far parallax layer: abandoned shrimp farm ponds with straight muddy dikes, a broken wooden sluice gate, rusty paddle-wheel aerators, a few dead mangrove stumps, a thin line of surviving mangrove forest on the horizon, overcast sky, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
  },
  {
-  "ten": "hang_xa_3",
+  "ten": "dam_xa_3",
   "rong": 1792,
   "cao": 768,
   "hat": 303,
-  "prompt": "Far parallax layer: inside a large sea cave, rocky walls, tide pools, faint shafts of light from cracks in the ceiling, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
+  "prompt": "Far parallax layer: abandoned shrimp farm ponds with straight muddy dikes, a broken wooden sluice gate, rusty paddle-wheel aerators, a few dead mangrove stumps, a thin line of surviving mangrove forest on the horizon, overcast sky, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
  },
  {
-  "ten": "dao_rac_xa_1",
-  "rong": 1792,
-  "cao": 768,
-  "hat": 101,
-  "prompt": "Far parallax layer: a distant island made of piled plastic trash and rusty barrels under a stormy purple sky, gloomy sea, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
- },
- {
-  "ten": "dao_rac_xa_2",
-  "rong": 1792,
-  "cao": 768,
-  "hat": 202,
-  "prompt": "Far parallax layer: a distant island made of piled plastic trash and rusty barrels under a stormy purple sky, gloomy sea, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
- },
- {
-  "ten": "dao_rac_xa_3",
-  "rong": 1792,
-  "cao": 768,
-  "hat": 303,
-  "prompt": "Far parallax layer: a distant island made of piled plastic trash and rusty barrels under a stormy purple sky, gloomy sea, painterly 2D side-scrolling game background art, soft light, no characters, no people, no text"
- },
- {
-  "ten": "o_cat_1",
+  "ten": "o_bun_1",
   "rong": 1024,
   "cao": 1024,
   "hat": 101,
-  "prompt": "Seamless tileable texture of packed sand with small pebbles and shell fragments, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+  "prompt": "Seamless tileable texture of dark wet river mud with tangled small roots, fallen mangrove leaves and tiny snail shells, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
  },
  {
-  "ten": "o_cat_2",
+  "ten": "o_bun_2",
   "rong": 1024,
   "cao": 1024,
   "hat": 202,
-  "prompt": "Seamless tileable texture of packed sand with small pebbles and shell fragments, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+  "prompt": "Seamless tileable texture of dark wet river mud with tangled small roots, fallen mangrove leaves and tiny snail shells, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
  },
  {
-  "ten": "o_cat_3",
+  "ten": "o_bun_3",
   "rong": 1024,
   "cao": 1024,
   "hat": 303,
-  "prompt": "Seamless tileable texture of packed sand with small pebbles and shell fragments, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+  "prompt": "Seamless tileable texture of dark wet river mud with tangled small roots, fallen mangrove leaves and tiny snail shells, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
  },
  {
-  "ten": "o_da_1",
-  "rong": 1024,
+  "ten": "the_gioi_1",
+  "rong": 1792,
   "cao": 1024,
   "hat": 101,
-  "prompt": "Seamless tileable texture of dark wet sea-cave rock with barnacles, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+  "prompt": "A hand-painted fantasy world map of a small green land seen from above, like an old storybook map: a sandy beach coast in the lower left, a mangrove forest along the coast, a dark polluted river winding inland past smoking factories, golden rice fields with smoke, a huge garbage landfill mountain, a city of glass towers, a pale coral reef in the sea on the right, and a giant grey shopping-mall fortress in the middle, soft watercolor colors, parchment paper edges, no text, no labels, no letters, no compass"
  },
  {
-  "ten": "o_da_2",
-  "rong": 1024,
+  "ten": "the_gioi_2",
+  "rong": 1792,
   "cao": 1024,
   "hat": 202,
-  "prompt": "Seamless tileable texture of dark wet sea-cave rock with barnacles, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+  "prompt": "A hand-painted fantasy world map of a small green land seen from above, like an old storybook map: a sandy beach coast in the lower left, a mangrove forest along the coast, a dark polluted river winding inland past smoking factories, golden rice fields with smoke, a huge garbage landfill mountain, a city of glass towers, a pale coral reef in the sea on the right, and a giant grey shopping-mall fortress in the middle, soft watercolor colors, parchment paper edges, no text, no labels, no letters, no compass"
  },
  {
-  "ten": "o_da_3",
-  "rong": 1024,
+  "ten": "the_gioi_3",
+  "rong": 1792,
   "cao": 1024,
   "hat": 303,
-  "prompt": "Seamless tileable texture of dark wet sea-cave rock with barnacles, flat front view, hand-painted game tile texture, even lighting, no shadows, no text"
+  "prompt": "A hand-painted fantasy world map of a small green land seen from above, like an old storybook map: a sandy beach coast in the lower left, a mangrove forest along the coast, a dark polluted river winding inland past smoking factories, golden rice fields with smoke, a huge garbage landfill mountain, a city of glass towers, a pale coral reef in the sea on the right, and a giant grey shopping-mall fortress in the middle, soft watercolor colors, parchment paper edges, no text, no labels, no letters, no compass"
  }
 ]

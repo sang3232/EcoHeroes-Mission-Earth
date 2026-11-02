@@ -11,9 +11,9 @@
     B.forEach(v => { if (!A.has(v)) n++; });
     return n;
   }
-  function levelRooms() { return HSX.LEVELS[HSX.S.level].rooms; }
+  function levelRooms(lv) { return HSX.LEVELS[lv || HSX.S.level].rooms; }
 
-  let heapCount = null;
+  const heapCount = {};   // số đống rác của từng màn (đếm một lần)
   const Calc = HSX.Calc = {
     charmFx(key) {
       let sum = 0;
@@ -34,22 +34,28 @@
     dropMult() { return 1 + (HSX.S.spirits.taiche ? 0.2 : 0) + this.speciesFx('dropBonus'); },
     seedMult() { return 1 + this.charmFx('seedBonus') + this.speciesFx('seedBonus'); },
     spiritCount() { return Object.keys(HSX.S.spirits).length; },
-    heapTotal() {
-      if (heapCount === null) {
-        heapCount = 0;
-        const rooms = levelRooms();
-        for (const id in rooms) rooms[id].map.forEach(row => { for (const c of row) if (c === 'T') heapCount++; });
+    // Độ sạch tính riêng từng màn (mặc định màn đang chơi)
+    heapTotal(lv) {
+      lv = lv || HSX.S.level;
+      if (heapCount[lv] === undefined) {
+        let n = 0;
+        const rooms = levelRooms(lv);
+        for (const id in rooms) rooms[id].map.forEach(row => { for (const c of row) if (c === 'T') n++; });
+        heapCount[lv] = n;
       }
-      return heapCount;
+      return heapCount[lv];
     },
-    heapsBroken() {
+    heapsBroken(lv) {
+      const rooms = levelRooms(lv);
       let n = 0;
-      for (const id in HSX.S.heaps) n += Object.keys(HSX.S.heaps[id]).length;
+      for (const id in HSX.S.heaps) if (rooms[id]) n += Object.keys(HSX.S.heaps[id]).length;
       return n;
     },
-    cleanPct() { return Math.min(1, this.heapsBroken() / Math.max(1, this.heapTotal())); },
-    roomHeaps(id) { let n = 0; levelRooms()[id].map.forEach(row => { for (const c of row) if (c === 'T') n++; }); return n; },
+    cleanPct(lv) { return Math.min(1, this.heapsBroken(lv) / Math.max(1, this.heapTotal(lv))); },
+    roomHeaps(id) { let n = 0; HSX.roomDef(id).map.forEach(row => { for (const c of row) if (c === 'T') n++; }); return n; },
     roomClean(id) { return Object.keys(HSX.S.heaps[id] || {}).length >= this.roomHeaps(id); },
+    // Màn đã hạ boss cuối: trời sáng hẳn (Màn 1: bình minh)
+    levelDone(lv) { lv = lv || HSX.S.level; return lv === 'm1' ? !!HSX.S.dawn : !!HSX.S.xong[lv]; },
   };
 
   HSX.Sys = {
@@ -69,6 +75,28 @@
       if (!key || s.facts[key]) return;
       s.facts[key] = true;
       HSX.UI.fact(D.facts[key]);
+    },
+
+    // ---------- Sổ quái vật ----------
+    quai(type) { return (HSX.S.quai[type] = HSX.S.quai[type] || { seen: false, kills: 0 }); },
+    quaiName(type) { return (D.enemies[type] || D.bosses[type]).name; },
+    quaiSeen(type) {
+      const q = this.quai(type);
+      if (q.seen || !D.soQuai[type]) return;
+      q.seen = true;
+      HSX.UI.toast(`📖 Sổ quái vật: lần đầu gặp <b>${this.quaiName(type)}</b>`);
+    },
+    // Hạ lần đầu: mở hình và cách đánh. Hạ đủ số lần: mở kiến thức về loại rác đó.
+    quaiKill(type) {
+      const q = this.quai(type), d = D.soQuai[type];
+      if (!d) return;
+      q.seen = true;
+      q.kills++;
+      if (q.kills === 1) HSX.UI.toast(`📖 Đã ghi <b>${this.quaiName(type)}</b> vào Sổ quái vật${d.can > 1 ? ` · 1/${d.can}` : ''}`);
+      if (q.kills === d.can) {
+        if (d.can > 1) HSX.UI.toast(`📖 Hoàn thành trang <b>${this.quaiName(type)}</b> trong Sổ quái vật`);
+        this.fact(d.fact);
+      }
     },
 
     // ---------- Chế tạo (tức thì, chỉ khi ngồi ở Trạm) ----------
@@ -155,6 +183,7 @@
     rest(roomId, x, y) {
       const s = HSX.S;
       s.bench = { room: roomId, x, y };
+      s.benches[HSX.roomLevel(roomId)] = s.bench;
       s.hp = Calc.maxHp();
       s.dead = {};
       const gifts = [];
@@ -174,6 +203,7 @@
       if (c) s.inv.compost -= 1;
       (s.trees[roomId] = s.trees[roomId] || {})[idx] = { type, g: 0, c };
       this.fact(T.fact);
+      HSX.emit('trong', { room: roomId, idx, type });
       HSX.saveGame();
       return true;
     },
@@ -183,7 +213,12 @@
         const t = s.trees[r][i];
         if (t.g >= 1) continue;
         t.g = Math.min(1, t.g + (dt / D.trees[t.type].grow) * (t.c ? 2 : 1));
-        if (t.g >= 1) { this.checkSpecies(); HSX.UI.toast(`${D.trees[t.type].emoji} ${D.trees[t.type].name} đã lớn và tỏa sáng`); }
+        if (t.g >= 1) {
+          this.checkSpecies();
+          const W = HSX.World, cau = W.room && W.room.id === r && W.room.rootSegs.some(sg => sg.idx === +i);
+          if (cau) W.rootsGrown(+i);
+          else HSX.UI.toast(`${D.trees[t.type].emoji} ${D.trees[t.type].name} đã lớn và tỏa sáng`);
+        }
       }
     },
     matureCount(type) {
@@ -195,10 +230,10 @@
 
     // ---------- Sinh vật ----------
     speciesStatus(id) {
-      const s = HSX.S, sp = D.species[id], c = sp.cond, list = [];
-      const room = levelRooms()[sp.room];
+      const s = HSX.S, sp = D.species[id], c = sp.cond, list = [], lv = HSX.roomLevel(sp.room);
+      const room = HSX.roomDef(sp.room);
       list.push({ ok: Calc.roomClean(sp.room), text: `Dọn sạch rác ở ${room.name}` });
-      if (c.clean) list.push({ ok: Calc.cleanPct() >= c.clean, text: `Độ sạch bãi biển ≥ ${HSX.pct(c.clean)}` });
+      if (c.clean) list.push({ ok: Calc.cleanPct(lv) >= c.clean, text: `Độ sạch ${HSX.LEVELS[lv].goi} ≥ ${HSX.pct(c.clean)}` });
       if (c.tree) for (const t in c.tree) {
         const have = this.matureCount(t);
         list.push({ ok: have >= c.tree[t], text: `${c.tree[t]} cây ${D.trees[t].name} trưởng thành (${Math.min(have, c.tree[t])}/${c.tree[t]})` });

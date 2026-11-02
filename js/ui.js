@@ -55,7 +55,7 @@
 
   const UI = HSX.UI = {
     queue: [], view: null,
-    sel: { exp: [], expMsg: '', book: 'phatminh', compost: true },
+    sel: { exp: [], expMsg: '', book: 'phatminh', compost: true, quai: null },
 
     init() {
       $('modal-root').addEventListener('click', e => this.handle(e));
@@ -72,10 +72,11 @@
     blocking() { return !!$('modal-root').innerHTML || HSX.Puzzle.active; },
 
     // ---------- Hộp thoại chung ----------
+    // buttons: [chữ, hành động, nút chính?, tham số]
     modal(title, body, buttons, wide) {
       buttons = buttons || [['Đóng', 'close', true]];
       const html = `<div class="overlay"><div class="modal ${wide ? 'wide' : ''}"><div class="m-head"><b>${title}</b><button class="x" data-act="close" title="Đóng (Esc)">✕</button></div>
-        <div class="m-body">${body}</div><div class="row end">${buttons.map(([l, a, p]) => `<button class="btn ${p ? 'primary' : ''}" data-act="${a}">${l}</button>`).join('')}</div></div></div>`;
+        <div class="m-body">${body}</div><div class="row end">${buttons.map(([l, a, p, g]) => `<button class="btn ${p ? 'primary' : ''}" data-act="${a}"${g ? ` data-arg="${g}"` : ''}>${l}</button>`).join('')}</div></div></div>`;
       if (this.blocking()) { this.queue.push(html); return; }
       this.view = { kind: 'modal' };
       $('modal-root').innerHTML = html;
@@ -115,7 +116,14 @@
         case 'exp-del': this.sel.exp = this.sel.exp.filter(x => x !== arg); break;
         case 'exp-try': this.sel.expMsg = Sys.experiment(this.sel.exp).msg; break;
         case 'book': this.sel.book = arg; break;
+        case 'quai': this.sel.quai = arg; break;
+        case 'cam': HSX.opt.camChuot = +arg; HSX.saveOpt(); break;
+        case 'hd-bat': HSX.opt.huongDan = !HSX.opt.huongDan; HSX.saveOpt(); break;
+        case 'hd-lai': HSX.HuongDan.lamLai(); this.closeModal(); this.toast('Hướng dẫn sẽ chạy lại từ bước đầu.'); return;
         case 'compost': this.sel.compost = !this.sel.compost; break;
+        case 'tg': this.sel.tg = arg; break;
+        case 'di': this.closeModal(); HSX.World.travel(arg); return;
+        case 'tg-mo': this.closeModal(); this.openPause('thegioi'); return;
         case 'plant':
           if (Sys.plant(v.room, v.idx, arg, this.sel.compost)) { this.closeModal(); this.toast(`Đã trồng ${D.trees[arg].emoji} ${D.trees[arg].name}`); }
           return;
@@ -139,10 +147,11 @@
     },
 
     // ---------- Menu nhiều tab ----------
-    openPause(tab) { this.view = { kind: 'pause', tab: tab || 'tui' }; this.renderMenu(); },
-    openBench(gifts) { this.view = { kind: 'bench', tab: 'nghi', gifts: gifts || [] }; this.renderMenu(); },
-    openPlant(room, idx) {
-      this.view = { kind: 'plant', room, idx };
+    openPause(tab) { this.sel.tg = null; this.view = { kind: 'pause', tab: tab || 'tui' }; this.renderMenu(); HSX.emit('menu'); },
+    openBench(gifts) { this.sel.tg = null; this.view = { kind: 'bench', tab: 'nghi', gifts: gifts || [] }; this.renderMenu(); },
+    // dat: loại ô ('cat', 'bun', 'boi'), chỉ hiện cây trồng được ở loại ô đó
+    openPlant(room, idx, dat) {
+      this.view = { kind: 'plant', room, idx, dat: dat || 'cat' };
       this.renderMenu();
     },
     renderMenu() {
@@ -151,11 +160,11 @@
       let title, tabs, body;
       if (v.kind === 'pause') {
         title = '⏸ Tạm dừng';
-        tabs = [['tui', '🎒 Túi đồ'], ['bando', '🗺️ Bản đồ'], ['so', '📖 Sổ'], ['caidat', '⚙️ Cài đặt']];
+        tabs = [['tui', '🎒 Túi đồ'], ['bando', '🗺️ Bản đồ'], ['thegioi', '🌏 Thế giới'], ['so', '📖 Sổ'], ['caidat', '⚙️ Cài đặt']];
         body = this['tab_' + v.tab]();
       } else if (v.kind === 'bench') {
         title = '♻️ Trạm Tái Chế';
-        tabs = [['nghi', '🪑 Nghỉ'], ['bua', '🔮 Bùa'], ['xuong', '🛠️ Xưởng'], ['loc', '💧 Bàn lọc'], ['thinghiem', '🧪 Thí nghiệm']];
+        tabs = [['nghi', '🪑 Nghỉ'], ['bua', '🔮 Bùa'], ['xuong', '🛠️ Xưởng'], ['loc', '💧 Bàn lọc'], ['thinghiem', '🧪 Thí nghiệm'], ['lenduong', '🧭 Lên đường']];
         body = this['bench_' + v.tab]();
       } else {
         title = '🌱 Trồng cây';
@@ -169,6 +178,7 @@
         <div class="m-body">${body}</div></div></div>`;
       const nb = $('modal-root').querySelector('.m-body');
       if (nb) nb.scrollTop = top;
+      this.xemQuai();
     },
 
     // ---------- Túi đồ ----------
@@ -212,15 +222,44 @@
           <text x="${x + w / 2}" y="${y + h / 2}" class="mname">${esc(d.name)}</text>
           <text x="${x + w / 2}" y="${y + h / 2 + 15}" class="msub">${d.map.some(r => r.includes('B')) ? '♻️ ' : ''}${left ? '🗑️' + left : '✨'}${id === here ? ' · 📍' : ''}</text></g>`;
       }
-      const seen = Object.keys(S.visited).length, total = Object.keys(L.rooms).length;
-      return `<p class="small muted">Đã khám phá ${seen}/${total} khu vực · Độ sạch ${pct(Calc.cleanPct())} · ♻️ Trạm Tái Chế · 🗑️ số đống rác còn lại · ✨ đã sạch · 📍 bạn đang ở đây</p>
+      const seen = Object.keys(L.rooms).filter(id => S.visited[id]).length, total = Object.keys(L.rooms).length;
+      return `<p class="small muted"><b>${esc(L.name)}</b> · Đã khám phá ${seen}/${total} khu vực · Độ sạch ${pct(Calc.cleanPct())} · ♻️ Trạm Tái Chế · 🗑️ số đống rác còn lại · ✨ đã sạch · 📍 bạn đang ở đây</p>
         <svg class="map" viewBox="-4 -4 ${(maxX - minX) * k + 8} ${(maxY - minY) * k + 8}">${svg}</svg>`;
+    },
+
+    // ---------- Bản đồ thế giới: 8 màn theo kịch bản ----------
+    tab_thegioi() { return this.banDoTheGioi(false); },
+    bench_lenduong() { return this.banDoTheGioi(true); },
+    banDoTheGioi(diDuoc) {
+      const S = HSX.S, ds = D.theGioi, img = A.get('bg/the_gioi');
+      const tt = m => (!HSX.LEVELS[m.id] ? 'sap' : Calc.levelDone(m.id) ? 'xong' : S.mo[m.id] ? 'mo' : 'khoa');
+      if (!ds.some(m => m.id === this.sel.tg)) this.sel.tg = S.level;
+      const m = ds.find(x => x.id === this.sel.tg), so = ds.indexOf(m) + 1, st = tt(m);
+      const H = 540 / 945 * 100;
+      const duong = ds.map(x => `${x.x},${(x.y * H / 100).toFixed(2)}`).join(' ');
+      const moc = ds.map((x, i) => `<button class="tg-moc ${tt(x)} ${x.id === m.id ? 'sel' : ''} ${x.id === S.level ? 'here' : ''}" style="left:${x.x}%;top:${x.y}%" data-act="tg" data-arg="${x.id}" title="${esc(x.ten)}">
+          <span class="tg-o">${tt(x) === 'sap' || tt(x) === 'khoa' ? '🔒' : x.emo}</span><span class="tg-ten">${i + 1}. ${esc(x.ten)}</span></button>`).join('');
+      let info = `<h3>${m.emo} Màn ${so}: ${esc(m.ten)}</h3><p class="small">Vấn đề: <b>${esc(m.van_de)}</b></p>`;
+      if (st === 'sap') info += '<p class="small muted">🚧 Khu vực này sẽ có ở bản sau. Hồi sinh các khu trước để đi tiếp.</p>';
+      else if (st === 'khoa') info += '<p class="small muted">🔒 Hạ boss của màn trước để mở đường tới đây.</p>';
+      else {
+        const rooms = HSX.LEVELS[m.id].rooms, tham = Object.keys(rooms).filter(id => S.visited[id]).length;
+        info += `<p class="small">${st === 'xong' ? '✨ Đã hồi sinh' : '🌱 Đang hồi sinh'} · Độ sạch ${pct(Calc.cleanPct(m.id))} · Khu vực đã tới ${tham}/${Object.keys(rooms).length}</p>`;
+        if (m.id === S.level) info += '<p class="small">📍 Bạn đang ở đây.</p>';
+        else if (diDuoc) info += `<button class="btn primary" data-act="di" data-arg="${m.id}">Lên đường tới ${esc(m.ten)}</button>`;
+        else info += '<p class="small muted">Ngồi nghỉ ở một Trạm Tái Chế để lên đường sang khu này.</p>';
+      }
+      return `<div class="tg" style="${img ? `background-image:url('${img.src}')` : ''}">
+          ${img ? '' : '<div class="tg-nen"></div>'}
+          <svg class="tg-duong" viewBox="0 0 100 ${H.toFixed(2)}" preserveAspectRatio="none"><polyline points="${duong}"/></svg>
+          ${moc}</div>
+        <div class="tg-info">${info}</div>`;
     },
 
     // ---------- Sổ ----------
     tab_so() {
       const S = HSX.S, sub = this.sel.book;
-      const subs = [['phatminh', 'Phát Minh'], ['sachdo', 'Sách Đỏ'], ['nhatky', 'Nhật ký'], ['biet', 'Bạn có biết']];
+      const subs = [['phatminh', 'Phát Minh'], ['quai', 'Quái vật'], ['sachdo', 'Sách Đỏ'], ['nhatky', 'Nhật ký'], ['biet', 'Bạn có biết']];
       let h = `<div class="subtabs">${subs.map(([id, n]) => `<button class="${sub === id ? 'on' : ''}" data-act="book" data-arg="${id}">${n}</button>`).join('')}</div>`;
       if (sub === 'phatminh') {
         h += `<p class="small muted">Đã biết ${D.recipes.filter(r => S.known[r.id]).length}/${D.recipes.length} công thức. Công thức bí ẩn tìm qua Nhật ký hoặc Bàn thí nghiệm ở Trạm.</p><div class="list">`;
@@ -232,22 +271,101 @@
         });
         h += '</div>';
       } else if (sub === 'sachdo') {
-        h += '<p class="small muted">Loài vật thật ở biển Việt Nam. Phục hồi nơi sống để chúng quay về.</p>';
+        h += '<p class="small muted">Loài vật thật ở Việt Nam. Phục hồi nơi sống để chúng quay về.</p>';
         h += Object.keys(D.species).map(id => {
           const sp = D.species[id];
           if (S.seen[id]) return `<div class="row-item">${icon('species', id, sp.emoji)}<div class="grow"><b>${sp.name}</b><div class="small">${D.facts[sp.fact]}</div></div></div>`;
           return `<div class="row-item dim"><span class="ico emo">❔</span><div class="grow"><b>Chưa gặp</b>${Sys.speciesStatus(id).map(x => `<div class="small ${x.ok ? 'ok' : 'no'}">${x.ok ? '✔' : '✘'} ${x.text}</div>`).join('')}</div></div>`;
         }).join('');
+      } else if (sub === 'quai') {
+        h += this.soQuai();
       } else if (sub === 'nhatky') {
+        // trang chưa tìm thấy: gợi ý màn có trang đó (theo phòng có journal = n)
+        const oDau = n => { for (const lv in HSX.LEVELS) for (const id in HSX.LEVELS[lv].rooms) if (HSX.LEVELS[lv].rooms[id].journal === +n) return HSX.LEVELS[lv].goi; return 'đâu đó'; };
         h += Object.keys(D.journals).map(n => (S.journals[n]
           ? `<div class="journal"><b>📜 ${D.journals[n].title}</b><p>${D.journals[n].text}</p></div>`
-          : '<div class="journal dim"><b>📜 Trang chưa tìm thấy</b><p class="small muted">Ở đâu đó trên bãi biển...</p></div>')).join('');
+          : `<div class="journal dim"><b>📜 Trang chưa tìm thấy</b><p class="small muted">Ở đâu đó trong ${oDau(n)}...</p></div>`)).join('');
       } else {
         const seen = Object.keys(D.facts).filter(k => S.facts[k]);
         h += `<p class="small muted">Đã mở ${seen.length}/${Object.keys(D.facts).length} thẻ kiến thức.</p>`;
         h += seen.map(k => `<div class="fact-box">💡 ${D.facts[k]}</div>`).join('') || '<p class="small muted">Chế đồ, trồng cây và giải đố để mở thẻ kiến thức.</p>';
       }
       return h;
+    },
+
+    // ---------- Sổ quái vật ----------
+    // Gặp: hiện tên và bóng đen. Hạ lần đầu: hiện hình, mô tả, cách đánh. Hạ đủ số lần: mở thẻ kiến thức về loại rác đó.
+    soQuai() {
+      const S = HSX.S, ids = Object.keys(D.soQuai), q = id => S.quai[id] || {};
+      if (!D.soQuai[this.sel.quai]) this.sel.quai = ids.find(id => q(id).seen) || ids[0];
+      const sel = this.sel.quai;
+      let h = `<p class="small muted">Đã gặp ${ids.filter(id => q(id).seen).length}/${ids.length} · đã ghi ${ids.filter(id => q(id).kills).length} · hoàn thành ${ids.filter(id => q(id).kills >= D.soQuai[id].can).length} trang. Hạ đủ số lần ghi trên mỗi trang để mở kiến thức về loại rác đó.</p>`;
+      h += '<div class="so-quai"><div class="sq-luoi">';
+      ids.forEach(id => {
+        const d = D.soQuai[id], e = D.enemies[id] || D.bosses[id], img = D.bosses[id] ? D.bosses[id].img : id;
+        h += `<button class="sq-the ${id === sel ? 'sel' : ''} ${q(id).seen ? '' : 'an'} ${q(id).kills ? '' : 'bong'} ${d.boss ? 'trum' : ''}" data-act="quai" data-arg="${id}">
+          ${q(id).seen ? A.html('enemies/' + img, e.emoji) : '<span class="ico emo">❔</span>'}<b>${q(id).seen ? esc(e.name) : '???'}</b>
+          ${q(id).kills >= d.can ? '<span class="sq-ok">✔</span>' : q(id).kills ? `<span class="sq-so">${q(id).kills}/${d.can}</span>` : ''}</button>`;
+      });
+      return h + `</div><div class="sq-trang">${this.trangQuai(sel)}</div></div>`;
+    },
+    trangQuai(id) {
+      const q = HSX.S.quai[id] || {}, d = D.soQuai[id], e = D.enemies[id] || D.bosses[id];
+      if (!q.seen) return '<div class="sq-trong muted">Chưa gặp loài quái này. Hãy đi khám phá thêm.</div>';
+      let h = `<canvas id="sq-xem" width="640" height="400" data-quai="${id}"></canvas>
+        <h3>${esc(e.name)} ${d.boss ? '<span class="tag">Boss</span>' : ''}</h3>
+        <p class="small"><b>Làm từ:</b> ${d.rac} · <b>Đã hạ:</b> ${q.kills || 0}${d.can > 1 ? '/' + d.can : ''}</p>`;
+      if (!q.kills) return h + '<p class="small muted">Hạ nó một lần để ghi lại hình dáng và cách đánh.</p>';
+      h += `<p>${d.mo_ta}</p><p class="small"><b>Cách đánh:</b> ${d.cach}</p>`;
+      return h + (q.kills >= d.can
+        ? `<div class="fact-box">💡 <b>Bạn có biết?</b> ${D.facts[d.fact]}</div>`
+        : `<p class="small muted">Hạ thêm ${d.can - q.kills} lần để mở kiến thức về ${d.rac.toLowerCase()}.</p>`);
+    },
+    // Hình động trong trang Sổ: quái thường nhún nhảy, boss diễn lần lượt từng động tác (khung Qwen nếu có)
+    xemQuai() {
+      const cv = $('sq-xem');
+      if (!cv) return;
+      const id = cv.dataset.quai, g = cv.getContext('2d'), q = HSX.S.quai[id] || {}, ma = (this.xemMa || 0) + 1;
+      this.xemMa = ma;
+      A.loadBoss(id);
+      const TEN = { dung: 'Đứng', di: 'Đi', gam: 'Gầm', nem: 'Ném túi', nhay: 'Nhảy đập', lao: 'Lao tới', dau: 'Trúng đòn',
+        dap: 'Đập càng', choang: 'Choáng', chet: 'Gục ngã', quang: 'Quăng lưới', goi: 'Gọi Lưới Ma' };
+      const img0 = A.get('enemies/' + (D.bosses[id] ? D.bosses[id].img : id)), t0 = performance.now();
+      const ve = () => {
+        if (this.xemMa !== ma || !document.body.contains(cv)) return;
+        const t = (performance.now() - t0) / 1000, W2 = cv.width, H2 = cv.height, chan = H2 - 40;
+        g.setTransform(1, 0, 0, 1, 0, 0);
+        g.clearRect(0, 0, W2, H2);
+        const bg = g.createRadialGradient(W2 / 2, chan - 80, 20, W2 / 2, chan - 80, W2 * 0.6);
+        bg.addColorStop(0, '#2a3a4a'); bg.addColorStop(1, '#0b1118');
+        g.fillStyle = bg; g.fillRect(0, 0, W2, H2);
+        g.fillStyle = 'rgba(255,255,255,0.06)'; g.fillRect(0, chan, W2, 2);
+        if (!q.kills) g.filter = 'brightness(0)';   // chưa hạ: chỉ thấy bóng đen
+        const K = (HSX.KHUNG_QUAI || {})[id], G = HSX.KHUNG_QUAI_CO;
+        let nhan = '';
+        if (K && G && q.kills) {
+          const ds = Object.keys(K), dt = ds[Math.floor(t / 1.6) % ds.length], n = K[dt].length, i = Math.min(n - 1, Math.floor((t % 1.6) / 1.6 * n * 1.25));
+          const fr = A.get(`enemies/${id}_${dt}_${i + 1}`), u = 230 / G.cao;
+          if (fr) g.drawImage(fr, W2 / 2 + (K[dt][i][0] - G.w / 2) * u, chan + (K[dt][i][1] - G.chan) * u, fr.width * u, fr.height * u);
+          nhan = TEN[dt] || dt;
+        } else if (img0) {
+          const s = 300, nh = Math.sin(t * 3), lao = Math.max(0, Math.sin(t * 1.3)) > 0.97 ? 1 : 0;
+          g.save();
+          g.translate(W2 / 2 - lao * 30, chan);
+          g.scale(1 + nh * 0.03 + lao * 0.1, 1 - nh * 0.04 - lao * 0.08);
+          g.drawImage(img0, -s / 2, -s + 8, s, s);
+          g.restore();
+        }
+        g.filter = 'none';
+        if (nhan) {
+          g.font = 'bold 22px "Segoe UI",system-ui,sans-serif';
+          g.textAlign = 'center';
+          g.fillStyle = '#bfe6c8';
+          g.fillText(nhan, W2 / 2, H2 - 12);
+        }
+        requestAnimationFrame(ve);
+      };
+      requestAnimationFrame(ve);
     },
 
     // ---------- Cài đặt ----------
@@ -267,7 +385,11 @@
           <tr><td>Túi đồ / Bản đồ / Tạm dừng</td><td>Tab / M / Esc</td></tr>
         </table>
         <p class="small muted">Tay cầm: A nhảy, X chém, RB lướt, B hồi, Y phép, Start tạm dừng. Điện thoại: dùng nút trên màn hình, xoay ngang máy.</p></div>
-        <div><h3>Thống kê</h3><p class="small">Thời gian chơi ${HSX.fmtTime(S.stats.time)} · Quái đã hạ ${fmt(S.stats.kills)} · Số lần ngã ${S.stats.deaths}</p>
+        <div><h3>Camera theo chuột</h3><p class="small muted">Rê chuột ra phía mép màn hình thì khung nhìn lia theo một phần.</p>
+        <div class="row">${[[0, 'Tắt'], [0.18, 'Nhẹ'], [0.3, 'Vừa'], [0.45, 'Mạnh']].map(([v, n]) => `<button class="btn small ${HSX.opt.camChuot === v ? 'on' : ''}" data-act="cam" data-arg="${v}">${n}</button>`).join('')}</div>
+        <h3>Hướng dẫn</h3><p class="small muted">Bảng nhỏ phía trên màn hình dạy từng thao tác, mẹo mới hiện khi gặp tình huống lần đầu.</p>
+        <div class="row"><button class="btn small ${HSX.opt.huongDan ? 'on' : ''}" data-act="hd-bat">${HSX.opt.huongDan ? 'Đang bật' : 'Đang tắt'}</button><button class="btn small" data-act="hd-lai">Xem lại từ đầu</button></div>
+        <h3>Thống kê</h3><p class="small">Thời gian chơi ${HSX.fmtTime(S.stats.time)} · Quái đã hạ ${fmt(S.stats.kills)} · Số lần ngã ${S.stats.deaths}</p>
         <h3>Lưu game</h3><p class="small muted">Game tự lưu khi ngồi Trạm, khi sang phòng mới và khi nhặt đồ quan trọng.</p>
         <div class="row"><button class="btn" data-act="save">Lưu ngay</button><button class="btn" data-act="fullscreen">Toàn màn hình</button></div>
         <div class="row"><button class="btn" data-act="export">Xuất mã save</button><button class="btn" data-act="import">Nhập mã save</button><button class="btn danger" data-act="reset">Chơi lại từ đầu</button></div>
@@ -276,12 +398,13 @@
 
     // ---------- Trạm Tái Chế ----------
     bench_nghi() {
-      const S = HSX.S, v = this.view;
-      return `<div class="reward">🪑 Đã nghỉ ở Trạm: hồi đầy máu, đã lưu game. Quái quanh bãi biển cũng hồi sinh.${v.gifts.length ? `<br>Nhận thêm: ${v.gifts.join(' ')}` : ''}</div>
-        <p class="small muted">Ngã xuống thì sẽ tỉnh dậy ở Trạm này. Chỉ đổi bùa được khi ngồi ở Trạm.</p>
+      const S = HSX.S, v = this.view, L = HSX.LEVELS[S.level];
+      const loai = Object.keys(D.species).filter(id => HSX.roomLevel(D.species[id].room) === S.level);
+      return `<div class="reward">🪑 Đã nghỉ ở Trạm: hồi đầy máu, đã lưu game. Quái quanh ${L.goi} cũng hồi sinh.${v.gifts.length ? `<br>Nhận thêm: ${v.gifts.join(' ')}` : ''}</div>
+        <p class="small muted">Ngã xuống thì sẽ tỉnh dậy ở Trạm này. Chỉ đổi bùa được khi ngồi ở Trạm. Sang khu khác: thẻ 🧭 Lên đường.</p>
         <div class="cols"><div><h3>Tinh linh đi cùng</h3>${D.spiritOrder.filter(id => S.spirits[id]).map(id => `<div class="row-item">${spiritIcon(id)}<div class="grow"><b>${D.spirits[id].name}</b><div class="small muted">${D.spirits[id].skill}</div></div></div>`).join('') || '<p class="small muted">Chưa có tinh linh nào.</p>'}</div>
-        <div><h3>Bãi biển</h3><p class="small">Độ sạch ${pct(Calc.cleanPct())} · Khu vực đã tới ${Object.keys(S.visited).length}/${Object.keys(HSX.LEVELS[S.level].rooms).length}</p>
-        ${Object.keys(D.species).map(id => `<div class="small">${S.species[id] ? '✔' : '✘'} ${D.species[id].emoji} ${D.species[id].name}</div>`).join('')}</div></div>`;
+        <div><h3>${esc(L.name)}</h3><p class="small">Độ sạch ${pct(Calc.cleanPct())} · Khu vực đã tới ${Object.keys(L.rooms).filter(id => S.visited[id]).length}/${Object.keys(L.rooms).length}</p>
+        ${loai.map(id => `<div class="small">${S.species[id] ? '✔' : '✘'} ${D.species[id].emoji} ${D.species[id].name}</div>`).join('')}</div></div>`;
     },
     bench_bua() {
       const S = HSX.S, all = Object.keys(S.owned).filter(id => D.items[id] && D.items[id].kind === 'charm');
@@ -329,10 +452,11 @@
     },
 
     plantBody() {
-      const S = HSX.S;
-      return `<p class="small">Bạn có <b>${Math.floor(S.seeds)} 🌱</b> hạt giống. Cây lớn trong lúc bạn chơi, lớn rồi thì tỏa sáng.</p>
+      const S = HSX.S, dat = this.view.dat || 'cat';
+      const ds = Object.keys(D.trees).filter(id => D.trees[id].dat.includes(dat));
+      return `<p class="small">Bạn có <b>${Math.floor(S.seeds)} 🌱</b> hạt giống. Cây lớn trong lúc bạn chơi, lớn rồi thì tỏa sáng.${dat === 'boi' ? ' Bãi bồi ngập bùn: chỉ cây đước sống được, rễ đước lớn lên sẽ bắc thành cầu.' : ''}</p>
         <button class="btn small ${this.sel.compost ? 'on' : ''}" data-act="compost">🍂 Bón compost (lớn nhanh gấp đôi): ${this.sel.compost ? 'Bật' : 'Tắt'} · còn ${Sys.count('compost')}</button>
-        <div class="list">${Object.keys(D.trees).map(id => {
+        <div class="list">${ds.map(id => {
           const t = D.trees[id];
           return `<div class="row-item">${icon('trees', id, t.emoji)}<div class="grow"><b>${t.name}</b> <span class="tag">🌱 ${t.cost}</span><div class="small muted">${t.desc} Lớn sau ${HSX.fmtTime(t.grow)}.</div></div>
             <button class="btn small" data-act="plant" data-arg="${id}" ${S.seeds >= t.cost ? '' : 'disabled'}>Trồng</button></div>`;
@@ -357,20 +481,26 @@
       this.modal(`${sp.emoji} ${sp.name} đã quay về!`, `<div class="big-emo">${icon('species', id, sp.emoji, 'xl')}</div>
         <p class="center">Nơi sống đã đủ tốt. Thưởng: <b>${buff}</b>.</p><div class="fact-box">💡 <b>Bạn có biết?</b> ${D.facts[sp.fact]}</div>`, [['Tuyệt vời!', 'close', true]]);
     },
-    showVictory() {
-      const S = HSX.S;
-      this.modal('🌅 Bãi biển nhựa đã hồi sinh!', `<p>Vua Túi Nilon đã bị đánh bại, Sương Độc tan đi và bình minh trở lại.</p>
-        <p class="small">Thời gian ${HSX.fmtTime(S.stats.time)} · Độ sạch ${pct(Calc.cleanPct())} · Tinh linh ${Calc.spiritCount()}/4 · Loài vật quay về ${Object.keys(S.species).length}/${Object.keys(D.species).length} · Mảnh Lá ${S.shards}</p>
+    // Bảng tổng kết khi hạ boss cuối màn, kèm đường sang màn sau
+    showVictory(lv) {
+      const S = HSX.S, loai = Object.keys(D.species).filter(id => HSX.roomLevel(D.species[id].room) === lv);
+      const so = `<p class="small">Thời gian ${HSX.fmtTime(S.stats.time)} · Độ sạch ${pct(Calc.cleanPct(lv))} · Loài vật quay về ${loai.filter(id => S.species[id]).length}/${loai.length} · Mảnh Lá ${S.shards}</p>`;
+      if (lv === 'm2') {
+        this.modal('🌿 Rừng Ngập Mặn bắt đầu hồi sinh!', `<p>Lưới Ma Khổng Lồ đã buông ra. Cá, cua quay về, rễ đước lại vươn ra giữ đất.</p>${so}
+          <div class="fact-box">💡 <b>Bạn có biết?</b> ${D.facts.rungchan}</div>
+          <p class="small">Vẫn còn bãi bồi chờ cây đước, rặng bần chờ đom đóm. Đi tiếp lên thượng nguồn: <b>Màn 3: Sông Đen</b> sẽ có ở bản sau.</p>`,
+        [['Xem bản đồ thế giới', 'tg-mo'], ['Tiếp tục khám phá', 'close', true]]);
+        return;
+      }
+      this.modal('🌅 Bãi Biển Nhựa đã hồi sinh!', `<p>Vua Túi Nilon đã bị đánh bại, Sương Độc tan đi và bình minh trở lại.</p>${so}
         <div class="fact-box">💡 <b>Bạn có biết?</b> ${D.facts.nilon}</div>
-        <p class="small">Bạn vẫn có thể đi tiếp để dọn hết rác, tìm Mảnh Lá và đón loài vật quay về. <b>Màn 2: Dòng sông chết</b> sẽ có ở bản sau.</p>`, [['Tiếp tục khám phá', 'close', true]]);
+        <p class="small">Đường tới <b>Màn 2: Rừng Ngập Mặn</b> đã mở. Đi ngay, hoặc ở lại dọn nốt rác rồi lên đường sau từ thẻ 🧭 Lên đường ở bất kỳ Trạm Tái Chế nào.</p>`,
+      [['Ở lại khám phá', 'close'], ['Lên đường tới Rừng Ngập Mặn', 'di', true, 'm2']]);
     },
     showIntro(oldSave) {
       const touch = HSX.Input.usingTouch || matchMedia('(pointer: coarse)').matches;
-      this.modal('🌏 Hồi Sinh Xanh', `<p>Sương Độc phủ kín <b>Bãi biển nhựa</b>. Quái ô nhiễm mọc lên từ rác, bốn tinh linh bảo vệ biển bị nhốt trong lồng.</p>
-        <p>Bạn là <b>Mầm</b>, Vệ Binh Xanh cuối cùng. Hãy phá rác, giải cứu tinh linh và mang ánh sáng trở lại.</p>
-        ${touch ? '<p class="small">Xoay ngang điện thoại. Dùng các nút trên màn hình để chạy, nhảy, chém.</p>'
-          : '<table class="keys"><tr><td>Chạy</td><td>← →</td></tr><tr><td>Nhảy</td><td>Space</td></tr><tr><td>Chém</td><td>X hoặc chuột trái</td></tr><tr><td>Tương tác</td><td>↑</td></tr><tr><td>Tạm dừng</td><td>Esc</td></tr></table>'}
-        ${oldSave ? '<p class="small muted">Game đã đổi từ lối chơi idle sang hành động, nên tiến trình bản cũ không chuyển sang được.</p>' : ''}`, [['Bắt đầu', 'close', true]]);
+      this.toast(`${touch ? '📱 Xoay ngang điện thoại. ' : ''}Bảng hướng dẫn phía trên sẽ dạy từng thao tác${touch ? ', nút cần bấm sẽ sáng lên' : ''}. Tắt hoặc xem lại trong Cài đặt.`, '', 6500);
+      if (oldSave) this.toast('Game đã đổi từ lối chơi idle sang hành động, nên tiến trình bản cũ không chuyển sang được.', '', 6500);
     },
 
     // ---------- Nút cảm ứng ----------
@@ -391,7 +521,11 @@
         if (!b) return;
         e.preventDefault();
         box.setPointerCapture && box.setPointerCapture(e.pointerId);
-        if (b.dataset.a === 'menu') { if (!this.blocking()) this.openPause('tui'); return; }
+        if (b.dataset.a === 'menu') {
+          if (HSX.Truyen.active()) HSX.Truyen.skip();   // đang diễn cảnh truyện: ☰ để bỏ qua
+          else if (!this.blocking()) this.openPause('tui');
+          return;
+        }
         set(e.pointerId, b.dataset.a);
       });
       // Trượt ngón tay giữa các nút di chuyển mà không cần nhấc lên

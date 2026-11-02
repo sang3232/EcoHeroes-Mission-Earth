@@ -14,8 +14,9 @@
 
   // hit: hành động vừa bấm, giữ tới hết bước vật lý kế tiếp để không lỡ cú bấm nhanh
   // mouse, aim: vị trí chuột trên khung nhìn 960×540 (aim là chỗ bấm chém gần nhất)
+  // device: thiết bị dùng gần nhất ('pc' bàn phím/chuột, 'pad' tay cầm, 'touch' cảm ứng), để hướng dẫn hiện đúng nút
   HSX.Input = {
-    hit: {}, key: {}, pad: {}, touch: {}, padPrev: {}, usingTouch: false,
+    hit: {}, key: {}, pad: {}, touch: {}, padPrev: {}, usingTouch: false, device: 'pc',
     mouse: { x: 0, y: 0, t: -1e9 }, aim: null,
 
     init() {
@@ -27,10 +28,14 @@
       addEventListener('pointermove', e => {
         if (e.pointerType !== 'mouse') return;
         Object.assign(this.mouse, view(e), { t: performance.now() });
+        this.device = 'pc';
       });
-      // Bấm chuột trái lên màn chơi: chém về phía con trỏ
+      // Chuột ra khỏi màn chơi thì thôi lia camera theo nó
+      cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') this.mouse.t = -1e9; });
+      // Bấm chuột trái lên màn chơi: chém về phía con trỏ. Chạm màn chơi (cảm ứng): 'tap', dùng để qua lời thoại
       cv.addEventListener('pointerdown', e => {
-        if (e.pointerType !== 'mouse' || e.button !== 0) return;
+        if (e.pointerType !== 'mouse') { this.hit.tap = true; return; }
+        if (e.button !== 0) return;
         e.preventDefault();
         this.aim = view(e);
         Object.assign(this.mouse, this.aim, { t: performance.now() });
@@ -44,6 +49,7 @@
         if (!this.key[e.code]) this.hit[a] = true;
         this.key[e.code] = a;
         this.usingTouch = false;
+        this.device = 'pc';
       });
       addEventListener('keyup', e => { delete this.key[e.code]; });
       addEventListener('blur', () => this.clear());
@@ -71,6 +77,7 @@
         if (ay < -0.5) now.up = true;
         if (ay > 0.5) now.down = true;
         for (const a in now) if (!this.padPrev[a]) this.hit[a] = true;
+        if (Object.keys(now).length) this.device = 'pad';
       }
       this.padPrev = now;
       this.pad = now;
@@ -80,6 +87,7 @@
       if (on && !this.touch[a]) this.hit[a] = true;
       if (on) this.touch[a] = true; else delete this.touch[a];
       this.usingTouch = true;
+      this.device = 'touch';
     },
   };
 

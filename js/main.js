@@ -9,7 +9,8 @@
   HSX.Render.init(document.getElementById('game'));
   HSX.UI.init();
   HSX.World.init();
-  if (!loaded) HSX.UI.showIntro(old);
+  // Game mới: cảnh mở đầu (Mầm thức dậy giữa đống rác), xong thì nhắc về bảng hướng dẫn
+  if (!loaded && !HSX.Truyen.play('mo_dau', { sau: () => HSX.UI.showIntro(old) })) HSX.UI.showIntro(old);
   if (old) HSX.dropOldSave();
 
   const STEP = 1 / 60;
