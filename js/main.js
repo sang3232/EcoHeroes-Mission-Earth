@@ -9,7 +9,8 @@
   HSX.Render.init(document.getElementById('game'));
   HSX.UI.init();
   HSX.World.init();
-  if (!loaded) HSX.UI.showIntro(old);
+  // Game mới: cảnh mở đầu (Mầm thức dậy giữa đống rác), xong thì nhắc về bảng hướng dẫn
+  if (!loaded && !HSX.Truyen.play('mo_dau', { sau: () => HSX.UI.showIntro(old) })) HSX.UI.showIntro(old);
   if (old) HSX.dropOldSave();
 
   const STEP = 1 / 60;
@@ -18,7 +19,12 @@
     const dt = Math.min(0.1, (now - last) / 1000);
     last = now;
     HSX.Input.poll();
-    if (HSX.UI.blocking()) {
+    if (HSX.PhatLai && HSX.PhatLai.dang) {
+      // Đang xem lại trận boss (js/phat_lai.js): game đứng yên, chỉ dựng lại cảnh theo nhật ký
+      acc = 0;
+      HSX.PhatLai.capNhat(dt);
+      HSX.Input.step();
+    } else if (HSX.UI.blocking()) {
       // Menu đang mở: game đứng yên. Nút Start của tay cầm đóng menu.
       acc = 0;
       if (HSX.Input.pressed('menu') && !HSX.Puzzle.active) HSX.UI.closeModal();

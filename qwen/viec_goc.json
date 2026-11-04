@@ -1,26 +1,74 @@
 [
  {
-  "ten": "mam_goc_1",
+  "ten": "me_duoc_goc_1",
   "trong_suot": true,
   "rong": 1024,
   "cao": 1024,
   "hat": 101,
-  "prompt": "a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear, standing in a relaxed idle pose, three-quarter view facing right. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+  "prompt": "a kind elderly Vietnamese grandmother who guards the mangrove forest, wearing a conical palm-leaf hat, a faded brown traditional blouse and dark trousers rolled up to the knees, bare muddy feet, leaning on a walking stick made from a twisted mangrove root, a small woven basket of long green mangrove seedlings on her back, warm gentle smile, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
  },
  {
-  "ten": "mam_goc_2",
+  "ten": "me_duoc_goc_2",
   "trong_suot": true,
   "rong": 1024,
   "cao": 1024,
   "hat": 202,
-  "prompt": "a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear, standing in a relaxed idle pose, three-quarter view facing right. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+  "prompt": "a kind elderly Vietnamese grandmother who guards the mangrove forest, wearing a conical palm-leaf hat, a faded brown traditional blouse and dark trousers rolled up to the knees, bare muddy feet, leaning on a walking stick made from a twisted mangrove root, a small woven basket of long green mangrove seedlings on her back, warm gentle smile, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
  },
  {
-  "ten": "mam_goc_3",
+  "ten": "me_duoc_goc_3",
   "trong_suot": true,
   "rong": 1024,
   "cao": 1024,
   "hat": 303,
-  "prompt": "a tiny guardian hero wearing a hooded cloak made from one large dark-green leaf, a round white seed-shell mask covering the whole face with two large dark oval eye holes, short legs, holding a long trash-picking net like a spear, standing in a relaxed idle pose, three-quarter view facing right. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+  "prompt": "a kind elderly Vietnamese grandmother who guards the mangrove forest, wearing a conical palm-leaf hat, a faded brown traditional blouse and dark trousers rolled up to the knees, bare muddy feet, leaning on a walking stick made from a twisted mangrove root, a small woven basket of long green mangrove seedlings on her back, warm gentle smile, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "hop_xop_goc_1",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "a grumpy little monster made of a cracked white styrofoam food box, the hinged lid opening like a mouth with jagged foam teeth, foam crumbs flaking off, tiny stubby legs, angry eyes, faint toxic purple glow, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "hop_xop_goc_2",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "a grumpy little monster made of a cracked white styrofoam food box, the hinged lid opening like a mouth with jagged foam teeth, foam crumbs flaking off, tiny stubby legs, angry eyes, faint toxic purple glow, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "hop_xop_goc_3",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "a grumpy little monster made of a cracked white styrofoam food box, the hinged lid opening like a mouth with jagged foam teeth, foam crumbs flaking off, tiny stubby legs, angry eyes, faint toxic purple glow, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_goc_1",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 101,
+  "prompt": "a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_goc_2",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 202,
+  "prompt": "a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
+ },
+ {
+  "ten": "luoi_ma_khong_lo_goc_3",
+  "trong_suot": true,
+  "rong": 1024,
+  "cao": 1024,
+  "hat": 303,
+  "prompt": "a giant ghostly boss monster woven from huge tangles of old green and blue fishing nets, knotted ropes and broken plastic floats caught inside, a hooded net head with two hollow glowing purple eyes, two long trailing net arms, the lower body dissolving into dangling net strands, floating above the ground, toxic purple glow, standing in a relaxed idle pose, three-quarter view facing left. 2D game character sprite, hand-painted cartoon style, soft cel shading, clean medium-weight dark outline, cute chibi proportions with a big head and small body, bright friendly colors, full body visible from head to feet, centered, no text, no ground, no shadow."
  }
 ]

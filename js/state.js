@@ -25,12 +25,42 @@ HSX.newState = function () {
     species: {}, seen: {}, journals: {}, facts: {}, visited: {},
     dawn: false,
     stats: { time: 0, deaths: 0, kills: 0 },
+    tut: {},                     // bước hướng dẫn đã xong
+    quai: {},                    // Sổ quái vật: { loại: { seen, kills } }
+    story: {},                   // cảnh truyện đã xem
+    mo: { m1: true },            // màn đã mở trên bản đồ thế giới
+    xong: {},                    // màn đã hạ boss cuối (Màn 1 còn ghi ở dawn)
+    benches: {},                 // Trạm nghỉ gần nhất của từng màn, để đi lại giữa các màn
   };
 };
+
+// Phòng thuộc màn nào: id phòng không trùng giữa các màn, nên tìm được màn từ id phòng
+HSX.roomLevel = id => Object.keys(HSX.LEVELS).find(lv => HSX.LEVELS[lv].rooms[id]) || 'm1';
+HSX.roomDef = id => HSX.LEVELS[HSX.roomLevel(id)].rooms[id];
+
+// Cài đặt theo máy, không theo save: camera theo chuột (0 = tắt), bật/tắt hướng dẫn,
+// bộ phím ('chuot' bàn phím + chuột, 'phim' chỉ bàn phím, 'rieng' Tùy chỉnh với phím ở phimRieng, xem js/engine.js;
+// boPhimChon: người chơi đã chọn, không tự đoán nữa), taiTran: tự tải file nhật ký sau mỗi trận boss
+HSX.OPT_KEY = 'hoi-sinh-xanh-cai-dat';
+HSX.opt = { camChuot: 0.3, huongDan: true, boPhim: 'chuot', boPhimChon: false, phimRieng: null, taiTran: false };
+try { Object.assign(HSX.opt, JSON.parse(localStorage.getItem(HSX.OPT_KEY) || '{}')); } catch (e) { /* bỏ qua */ }
+HSX.saveOpt = function () {
+  try { localStorage.setItem(HSX.OPT_KEY, JSON.stringify(HSX.opt)); } catch (e) { /* bỏ qua */ }
+};
+
+// Sự kiện trong game (nhảy, chém, hạ quái...) cho hướng dẫn và Sổ quái vật nghe, không phải sửa chỗ phát
+HSX.ev = {};
+HSX.on = (name, fn) => { (HSX.ev[name] = HSX.ev[name] || []).push(fn); };
+HSX.emit = (name, data) => { (HSX.ev[name] || []).forEach(fn => fn(data)); };
 
 HSX.migrate = function (s) {
   const base = HSX.newState();
   for (const k in base) if (s[k] === undefined) s[k] = base[k];
+  // save trước khi có nhiều màn: đã hạ Vua Túi Nilon thì Màn 2 mở sẵn
+  if (s.dawn) { s.mo.m2 = true; s.xong.m1 = true; }
+  if (!s.benches[s.level] && s.bench) s.benches[s.level] = s.bench;
+  // công thức mới thêm sau (không phải công thức bí ẩn) thì biết sẵn
+  HSX.DATA.recipes.forEach(r => { if (!r.hidden) s.known[r.id] = true; });
   return s;
 };
 

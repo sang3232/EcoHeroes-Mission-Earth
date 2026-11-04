@@ -12,10 +12,13 @@ Ký hiệu bản đồ (mỗi ký tự là một ô 48 px):
   c  Chai Lăn   s  Slime Nilon   k  Cua Lon   g  Lưới Ma   K  Cua Lon Khổng Lồ   V  Vua Túi Nilon
 
 tips: dòng hướng dẫn hiện khi Mầm tới gần ô (x, y). k = chữ cho bàn phím, t = chữ cho cảm ứng.
+story: cảnh truyện (js/cot_truyen.js) tự chạy một lần khi Mầm tới gần ô (x, y) trong r ô.
+goi: cách gọi chung cả màn trong câu chữ ("bãi biển sáng hơn").
 */
 HSX.LEVELS = {
   m1: {
     name: 'Bãi biển nhựa',
+    goi: 'bãi biển',
     start: 'ben_thuyen',
     gateClean: 0.3,
     rooms: {
@@ -25,7 +28,7 @@ HSX.LEVELS = {
         tips: [
           { x: 2, y: 11, k: '← → hoặc A D để chạy · Space để nhảy, giữ lâu thì nhảy cao', t: '◀ ▶ để chạy · Nhảy: giữ lâu thì nhảy cao' },
           { x: 11, y: 11, k: 'X hoặc chuột trái để chém · Chém vỡ lồng để giải cứu tinh linh', t: 'Chém vỡ lồng để giải cứu tinh linh' },
-          { x: 5, y: 11, k: '↑ hoặc E: ngồi Trạm Tái Chế để lưu game, hồi máu, chế đồ', t: '▲: ngồi Trạm Tái Chế để lưu game, hồi máu, chế đồ' },
+          { x: 5, y: 11, k: '{tuongTac}: ngồi Trạm Tái Chế để lưu game, hồi máu, chế đồ', t: '▲: ngồi Trạm Tái Chế để lưu game, hồi máu, chế đồ' },
         ],
         map: [
           '..................................',
@@ -98,7 +101,7 @@ HSX.LEVELS = {
         name: 'Lều bỏ hoang', area: 'bai_bien', sort: true,
         doors: { 1: ['dun_cat', 2] },
         tips: [
-          { x: 20, y: 9, k: '↑ để nhặt rác · X để ném vào đúng thùng · ↑ lần nữa để đặt xuống', t: '▲ để nhặt rác · Chém để ném vào đúng thùng' },
+          { x: 20, y: 9, k: '{tuongTac} để nhặt rác · {chem} để ném vào đúng thùng · {tuongTac} lần nữa để đặt xuống', t: '▲ để nhặt rác · Chém để ném vào đúng thùng' },
         ],
         map: [
           '##############################',
@@ -121,7 +124,7 @@ HSX.LEVELS = {
         doors: { 1: ['dun_cat', 3], 2: ['hang_cong', 1] },
         tips: [
           { x: 16, y: 10, k: 'Lồng được bảo vệ: hạ hết quái trong phòng để mở', t: 'Hạ hết quái trong phòng để mở lồng' },
-          { x: 26, y: 10, k: 'Vực gai quá rộng: nhảy rồi bấm C để lướt qua', t: 'Vực gai quá rộng: nhảy rồi bấm Lướt' },
+          { x: 26, y: 10, k: 'Vực gai quá rộng: nhảy rồi bấm {luot} để lướt qua', t: 'Vực gai quá rộng: nhảy rồi bấm Lướt' },
         ],
         map: [
           '######################################',
@@ -167,7 +170,7 @@ HSX.LEVELS = {
         name: 'Rặng phi lao', area: 'bai_bien',
         doors: { 1: ['bai_tam', 2], 2: ['cua_song', 1], 3: ['bai_de_rua', 1] },
         tips: [
-          { x: 13, y: 13, k: 'Ô đất: ↑ để trồng cây (tốn hạt giống). Cây lớn sẽ tỏa sáng', t: 'Ô đất: ▲ để trồng cây. Cây lớn sẽ tỏa sáng' },
+          { x: 13, y: 13, k: 'Ô đất: {tuongTac} để trồng cây (tốn hạt giống). Cây lớn sẽ tỏa sáng', t: 'Ô đất: ▲ để trồng cây. Cây lớn sẽ tỏa sáng' },
           { x: 34, y: 13, k: 'Hố này dẫn xuống Bãi đẻ rùa', t: 'Hố này dẫn xuống Bãi đẻ rùa' },
         ],
         map: [
@@ -260,7 +263,7 @@ HSX.LEVELS = {
       ghenh_da: {
         name: 'Ghềnh đá', area: 'hang', spirit: 'gau', cageLock: 'boss', boss: 'cua_khong_lo',
         doors: { 1: ['bai_de_rua', 2], 2: ['cong', 1] },
-        tips: [{ x: 33, y: 13, k: 'Nền rác nứt: nhảy lên rồi bấm V để đập xuống', t: 'Nền rác nứt: nhảy lên rồi bấm Phép để đập xuống' }],
+        tips: [{ x: 33, y: 13, k: 'Nền rác nứt: nhảy lên rồi bấm {dap} để đập xuống', t: 'Nền rác nứt: nhảy lên rồi bấm Phép để đập xuống' }],
         map: [
           '########################################',
           '#......................................#',
@@ -284,7 +287,8 @@ HSX.LEVELS = {
       cong: {
         name: 'Cổng Phân Loại', area: 'hang', spirit: 'taiche', cageLock: 'puzzle',
         doors: { 1: ['ghenh_da', 2], 2: ['hang_vua', 1] },
-        tips: [{ x: 25, y: 15, k: '↑ để mở Cổng Phân Loại', t: '▲ để mở Cổng Phân Loại' }],
+        story: [{ x: 22, y: 15, r: 7, canh: 'trang_luat', khi: () => !HSX.S.puzzle.solved }],
+        tips: [{ x: 25, y: 15, k: '{tuongTac} để mở Cổng Phân Loại', t: '▲ để mở Cổng Phân Loại' }],
         map: [
           '######11##########################',
           '#................................#',
