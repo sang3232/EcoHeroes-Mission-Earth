@@ -91,7 +91,9 @@ function explore(r, starts, ab) {
   while (q.length) {
     const { x, y } = q.shift();
     if ((x === 0 || x === r.w - 1) && isDoor(r.raw(x, y))) exits.add(r.raw(x, y));
-    for (let dx = -2; dx <= 2; dx++) for (let dy = 1; dy <= JUMP_UP + 1; dy++) {
+    // Cửa trên trần: game chuyển phòng khi tâm Mầm lên khỏi mép trên phòng. Đứng ở hàng y thì tâm cách mép (y + 1) ô - 22 px,
+    // nhảy cao ~127 px nên chỉ ra được từ hàng 1, 2 (JUMP_UP), hàng 3 là thiếu
+    for (let dx = -2; dx <= 2; dx++) for (let dy = 1; dy <= JUMP_UP; dy++) {
       if (y - dy === 0 && isDoor(r.raw(x + dx, 0)) && arcClear(r, x, y, x + dx, 1)) exits.add(r.raw(x + dx, 0));
     }
     for (const s of [-1, 1]) {

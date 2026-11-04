@@ -203,7 +203,7 @@
         } },
       { noi: 'mam', chu: 'Cảm ơn bà. Con sẽ trồng lại rừng.' },
       { noi: 'me_duoc', chu: 'Đi qua đầm cẩn thận nghe con. Mấy tấm lưới người ta cắt bỏ giữa biển trôi vô đây, quấn hết cá tôm, không chịu đi.' },
-      { nhin: null, lam: () => W().banner('Học được: Trồng đước', 'Đứng ở bãi bồi, ↑ để cắm trụ mầm. Rễ đước lớn lên sẽ bắc thành cầu', 3.4), cho: 0.3 },
+      { nhin: null, lam: () => W().banner('Học được: Trồng đước', HSX.phimChu('Đứng ở bãi bồi, bấm {tuongTac} để cắm trụ mầm. Rễ đước lớn lên sẽ bắc thành cầu'), 3.4), cho: 0.3 },
     ],
     thay_lach: () => [
       { nhin: () => ({ x: 22 * T, y: 9 * T }), cho: 1.0 },

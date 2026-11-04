@@ -9,26 +9,53 @@
   const FONT = '"Segoe UI",system-ui,-apple-system,Roboto,sans-serif';
   const W = () => HSX.World, P = () => HSX.Player, S = () => HSX.S;
 
-  // Phím theo thiết bị. '/' và '+' là chữ nối; 'chuot', 'chuot_len', 'chuot_xuong' vẽ hình con chuột.
+  // Phím theo thiết bị: chuot / phim là hai bộ phím máy tính (HSX.opt.boPhim), pad tay cầm, touch cảm ứng;
+  // bộ Tùy chỉnh (rieng) tính theo phím đã gán, xem RIENG bên dưới.
+  // '/' và '+' là chữ nối; 'chuot', 'chuot_len', 'chuot_xuong', 'chuot_phai' vẽ hình con chuột.
   const PHIM = {
-    chay: { pc: ['A', 'D', '/', '←', '→'], pad: ['Cần trái'], touch: ['◀', '▶'] },
-    nhay: { pc: ['Space'], pad: ['A'], touch: ['Nhảy'] },
-    chem: { pc: ['X', '/', 'chuot'], pad: ['X'], touch: ['Chém'] },
-    chemLen: { pc: ['chuot_len', '/', '↑', '+', 'X'], pad: ['↑', '+', 'X'], touch: ['▲', '+', 'Chém'] },
-    chemXuong: { pc: ['chuot_xuong', '/', '↓', '+', 'X'], pad: ['↓', '+', 'X'], touch: ['▼', '+', 'Chém'] },
-    tuongTac: { pc: ['↑', '/', 'E'], pad: ['↑'], touch: ['▲'] },
-    hoi: { pc: ['giữ F'], pad: ['giữ B'], touch: ['giữ Hồi'] },
-    luot: { pc: ['C', '/', 'Shift'], pad: ['RB'], touch: ['Lướt'] },
-    dap: { pc: ['V'], pad: ['Y'], touch: ['Phép'] },
-    menu: { pc: ['M', 'Tab', 'Esc'], pad: ['Select', 'Start'], touch: ['☰'] },
-    nhin: { pc: ['chuot'] },
+    chay: { chuot: ['A', 'D'], phim: ['←', '→'], pad: ['Cần trái'], touch: ['◀', '▶'] },
+    nhay: { chuot: ['Space'], phim: ['Z'], pad: ['A'], touch: ['Nhảy'] },
+    chem: { chuot: ['chuot'], phim: ['X'], pad: ['X'], touch: ['Chém'] },
+    chemLen: { chuot: ['chuot_len'], phim: ['↑', '+', 'X'], pad: ['↑', '+', 'X'], touch: ['▲', '+', 'Chém'] },
+    chemXuong: { chuot: ['chuot_xuong'], phim: ['↓', '+', 'X'], pad: ['↓', '+', 'X'], touch: ['▼', '+', 'Chém'] },
+    tuongTac: { chuot: ['E'], phim: ['↑'], pad: ['↑'], touch: ['▲'] },
+    hoi: { chuot: ['giữ F'], phim: ['giữ A'], pad: ['giữ B'], touch: ['giữ Hồi'] },
+    luot: { chuot: ['Shift'], phim: ['C'], pad: ['RB'], touch: ['Lướt'] },
+    dap: { chuot: ['Q'], phim: ['S'], pad: ['Y'], touch: ['Phép'] },
+    ban: { chuot: ['chuot_phai'], phim: ['giữ D'], pad: ['giữ LB'], touch: ['giữ Bắn'] },
+    menu: { chuot: ['M', 'Tab', 'Esc'], phim: ['M', 'Tab', 'Esc'], pad: ['Select', 'Start'], touch: ['☰'] },
+    nhin: { chuot: ['chuot'], phim: ['chuot'] },
   };
+  const boDung = () => (HSX.Input.device === 'pc' ? HSX.opt.boPhim : HSX.Input.device);   // chuot / phim / rieng / pad / touch
+  // Bộ phím Tùy chỉnh (rieng): phím lấy theo chỗ đã gán (HSX.Phim). Chém, bắn bằng nút chuột thì vẽ hình con chuột.
+  const ten = a => HSX.Phim.tenHD(a), dau = a => HSX.Phim.cua(a).find(Boolean) || '';
+  const RIENG = {
+    chay: () => [ten('left'), ten('right')],
+    nhay: () => [ten('jump')],
+    chem: () => [dau('attack') === 'Mouse2' ? 'chuot_phai' : /^Mouse/.test(dau('attack')) ? 'chuot' : ten('attack')],
+    chemLen: () => (/^Mouse/.test(dau('attack')) ? ['chuot_len'] : [ten('up'), '+', ten('attack')]),
+    chemXuong: () => (/^Mouse/.test(dau('attack')) ? ['chuot_xuong'] : [ten('down'), '+', ten('attack')]),
+    tuongTac: () => [ten('interact')],
+    hoi: () => ['giữ ' + ten('heal')],
+    luot: () => [ten('dash')],
+    dap: () => [ten('skill')],
+    ban: () => [dau('shoot') === 'Mouse2' ? 'chuot_phai' : /^Mouse/.test(dau('shoot')) ? 'chuot' : 'giữ ' + ten('shoot')],
+    menu: () => ['M', 'Tab', 'Esc'],
+    nhin: () => ['chuot'],
+  };
+  Object.keys(RIENG).forEach(k => Object.defineProperty(PHIM[k], 'rieng', { get: RIENG[k] }));
+  // Chém / bắn bằng nút chuột (ngắm theo con trỏ) hay bằng phím
+  const chuot = () => boDung() === 'chuot' || (boDung() === 'rieng' && /^Mouse/.test(dau('attack')));
+  const banChuot = () => boDung() === 'chuot' || (boDung() === 'rieng' && /^Mouse/.test(dau('shoot')));
   // Nút cảm ứng sáng lên theo từng bước
   const NUT = {
     chay: ['left', 'right'], nhay: ['jump'], nhaycao: ['jump'], chem: ['attack'], chemlen: ['up', 'attack'], tram: ['up'],
     long: ['attack'], quai: ['attack'], dongrac: ['attack'], hoimau: ['heal'], luot: ['dash'], chemxuong: ['down', 'attack'],
-    dap: ['skill'], menu: ['menu'],
+    dap: ['skill'], menu: ['menu'], ban: ['shoot'], phandon: ['attack'], luotne: ['dash'],
   };
+  let giapLuc = -1e9;   // lần gần nhất chém trúng giáp boss, theo giờ chơi (để hiện mẹo "Boss có giáp")
+  HSX.on('giap', () => { giapLuc = S().stats.time; });
+  const boss = () => { const b = W().boss; return b && b.active && !b.dead ? b : null; };
 
   const gan = (o, r) => o && Math.abs(o.x + (o.w || T) / 2 - P().cx()) < r && Math.abs(o.y - P().b.y) < r;
   const obj = type => W().room.objs.find(o => o.type === type);
@@ -45,7 +72,7 @@
       phong: 'ben_thuyen', dich: () => tam(obj('bench')) },
     { id: 'chem', ten: 'Chém', phim: PHIM.chem, chu: 'Chém bằng Vợt Bắt Rác', su: 'attack' },
     { id: 'chemlen', ten: 'Chém lên', phim: PHIM.chemLen,
-      chu: () => (HSX.Input.device === 'pc' ? 'Trỏ chuột lên trên đầu Mầm rồi bấm (hoặc giữ ↑ + X)' : 'Giữ ↑ rồi chém'),
+      chu: () => (chuot() ? `Trỏ chuột lên trên đầu Mầm rồi bấm ${HSX.phim('chem')}` : HSX.phimChu('Giữ {len} rồi chém')),
       su: 'attack', loc: d => d.dir === 'up', ngam: -1 },
     { id: 'long', ten: 'Giải cứu tinh linh', phim: PHIM.chem, chu: 'Chém vỡ lồng giam để cứu Hoa Sen', su: 'rescue',
       phong: 'ben_thuyen', boQua: () => S().spirits.sen, dich: () => tam(obj('cage')) },
@@ -78,6 +105,20 @@
       khi: () => S().flags.trongDuoc && !!baiBoi(), dich: () => tam(baiBoi()) },
     { id: 'thoatluoi', ten: 'Bị lưới quấn', phim: PHIM.chem, chu: 'Bấm chém (hoặc nhảy) liên tục để vùng ra khỏi lưới', su: 'thoat', het: 4, trongTran: true,
       khi: () => P().troi > 0 },
+    // Ná Tái Chế, đánh boss
+    { id: 'ban', ten: 'Ná Tái Chế', phim: PHIM.ban,
+      chu: () => (banChuot() ? `Giữ ${HSX.phim('ban')}: đường bay vòng cung theo con trỏ, giữ lâu bắn xa hơn. Thả ra để bắn`
+        : boDung() === 'pad' ? 'Giữ LB, cần phải chọn hướng, giữ lâu bắn xa hơn. Thả ra để bắn'
+          : HSX.phimChu('Giữ nút bắn: {len} {xuong} xoay góc, {chay} đổi bên, giữ lâu bắn xa hơn. Thả ra để bắn')),
+      su: 'ban', het: 20, khi: () => !!S().owned.na_tai_che },
+    { id: 'giap', ten: 'Boss có giáp', chu: 'Lúc boss thủ thế, đòn đánh yếu hẳn đi. Né chiêu của nó, chờ nó sơ hở rồi hãy dồn đòn', het: 7, trongTran: true,
+      khi: () => S().stats.time - giapLuc < 1.2 },
+    { id: 'soho', ten: 'Sơ hở!', chu: 'Boss sáng viền vàng: dồn đòn ngay, lúc này đánh mạnh gần gấp 4 lúc nó thủ thế', het: 5, trongTran: true,
+      khi: () => boss() && boss().open > 0 },
+    { id: 'phandon', ten: 'Phản đòn', phim: PHIM.chem, chu: 'Chém trúng túi, lưới đang bay tới thì nó bay ngược về phía boss', su: 'phan', het: 14, trongTran: true,
+      khi: () => !!boss() && W().shots.some(s => (s.type === 'bag' || s.type === 'net') && !s.phan && gan(s, 280)) },
+    { id: 'luotne', ten: 'Lướt né', phim: PHIM.luot, chu: 'Lướt đúng lúc đòn sắp trúng thì xuyên qua, không mất máu', su: 'luotne', het: 10, trongTran: true,
+      khi: () => S().spirits.gio && !!boss() && Math.hypot(boss().vx, boss().vy) > 400 },   // boss đang lao tới
   ];
 
   function bucGo() {
@@ -120,7 +161,7 @@
     buoc: null, quang: 0, lastX: null, nutSang: '',
 
     init() {
-      ['jump', 'attack', 'rest', 'rescue', 'kill', 'heap', 'heal', 'dash', 'pogo', 'slam', 'menu', 'luoi', 'trong', 'thoat'].forEach(n => HSX.on(n, d => this.ev(n, d)));
+      ['jump', 'attack', 'rest', 'rescue', 'kill', 'heap', 'heal', 'dash', 'pogo', 'slam', 'menu', 'luoi', 'trong', 'thoat', 'ban', 'phan', 'luotne'].forEach(n => HSX.on(n, d => this.ev(n, d)));
     },
     active() { return !!(this.buoc && HSX.opt.huongDan); },
 
@@ -194,7 +235,7 @@
         c.stroke(); c.fill();
         c.restore();
       }
-      if (b.def.ngam && HSX.Input.device === 'pc') {
+      if (b.def.ngam && chuot()) {
         // vòng ngắm: trỏ chuột vào đây rồi bấm
         const x = p.cx(), y = b.def.ngam < 0 ? p.b.y - 54 : p.b.y + p.b.h + 44, r = 12 + Math.sin(t * 5) * 2;
         c.save();
@@ -214,7 +255,7 @@
     draw(c, t) {
       const b = this.buoc;
       if (!b || !HSX.opt.huongDan || W().mode !== 'play') return;
-      const d = b.def, dev = HSX.Input.device, keys = d.phim ? (d.phim[dev] || d.phim.pc) : [];
+      const d = b.def, keys = d.phim ? (d.phim[boDung()] || d.phim.chuot) : [];
       const chu = typeof d.chu === 'function' ? d.chu() : d.chu, xong = b.xongT !== undefined;
       const vao = Math.min(1, b.t / 0.25), ra = xong ? Math.max(0, 1 - Math.max(0, b.xongT - 0.5) / 0.4) : 1;
       const so = CO_BAN.indexOf(d);
@@ -289,15 +330,17 @@
         return w;
       }
       if (k.startsWith('chuot')) {
-        if (chiDo) return 18 + (k === 'chuot' ? 0 : 12);
+        const muiTen = k === 'chuot_len' || k === 'chuot_xuong';
+        if (chiDo) return 18 + (muiTen ? 12 : 0);
         c.fillStyle = '#1c2a24';
         c.strokeStyle = '#9ff0b5';
         c.lineWidth = 1.5;
         c.beginPath(); c.roundRect(x, y - 12, 16, 24, 8); c.fill(); c.stroke();
         c.fillStyle = '#9ff0b5';
-        c.beginPath(); c.roundRect(x + 1.5, y - 10.5, 6, 9, [6, 1, 1, 1]); c.fill();   // nút trái
+        if (k === 'chuot_phai') { c.beginPath(); c.roundRect(x + 8.5, y - 10.5, 6, 9, [1, 6, 1, 1]); c.fill(); }   // nút phải
+        else { c.beginPath(); c.roundRect(x + 1.5, y - 10.5, 6, 9, [6, 1, 1, 1]); c.fill(); }                     // nút trái
         c.beginPath(); c.moveTo(x + 8, y - 12); c.lineTo(x + 8, y - 2); c.stroke();
-        if (k !== 'chuot') {
+        if (muiTen) {
           const up = k === 'chuot_len', ax = x + 23;
           c.strokeStyle = '#fff6c8';
           c.lineWidth = 2;
@@ -306,7 +349,7 @@
           c.moveTo(ax - 4, y + (up ? -4 : 4)); c.lineTo(ax, y + (up ? -8 : 8)); c.lineTo(ax + 4, y + (up ? -4 : 4));
           c.stroke();
         }
-        return 18 + (k === 'chuot' ? 0 : 12);
+        return 18 + (muiTen ? 12 : 0);
       }
       c.font = `bold 12px ${FONT}`;
       const w = Math.max(24, c.measureText(k).width + 14);

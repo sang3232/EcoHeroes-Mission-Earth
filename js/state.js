@@ -38,9 +38,11 @@ HSX.newState = function () {
 HSX.roomLevel = id => Object.keys(HSX.LEVELS).find(lv => HSX.LEVELS[lv].rooms[id]) || 'm1';
 HSX.roomDef = id => HSX.LEVELS[HSX.roomLevel(id)].rooms[id];
 
-// Cài đặt theo máy, không theo save: camera theo chuột (0 = tắt), bật/tắt hướng dẫn
+// Cài đặt theo máy, không theo save: camera theo chuột (0 = tắt), bật/tắt hướng dẫn,
+// bộ phím ('chuot' bàn phím + chuột, 'phim' chỉ bàn phím, 'rieng' Tùy chỉnh với phím ở phimRieng, xem js/engine.js;
+// boPhimChon: người chơi đã chọn, không tự đoán nữa), taiTran: tự tải file nhật ký sau mỗi trận boss
 HSX.OPT_KEY = 'hoi-sinh-xanh-cai-dat';
-HSX.opt = { camChuot: 0.3, huongDan: true };
+HSX.opt = { camChuot: 0.3, huongDan: true, boPhim: 'chuot', boPhimChon: false, phimRieng: null, taiTran: false };
 try { Object.assign(HSX.opt, JSON.parse(localStorage.getItem(HSX.OPT_KEY) || '{}')); } catch (e) { /* bỏ qua */ }
 HSX.saveOpt = function () {
   try { localStorage.setItem(HSX.OPT_KEY, JSON.stringify(HSX.opt)); } catch (e) { /* bỏ qua */ }
@@ -57,6 +59,8 @@ HSX.migrate = function (s) {
   // save trước khi có nhiều màn: đã hạ Vua Túi Nilon thì Màn 2 mở sẵn
   if (s.dawn) { s.mo.m2 = true; s.xong.m1 = true; }
   if (!s.benches[s.level] && s.bench) s.benches[s.level] = s.bench;
+  // công thức mới thêm sau (không phải công thức bí ẩn) thì biết sẵn
+  HSX.DATA.recipes.forEach(r => { if (!r.hidden) s.known[r.id] = true; });
   return s;
 };
 

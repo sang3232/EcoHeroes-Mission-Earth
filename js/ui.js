@@ -8,6 +8,20 @@
   const icon = (cat, id, emoji, cls) => A.html(cat + '/' + id, emoji, cls);
   const itemIcon = (id, cls) => icon('items', id, D.items[id].emoji, cls);
   const spiritIcon = (id, cls) => icon('heroes', id, D.spirits[id].emoji, cls);
+  // Bảng phím của hai bộ phím (đổi trong Cài đặt, xem engine.js)
+  // Bảng điều khiển trong Cài đặt: hành động và mô tả. Phím lấy theo bộ phím đang dùng (HSX.Phim) nên bảng luôn khớp phím thật.
+  const HANG_PHIM = [
+    ['left', 'Chạy sang trái'], ['right', 'Chạy sang phải'],
+    ['up', 'Nhìn lên (giữ), chém lên, ngắm ná lên'], ['down', 'Nhìn xuống (giữ), chém xuống khi đang nhảy'],
+    ['jump', 'Nhảy (giữ lâu nhảy cao)'],
+    ['attack', 'Chém. Bấm bằng nút chuột thì chém về phía con trỏ'],
+    ['shoot', 'Bắn ná: giữ để ngắm, giữ lâu bắn xa hơn, thả ra để bắn. Nút chuột: ngắm theo con trỏ; phím: lên / xuống xoay góc, trái / phải đổi bên'],
+    ['dash', 'Lướt (khi có tinh linh Gió)'],
+    ['heal', 'Hồi máu: đứng yên trên đất, giữ gần 1 giây. Cần tinh linh Hoa Sen, 33 năng lượng, máu chưa đầy'],
+    ['skill', 'Đập xuống (khi có Gấu Rừng, tốn 33 năng lượng)'],
+    ['interact', 'Ngồi Trạm, đọc, trồng cây, nhặt (đứng trên đất bấm Lên cũng được)'],
+  ];
+  const BO_TEN = [['chuot', '🖱️ Bàn phím + chuột'], ['phim', '⌨️ Chỉ bàn phím'], ['rieng', '✏️ Tùy chỉnh']];
 
   function costChips(cost) {
     return Object.keys(cost).map(id => {
@@ -23,7 +37,7 @@
       ? '<span class="have">✔ Đã có</span>'
       : `<button class="btn small" data-act="craft" data-arg="${r.id}" ${chk.ok ? '' : `disabled title="${esc(chk.reason)}"`}>Chế</button>`;
     return `<div class="row-item">${itemIcon(r.out)}<div class="grow"><b>${it.name}</b>${(r.qty || 1) > 1 ? ` ×${r.qty}` : ''} <span class="tag">${KIND[it.kind]}</span>
-      <div class="small muted">${it.desc}</div><div class="cost">${costChips(r.cost)}</div></div>${act}</div>`;
+      <div class="small muted">${HSX.phimChu(it.desc)}</div><div class="cost">${costChips(r.cost)}</div></div>${act}</div>`;
   }
 
   // Bố trí các phòng trên bản đồ bằng cách khớp vị trí cửa nối giữa hai phòng
@@ -66,7 +80,49 @@
           this.closeModal();
         }
       });
+      this.nghePhim();
       this.initTouch();
+    },
+
+    // Đang chờ phím mới cho một ô của bộ Tùy chỉnh (sel.doiPhim): phím kế tiếp, hoặc nút chuột bấm ngay trên ô đó, là phím mới.
+    // Nghe ở pha bắt (capture) và chặn lại để game, menu không nhận phím đó. Esc thôi đổi, Backspace / Delete bỏ trống ô,
+    // bấm chuột chỗ khác cũng là thôi đổi.
+    nghePhim() {
+      let nuot = null;   // nút chuột vừa lấy làm phím mới: nuốt luôn cú click / menu chuột phải của chính lần bấm đó
+      const nhan = code => {
+        const d = this.sel.doiPhim;
+        this.sel.doiPhim = null;
+        if (code !== 'Escape') {
+          const kq = HSX.Phim.gan(d.a, d.k, code === 'Backspace' || code === 'Delete' ? null : code);
+          this.toast(esc(kq.loi || kq.bao));
+        }
+        this.renderMenu();
+      };
+      addEventListener('keydown', e => {
+        if (!this.sel.doiPhim) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (!e.repeat && e.code) nhan(e.code);
+      }, true);
+      addEventListener('mousedown', e => {
+        if (!this.sel.doiPhim) return;
+        if (!(e.target.closest && e.target.closest('.phim-o.cho'))) {
+          this.sel.doiPhim = null;
+          document.querySelectorAll('.phim-o.cho').forEach(b => { b.classList.remove('cho'); b.textContent = b.dataset.ten; });
+          return;
+        }
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        nuot = { nut: e.button, luc: performance.now() };
+        nhan('Mouse' + e.button);
+      }, true);
+      // click (nút trái), auxclick (nút giữa, phải) đến sau cùng: nuốt xong thì thôi; menu chuột phải chỉ chặn
+      ['click', 'auxclick', 'contextmenu'].forEach(ev => addEventListener(ev, e => {
+        if (!nuot || e.button !== nuot.nut || performance.now() - nuot.luc > 1000) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (ev !== 'contextmenu') nuot = null;
+      }, true));
     },
 
     blocking() { return !!$('modal-root').innerHTML || HSX.Puzzle.active; },
@@ -85,6 +141,7 @@
     closeModal() {
       $('modal-root').innerHTML = '';
       this.view = null;
+      this.sel.doiPhim = null;
       HSX.Input.clear();
       const next = this.queue.shift();
       if (next) { this.view = { kind: 'modal' }; $('modal-root').innerHTML = next; }
@@ -118,8 +175,27 @@
         case 'book': this.sel.book = arg; break;
         case 'quai': this.sel.quai = arg; break;
         case 'cam': HSX.opt.camChuot = +arg; HSX.saveOpt(); break;
+        case 'bophim':   // chọn bộ phím; lần đầu chọn Tùy chỉnh thì bắt đầu từ bộ đang dùng
+          if (arg === 'rieng' && !HSX.opt.phimRieng) HSX.Phim.chepTu(HSX.opt.boPhim === 'phim' ? 'phim' : 'chuot');
+          HSX.opt.boPhim = arg; HSX.opt.boPhimChon = true; HSX.Input.key = {}; this.sel.doiPhim = null; HSX.saveOpt();
+          break;
+        case 'doiphim': {   // bấm một ô phím của bộ Tùy chỉnh: chờ bấm phím mới (xem nghePhim trong init)
+          const [a, k] = arg.split(':');
+          this.sel.doiPhim = { a, k: +k };
+          break;
+        }
+        case 'chepphim': HSX.Phim.chepTu(arg); this.sel.doiPhim = null; this.toast(`Bộ Tùy chỉnh đã lấy lại phím của bộ ${arg === 'phim' ? 'Chỉ bàn phím' : 'Bàn phím + chuột'}.`); break;
         case 'hd-bat': HSX.opt.huongDan = !HSX.opt.huongDan; HSX.saveOpt(); break;
         case 'hd-lai': HSX.HuongDan.lamLai(); this.closeModal(); this.toast('Hướng dẫn sẽ chạy lại từ bước đầu.'); return;
+        case 'tran-tai': { const x = HSX.GhiTran.dsTran()[+arg]; if (x) this.toast('📝 Đã tải ' + esc(HSX.GhiTran.tai(x))); return; }
+        case 'tran-tatca': this.toast('📝 Đã tải ' + esc(HSX.GhiTran.tai(HSX.GhiTran.dsTran()))); return;
+        case 'tran-xem': { const x = HSX.GhiTran.dsTran()[+arg]; if (x) HSX.PhatLai.mo(x); return; }
+        case 'tran-mofile': this.moFileTran(); return;
+        case 'tran-xemfile': { const x = (this.sel.fileTran || [])[+arg]; if (x) HSX.PhatLai.mo(x); return; }
+        case 'tran-tutai': HSX.opt.taiTran = !HSX.opt.taiTran; HSX.saveOpt(); break;
+        case 'tran-xoa': this.closeModal(); this.modal('Xoá nhật ký trận boss?', '<p>Xoá hết các trận đã ghi. Không hoàn tác được.</p>', [['Hủy', 'tran-xoa-huy', true], ['Xoá', 'tran-xoa-chac']]); return;
+        case 'tran-xoa-chac': HSX.GhiTran.luuDs([]); this.closeModal(); this.openPause('caidat'); return;
+        case 'tran-xoa-huy': this.closeModal(); this.openPause('caidat'); return;
         case 'compost': this.sel.compost = !this.sel.compost; break;
         case 'tg': this.sel.tg = arg; break;
         case 'di': this.closeModal(); HSX.World.travel(arg); return;
@@ -193,12 +269,12 @@
         <div class="row-item"><span class="ico emo">🌱</span><div class="grow"><b>${Math.floor(S.seeds)} hạt giống</b><div class="small muted">Dùng để trồng cây ở ô đất</div></div></div>
         <h3>Tinh linh</h3>`;
       h += D.spiritOrder.map(id => S.spirits[id]
-        ? `<div class="row-item">${spiritIcon(id)}<div class="grow"><b>${D.spirits[id].name}</b><div class="small muted">${D.spirits[id].skill}</div></div></div>`
+        ? `<div class="row-item">${spiritIcon(id)}<div class="grow"><b>${D.spirits[id].name}</b><div class="small muted">${HSX.phimChu(D.spirits[id].skill)}</div></div></div>`
         : '<div class="row-item dim"><span class="ico emo">❔</span><div class="grow"><b>Chưa giải cứu</b><div class="small muted">Đang bị Sương Độc nhốt ở đâu đó</div></div></div>').join('');
       h += '</div><div><h3>Bùa đang đeo</h3>';
-      h += S.charms.map(id => (id ? `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small muted">${D.items[id].desc}</div></div></div>` : '<div class="row-item dim"><span class="ico emo">◌</span><div class="grow small muted">Ô trống (đổi bùa ở Trạm Tái Chế)</div></div>')).join('');
+      h += S.charms.map(id => (id ? `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small muted">${HSX.phimChu(D.items[id].desc)}</div></div></div>` : '<div class="row-item dim"><span class="ico emo">◌</span><div class="grow small muted">Ô trống (đổi bùa ở Trạm Tái Chế)</div></div>')).join('');
       const tools = owned('tool').concat(owned('structure'));
-      h += '<h3>Công cụ & công trình</h3>' + (tools.length ? tools.map(id => `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small muted">${D.items[id].desc}</div></div></div>`).join('') : '<p class="small muted">Chưa có. Chế ở Xưởng tại Trạm Tái Chế.</p>');
+      h += '<h3>Công cụ & công trình</h3>' + (tools.length ? tools.map(id => `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small muted">${HSX.phimChu(D.items[id].desc)}</div></div></div>`).join('') : '<p class="small muted">Chưa có. Chế ở Xưởng tại Trạm Tái Chế.</p>');
       h += '<h3>Nguyên liệu</h3>' + (mats.length ? `<div class="inv">${mats.map(id => `<div class="chip big" title="${esc(D.items[id].name + ': ' + D.items[id].desc)}">${itemIcon(id)}<b>${fmt(Sys.count(id))}</b></div>`).join('')}</div>` : '<p class="small muted">Chém đống rác và quái để nhặt nguyên liệu.</p>');
       return h + '</div></div>';
     },
@@ -371,29 +447,77 @@
     // ---------- Cài đặt ----------
     tab_caidat() {
       const S = HSX.S;
-      return `<div class="cols"><div><h3>Điều khiển</h3>
-        <table class="keys">
-          <tr><td>Chạy</td><td>← → hoặc A D</td></tr>
-          <tr><td>Nhảy (giữ lâu nhảy cao)</td><td>Space hoặc Z</td></tr>
-          <tr><td>Chém (kèm ↑ ↓ để chém lên, chém xuống bật nảy)</td><td>X hoặc J</td></tr>
-          <tr><td>Chém về phía con trỏ (trỏ lên / xuống / ngang)</td><td>Chuột trái</td></tr>
-          <tr><td>Lướt</td><td>C, Shift hoặc K</td></tr>
-          <tr><td>Hồi máu (giữ)</td><td>F hoặc L</td></tr>
-          <tr><td>Kỹ năng tinh linh</td><td>V hoặc I</td></tr>
-          <tr><td>Ngồi Trạm, đọc, trồng cây, nhặt</td><td>↑ hoặc E</td></tr>
-          <tr><td>Xuống khỏi bục gỗ</td><td>↓ + Nhảy</td></tr>
-          <tr><td>Túi đồ / Bản đồ / Tạm dừng</td><td>Tab / M / Esc</td></tr>
-        </table>
-        <p class="small muted">Tay cầm: A nhảy, X chém, RB lướt, B hồi, Y phép, Start tạm dừng. Điện thoại: dùng nút trên màn hình, xoay ngang máy.</p></div>
+      return `<div class="cols"><div>${this.dieuKhien()}</div>
         <div><h3>Camera theo chuột</h3><p class="small muted">Rê chuột ra phía mép màn hình thì khung nhìn lia theo một phần.</p>
         <div class="row">${[[0, 'Tắt'], [0.18, 'Nhẹ'], [0.3, 'Vừa'], [0.45, 'Mạnh']].map(([v, n]) => `<button class="btn small ${HSX.opt.camChuot === v ? 'on' : ''}" data-act="cam" data-arg="${v}">${n}</button>`).join('')}</div>
         <h3>Hướng dẫn</h3><p class="small muted">Bảng nhỏ phía trên màn hình dạy từng thao tác, mẹo mới hiện khi gặp tình huống lần đầu.</p>
         <div class="row"><button class="btn small ${HSX.opt.huongDan ? 'on' : ''}" data-act="hd-bat">${HSX.opt.huongDan ? 'Đang bật' : 'Đang tắt'}</button><button class="btn small" data-act="hd-lai">Xem lại từ đầu</button></div>
+        ${this.nhatKyTran()}
         <h3>Thống kê</h3><p class="small">Thời gian chơi ${HSX.fmtTime(S.stats.time)} · Quái đã hạ ${fmt(S.stats.kills)} · Số lần ngã ${S.stats.deaths}</p>
         <h3>Lưu game</h3><p class="small muted">Game tự lưu khi ngồi Trạm, khi sang phòng mới và khi nhặt đồ quan trọng.</p>
         <div class="row"><button class="btn" data-act="save">Lưu ngay</button><button class="btn" data-act="fullscreen">Toàn màn hình</button></div>
         <div class="row"><button class="btn" data-act="export">Xuất mã save</button><button class="btn" data-act="import">Nhập mã save</button><button class="btn danger" data-act="reset">Chơi lại từ đầu</button></div>
         <h3>Hình ảnh</h3><p class="small muted">Đang dùng ${Object.keys(A.imgs).length} ảnh từ thư mục assets/. Thiếu ảnh nào thì game tự vẽ thay.</p></div></div>`;
+    },
+    // Cột Điều khiển: chọn bộ phím, bảng phím. Bộ Tùy chỉnh: mỗi hành động hai ô, bấm ô rồi bấm phím mới.
+    dieuKhien() {
+      const Ph = HSX.Phim, bo = BO_TEN.some(([v]) => v === HSX.opt.boPhim) ? HSX.opt.boPhim : 'chuot', rieng = bo === 'rieng', cho = this.sel.doiPhim;
+      const o = (a, k) => {
+        const c = Ph.cua(a)[k], dang = cho && cho.a === a && cho.k === k, ten = esc(Ph.tenMa(c));
+        return `<button class="btn small phim-o ${dang ? 'cho' : ''} ${c ? '' : 'trong'}" data-act="doiphim" data-arg="${a}:${k}" data-ten="${ten}">${dang ? 'Bấm phím…' : ten}</button>`;
+      };
+      const dong = HANG_PHIM.map(([a, mo]) => {
+        const ds = Ph.cua(a).filter(Boolean);
+        const thieu = !ds.length ? ' <span class="thieu">chưa có phím</span>' : '';
+        return `<tr><td>${mo}${thieu}</td><td>${rieng ? o(a, 0) + o(a, 1) : esc(ds.map(Ph.tenMa).join(' / '))}</td></tr>`;
+      }).join('');
+      return `<h3>Điều khiển</h3>
+        <div class="row">${BO_TEN.map(([v, n]) => `<button class="btn small ${bo === v ? 'on' : ''}" data-act="bophim" data-arg="${v}">${n}</button>`).join('')}</div>
+        ${rieng ? '<p class="small muted">Bấm vào một ô rồi bấm phím mới, hoặc bấm nút chuột ngay trên ô đó. Esc: thôi đổi. Backspace: bỏ trống ô. Phím đang thuộc hành động khác thì hai bên đổi chỗ cho nhau.</p>'
+          : '<p class="small muted">Muốn đổi phím: chọn ✏️ Tùy chỉnh, bộ đó bắt đầu từ các phím đang dùng.</p>'}
+        <table class="keys">${dong}
+          <tr><td>Xuống khỏi bục gỗ</td><td>${esc(Ph.tenHD('down'))} + ${esc(Ph.tenHD('jump'))}</td></tr>
+          <tr><td>Túi đồ / Bản đồ / Tạm dừng (cố định)</td><td>Tab / M / Esc</td></tr></table>
+        ${rieng ? `<div class="row"><span class="small muted">Lấy lại phím theo bộ:</span><button class="btn small" data-act="chepphim" data-arg="chuot">Bàn phím + chuột</button><button class="btn small" data-act="chepphim" data-arg="phim">Chỉ bàn phím</button></div>` : ''}
+        <p class="small muted">Tay cầm: cần trái chạy, A nhảy, X chém, RB lướt, giữ B hồi máu, Y đập xuống, giữ LB ngắm ná (cần phải chọn hướng) rồi thả để bắn, Start tạm dừng, Select bản đồ. Điện thoại: dùng nút trên màn hình, xoay ngang máy; giữ nút Bắn để ngắm (▲ ▼ xoay góc).</p>`;
+    },
+    // Mở file nhật ký đã tải (một trận hoặc nhiều trận) để xem lại; nhiều trận thì cho chọn trận
+    moFileTran() {
+      const inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = '.json,application/json';
+      inp.onchange = () => {
+        const f = inp.files && inp.files[0];
+        if (!f) return;
+        f.text().then(chu => {
+          let ds = [];
+          try { const d = JSON.parse(chu); ds = (Array.isArray(d) ? d : [d]).filter(x => x && x.anh && Array.isArray(x.anh.dong) && Array.isArray(x.suKien)); } catch (e) { /* không phải JSON */ }
+          if (!ds.length) { this.toast('File này không phải nhật ký trận boss.'); return; }
+          if (ds.length === 1) { HSX.PhatLai.mo(ds[0]); return; }
+          this.sel.fileTran = ds;
+          this.closeModal();
+          this.modal('Chọn trận để xem lại', `<div class="list">${ds.map((x, i) => `<div class="row-item"><div class="grow"><b>${esc(x.tenBoss || x.boss)}</b> · ${esc(x.ketQua || '')} · ${HSX.fmtTime(x.giay || 0)}
+            <div class="small muted">${esc(new Date(x.luc).toLocaleString('vi-VN'))}</div></div><button class="btn small primary" data-act="tran-xemfile" data-arg="${i}">▶ Xem</button></div>`).join('')}</div>`);
+        });
+      };
+      inp.click();
+    },
+    // Nhật ký trận boss (js/ghi_tran.js): trận mới nhất ở trên, mỗi trận nút Xem lại và Tải file JSON
+    nhatKyTran() {
+      const G = HSX.GhiTran;
+      if (!G) return '';
+      const ds = G.dsTran(), KQ = { thang: '🏆 Thắng', thua: '💀 Thua', roi: '🚪 Rời phòng', bo: '⏹ Bỏ dở' }, so = n => String(n).padStart(2, '0');
+      const dong = ds.map((x, i) => {
+        const tk = x.tongKet || {}, m = tk.mam || {}, sh = tk.soHo || {}, d = new Date(x.luc);
+        const luc = `${so(d.getHours())}:${so(d.getMinutes())} ngày ${d.getDate()}/${d.getMonth() + 1}`;
+        return `<div class="row-item"><div class="grow"><b>${esc(x.tenBoss)}</b> · ${KQ[x.ketQua] || esc(x.ketQua)} · ${HSX.fmtTime(x.giay)}
+          <div class="small muted">${luc} · mất ${m.matLa || 0} lá · trúng boss lúc sơ hở ${sh.coDanh || 0}/${sh.lan || 0} lần</div></div>
+          <button class="btn small primary" data-act="tran-xem" data-arg="${i}" title="Xem lại trận như phim">▶ Xem</button>
+          <button class="btn small" data-act="tran-tai" data-arg="${i}">Tải</button></div>`;
+      }).reverse().join('');
+      return `<h3>Nhật ký trận boss</h3><p class="small muted">Mỗi trận boss được ghi lại: bạn làm gì, boss ra chiêu gì, ai trúng ai. Giữ 10 trận gần nhất. ▶ Xem để xem lại trận như phim (tua, chậm, nhanh); Tải file JSON để cất hoặc gửi đi phân tích; 📂 Mở file để xem lại file đã tải.</p>
+        ${dong ? `<div class="list tran">${dong}</div>` : '<p class="small muted">Chưa có trận nào.</p>'}
+        <div class="row"><button class="btn small" data-act="tran-mofile">📂 Mở file…</button><button class="btn small ${HSX.opt.taiTran ? 'on' : ''}" data-act="tran-tutai">Tự tải file sau mỗi trận: ${HSX.opt.taiTran ? 'bật' : 'tắt'}</button>${ds.length ? '<button class="btn small" data-act="tran-tatca">Tải tất cả</button><button class="btn small danger" data-act="tran-xoa">Xoá</button>' : ''}</div>`;
     },
 
     // ---------- Trạm Tái Chế ----------
@@ -402,7 +526,7 @@
       const loai = Object.keys(D.species).filter(id => HSX.roomLevel(D.species[id].room) === S.level);
       return `<div class="reward">🪑 Đã nghỉ ở Trạm: hồi đầy máu, đã lưu game. Quái quanh ${L.goi} cũng hồi sinh.${v.gifts.length ? `<br>Nhận thêm: ${v.gifts.join(' ')}` : ''}</div>
         <p class="small muted">Ngã xuống thì sẽ tỉnh dậy ở Trạm này. Chỉ đổi bùa được khi ngồi ở Trạm. Sang khu khác: thẻ 🧭 Lên đường.</p>
-        <div class="cols"><div><h3>Tinh linh đi cùng</h3>${D.spiritOrder.filter(id => S.spirits[id]).map(id => `<div class="row-item">${spiritIcon(id)}<div class="grow"><b>${D.spirits[id].name}</b><div class="small muted">${D.spirits[id].skill}</div></div></div>`).join('') || '<p class="small muted">Chưa có tinh linh nào.</p>'}</div>
+        <div class="cols"><div><h3>Tinh linh đi cùng</h3>${D.spiritOrder.filter(id => S.spirits[id]).map(id => `<div class="row-item">${spiritIcon(id)}<div class="grow"><b>${D.spirits[id].name}</b><div class="small muted">${HSX.phimChu(D.spirits[id].skill)}</div></div></div>`).join('') || '<p class="small muted">Chưa có tinh linh nào.</p>'}</div>
         <div><h3>${esc(L.name)}</h3><p class="small">Độ sạch ${pct(Calc.cleanPct())} · Khu vực đã tới ${Object.keys(L.rooms).filter(id => S.visited[id]).length}/${Object.keys(L.rooms).length}</p>
         ${loai.map(id => `<div class="small">${S.species[id] ? '✔' : '✘'} ${D.species[id].emoji} ${D.species[id].name}</div>`).join('')}</div></div>`;
     },
@@ -410,11 +534,11 @@
       const S = HSX.S, all = Object.keys(S.owned).filter(id => D.items[id] && D.items[id].kind === 'charm');
       let h = '<p class="small muted">3 ô bùa. Bùa chế ở Xưởng, một số công thức là bí ẩn.</p><div class="list">';
       h += S.charms.map((id, k) => (id
-        ? `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small">${D.items[id].desc}</div></div><button class="btn small" data-act="unequip" data-arg="${k}">Gỡ</button></div>`
+        ? `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small">${HSX.phimChu(D.items[id].desc)}</div></div><button class="btn small" data-act="unequip" data-arg="${k}">Gỡ</button></div>`
         : '<div class="row-item dim"><span class="ico emo">◌</span><div class="grow small muted">Ô trống</div></div>')).join('');
       h += '</div><h3>Bùa có sẵn</h3>';
       const free = all.filter(id => !S.charms.includes(id));
-      h += free.length ? free.map(id => `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small">${D.items[id].desc}</div></div><button class="btn small" data-act="equip" data-arg="${id}" ${S.charms.includes(null) ? '' : 'disabled'}>Đeo</button></div>`).join('') : '<p class="small muted">Không còn bùa nào khác.</p>';
+      h += free.length ? free.map(id => `<div class="row-item">${itemIcon(id)}<div class="grow"><b>${D.items[id].name}</b><div class="small">${HSX.phimChu(D.items[id].desc)}</div></div><button class="btn small" data-act="equip" data-arg="${id}" ${S.charms.includes(null) ? '' : 'disabled'}>Đeo</button></div>`).join('') : '<p class="small muted">Không còn bùa nào khác.</p>';
       return h;
     },
     bench_xuong() {
@@ -474,7 +598,7 @@
       const sp = D.spirits[id];
       this.modal(`${sp.emoji} Giải cứu ${sp.name}!`, `<div class="big-emo">${spiritIcon(id, 'xl')}</div>
         <p class="center">${sp.name} thoát khỏi Sương Độc và sẽ bay theo bạn, tỏa sáng xung quanh.</p>
-        <div class="reward"><b>Khả năng mới:</b> ${sp.skill}</div>`, [['Tiếp tục', 'close', true]]);
+        <div class="reward"><b>Khả năng mới:</b> ${HSX.phimChu(sp.skill)}</div>`, [['Tiếp tục', 'close', true]]);
     },
     showSpecies(id) {
       const sp = D.species[id], buff = Object.keys(sp.buff).map(k => (k === 'dropBonus' ? `+${pct(sp.buff[k])} nguyên liệu rơi` : `+${pct(sp.buff[k])} hạt giống`)).join(', ');
@@ -509,6 +633,11 @@
       const show = () => { box.hidden = false; HSX.Input.usingTouch = true; };
       if (matchMedia('(pointer: coarse)').matches) show();
       addEventListener('pointerdown', e => { if (e.pointerType === 'touch') show(); }, true);
+      // nút Bắn chỉ hiện khi đã chế Ná Tái Chế
+      const na = () => box.classList.toggle('co-na', !!(HSX.S && HSX.S.owned.na_tai_che));
+      na();
+      HSX.on('room', na);
+      HSX.on('co', na);
       const held = new Map();
       const set = (id, a) => {
         const old = held.get(id);

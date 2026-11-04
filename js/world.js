@@ -6,6 +6,9 @@
   const lerp = (a, b, t) => a + (b - a) * t;
   const RAC = ['#e05a5a', '#4a90d9', '#f2f2f2', '#f2c14e', '#5cc48a', '#a08a62'];   // màu mảnh rác vụn
   const LUOI = ['#5f8f6a', '#3d6b8a', '#9fd3a8', '#c9b98a'];                         // màu sợi lưới đứt
+  // Năng lượng mỗi lần hạt ná trúng: quái, giáp boss, đống rác, túi / lưới đang bay, lưới ma giăng
+  // (chém trúng được 11, 3, 4, 6, 3: ná được chừng một nửa)
+  const NL_BAN = { quai: 5, giap: 1, rac: 2, dan: 3, luoi: 1 };
 
   // ---------- Phòng ----------
   function Room(id) {
@@ -138,6 +141,9 @@
     cam: { x: 0, y: 0 }, lookX: 0, aimX: 0, aimY: 0, hitstop: 0, shake: 0, fade: 0, fadeTo: null,
     ui: [], flashes: [], corpses: [], kick: { x: 0, y: 0 }, hurtT: 0, orbPulse: 0, loi: [], xa: null,
     bannerData: null, mode: 'play', deadT: 0, dawnT: 0, victoryT: 0, hints: {}, prompt: null, tip: null, gains: {}, gainT: 0,
+    chamT: 0, neLuc: -1e9,   // lướt né: thời gian chậm lại còn bao lâu, lần né gần nhất được thưởng (giờ chơi S.stats.time)
+    nguonDau: null,          // thứ sắp làm Mầm mất máu (đặt ngay trước P.hurt), để nhật ký trận boss biết mất máu vì đâu
+    banPha: false,           // đang xử lý hạt ná phá quái / đống rác: đồ rơi ra tự bay về Mầm (xem drop)
 
     init() {
       const S = HSX.S;
@@ -149,10 +155,11 @@
     // entry: { door, side, vx, vy } qua cửa · { bench } ở Trạm · { start } ở ô @. im: không hiện tên phòng.
     load(id, entry) {
       const S = HSX.S, P = HSX.Player, first = !S.visited[id], lv = HSX.roomLevel(id);
+      if (this.boss && this.boss.active && !this.boss.dead) HSX.emit('hettran', { ketQua: 'roi' });   // rời phòng giữa trận boss
       if (lv !== S.level) { S.level = lv; this.dawnT = Calc.levelDone(lv) ? 99 : 0; }
       const r = this.room = new Room(id);
       this.enemies = []; this.boss = null; this.pickups = []; this.shots = []; this.fx = []; this.texts = [];
-      this.flashes = []; this.corpses = []; this.loi = []; this.xa = null;
+      this.flashes = []; this.corpses = []; this.loi = []; this.xa = null; this.chamT = 0; this.neLuc = -1e9;
       P.troi = 0;
       HSX.Truyen.cam = null;
       HSX.Render.tilesDirty = true;
@@ -230,6 +237,7 @@
     // ---------- Vòng cập nhật ----------
     update(dt) {
       const S = HSX.S, P = HSX.Player, r = this.room;
+      if (this.chamT > 0) { this.chamT -= dt; dt *= 0.35; }   // vừa lướt né: thời gian chậm lại một nhịp
       this.shake = Math.max(0, this.shake - dt * 30);
       const bd = this.bannerData;
       if (bd) { bd.t += dt; if (bd.t > bd.dur) this.bannerData = null; }
@@ -283,12 +291,16 @@
         if (e.x + e.w > cam.x && e.x < cam.x + HSX.VW && e.y + e.h > cam.y && e.y < cam.y + HSX.VH) Sys.quaiSeen(e.type);
       });
       const pb = { x: P.b.x + 3, y: P.b.y + 5, w: P.b.w - 6, h: P.b.h - 7 };
+      // Boss đang sơ hở (kẹt, lún cát, choáng, lật ngửa...) thì chạm thân không mất máu: lao vào đánh lúc đó là đúng cách
       this.enemies.forEach(e => {
-        if (!e.dead && (e.kind !== 'boss' || e.active) && Phys.overlap(pb, e)) P.hurt(1, e.x + e.w / 2);
+        if (e.dead || (e.kind === 'boss' && (!e.active || e.open > 0)) || !Phys.overlap(pb, e)) return;
+        this.nguonDau = e.kind === 'boss' ? 'than:' + e.state : 'quai:' + e.type;
+        P.hurt(1, e.x + e.w / 2);
       });
       this.enemies = this.enemies.filter(e => !e.dead || e === this.boss);
 
       this.updateShots(dt, pb);
+      if (HSX.GhiTran) HSX.GhiTran.buoc(dt);
       this.updatePickups(dt);
       this.collectShards(pb);
       this.updateSortItems(dt);
@@ -305,6 +317,7 @@
     // ---------- Máu, chết, gai ----------
     hazardHit() {
       const P = HSX.Player;
+      this.nguonDau = 'dia_hinh';
       P.hurt(1, P.cx(), true);
       if (HSX.S.hp <= 0 || this.mode !== 'play') return;
       this.text(P.cx(), P.b.y - 10, 'Độc!', '#d58cff');
@@ -318,6 +331,7 @@
 
     die() {
       if (this.mode === 'dead') return;
+      if (this.boss && this.boss.active && !this.boss.dead) HSX.emit('hettran', { ketQua: 'thua' });
       this.mode = 'dead';
       this.deadT = 1.1;
       HSX.S.stats.deaths++;
@@ -336,23 +350,29 @@
       this.banner('Tỉnh dậy ở Trạm Tái Chế', 'Đồ nhặt được vẫn còn nguyên', 2.4);
     },
 
+    // Thêm năng lượng: đốm sáng bay từ chỗ trúng (x, y) về quả cầu năng lượng
+    napNL(n, x, y) {
+      const S = HSX.S, truoc = S.energy;
+      S.energy = Math.min(99, S.energy + n);
+      if (S.energy > truoc) this.orbs(x, y, Math.max(1, Math.round((S.energy - truoc) / 4)));
+    },
+
     // ---------- Đòn chém ----------
     attack(box, dir) {
       const S = HSX.S, P = HSX.Player, r = this.room, dmg = Calc.weaponDmg(), ang = P.atkAng;
       let hit = false, pogo = false;
-      // năng lượng nhận được bay thành đốm sáng từ chỗ trúng về quả cầu năng lượng
-      const gain = (n, x, y) => {
-        const truoc = S.energy;
-        S.energy = Math.min(99, S.energy + n);
-        if (S.energy > truoc) this.orbs(x, y, Math.max(1, Math.round((S.energy - truoc) / 4)));
-      };
+      const gain = (n, x, y) => this.napNL(n, x, y);
       // chỗ trúng: giữa phần giao của vùng chém và vật bị trúng
       const at = o => ({ x: (Math.max(box.x, o.x) + Math.min(box.x + box.w, o.x + o.w)) / 2, y: (Math.max(box.y, o.y) + Math.min(box.y + box.h, o.y + o.h)) / 2 });
       this.enemies.forEach(e => {
         if (e.dead || (e.kind === 'boss' && !e.active) || !Phys.overlap(box, e)) return;
         const res = HSX.Enemies.damage(e, dmg, P, dir), p = at(e);
         hit = true;
-        if (res !== 'block') {
+        if (res === 'giap') {   // boss đang thủ thế: tia lửa xám, ít năng lượng
+          gain(3, p.x, p.y);
+          this.spark(p.x, p.y, '#cfd3e0');
+          this.ring(p.x, p.y, '#cfd3e0', 30, 0.15, 2);
+        } else if (res !== 'block') {
           gain(11, p.x, p.y);
           this.hitFx(p.x, p.y, ang, (e.def.chip || [])[0]);
           this.kick.x += Math.cos(ang) * 4;
@@ -360,13 +380,18 @@
         }
         if (dir === 'down') pogo = true;
       });
-      this.shots = this.shots.filter(s => {
-        if ((s.type !== 'bag' && s.type !== 'net') || !Phys.overlap(box, s)) return true;
-        hit = true; gain(6, s.x + s.w / 2, s.y + s.h / 2);
+      // Túi, lưới boss ném tới: chém đúng lúc (đợi nó tới sát, không chém bừa liên tục) thì phản lại, không thì chỉ phá được nó.
+      // Đang nhấp nháy sau khi trúng đòn thì không phản được (lưới bay xuyên qua người rồi chém lại thì không tính)
+      const dungLuc = P.chemLuc - P.chemTruoc >= 0.45 && P.inv <= 0;
+      this.shots.forEach(s => {
+        if ((s.type !== 'bag' && s.type !== 'net') || s.phan || s.huy || !Phys.overlap(box, s)) return;
+        const cx = s.x + s.w / 2, cy = s.y + s.h / 2;
+        hit = true; gain(6, cx, cy);
         if (dir === 'down') pogo = true;
-        this.burst(s.x + s.w / 2, s.y + s.h / 2, s.type === 'net' ? '#9fd3a8' : '#d8d0ff', 10);
-        this.chips(s.x + s.w / 2, s.y + s.h / 2, s.type === 'net' ? LUOI : ['#e8e8f0', '#b9b9c9'], 5, 200);
-        return false;
+        if (dungLuc && Math.hypot(cx - P.cx(), cy - P.cy()) < 47 + s.w / 2) { this.phanLai(s, ang); return; }
+        s.huy = true;
+        this.burst(cx, cy, s.type === 'net' ? '#9fd3a8' : '#d8d0ff', 10);
+        this.chips(cx, cy, s.type === 'net' ? LUOI : ['#e8e8f0', '#b9b9c9'], 5, 200);
       });
       // Lưới ma giăng: mỗi đòn trúng một tấm lưới là một nhát
       const luoi = {};
@@ -567,9 +592,10 @@
       HSX.saveGame();
     },
 
+    // Đồ rơi văng ra rồi nằm chờ nhặt; hut: tự bay về Mầm dù ở xa (đồ rơi khi hạt ná phá quái, đống rác)
     drop(id, n, x, y) {
       for (let k = 0; k < n && this.pickups.length < 140; k++) {
-        this.pickups.push({ id, x: x - 8, y: y - 8, w: 16, h: 16, vx: (Math.random() - 0.5) * 340, vy: -260 - Math.random() * 260, t: 0 });
+        this.pickups.push({ id, x: x - 8, y: y - 8, w: 16, h: 16, vx: (Math.random() - 0.5) * 340, vy: -260 - Math.random() * 260, t: 0, hut: !!this.banPha });
       }
     },
 
@@ -578,7 +604,7 @@
       this.pickups = this.pickups.filter(p => {
         p.t += dt;
         const dx = P.cx() - (p.x + 8), dy = P.cy() - (p.y + 8), dist = Math.hypot(dx, dy) || 1;
-        if (p.t > 0.35 && dist < mag) {
+        if (p.t > 0.35 && (dist < mag || p.hut)) {
           p.x += dx / dist * 560 * dt;
           p.y += dy / dist * 560 * dt;
         } else {
@@ -666,10 +692,12 @@
       this.ring(b.x + b.w / 2, b.y + b.h / 2, '#c49bff', 280, 0.9, 8);
       this.flash(b.x + b.w / 2, b.y + b.h / 2, 320, '190,120,255', 0.6);
       this.banner(b.def.name, b.def.sub, 2.8);
+      HSX.emit('trandau', b);
     },
 
     bossDefeated(e) {
       const S = HSX.S, r = this.room;
+      HSX.emit('hettran', { ketQua: 'thang' });
       S.bosses[e.type] = true;
       r.locked = false;
       this.shake = 18;
@@ -709,16 +737,157 @@
 
     // ---------- Đạn của boss ----------
     bag(x, y) {
-      this.shots.push({ type: 'bag', x: x - 17, y: y - 17, w: 34, h: 34, vx: (Math.random() - 0.5) * 260, vy: -260, life: 7, t: Math.random() * 6 });
+      this.shots.push({ type: 'bag', x: x - 17, y: y - 17, w: 34, h: 34, vx: (Math.random() - 0.5) * 260, vy: -260, life: 5, t: Math.random() * 6 });
     },
     wave(x, feet, dir, speed) {
       this.shots.push({ type: 'wave', x: x - 20, y: feet - 30, w: 40, h: 30, vx: dir * speed, vy: 0, life: 3 });
     },
+    // Vùng đánh của boss (kẹp càng, nổ túi, sập lưới): đứng trong vùng lúc nó còn là mất máu, bị hất ra xa tâm boss (tu)
+    zone(x, y, w, h, life, kieu, dir, tu) {
+      this.shots.push({ type: 'vung', kieu, dir: dir || 1, x, y, w, h, life, max: life, t: 0, tu });
+    },
+    // Vùng lưới quẫy là hình bầu dục nội tiếp hộp vùng: trúng khi điểm của hộp b gần tâm nhất nằm trong bầu dục
+    trongElip(s, b) {
+      const cx = s.x + s.w / 2, cy = s.y + s.h / 2, qx = HSX.clamp(cx, b.x, b.x + b.w), qy = HSX.clamp(cy, b.y, b.y + b.h);
+      return ((qx - cx) / (s.w / 2)) ** 2 + ((qy - cy) / (s.h / 2)) ** 2 <= 1;
+    },
+    // Mưa túi (Vua Túi Nilon pha 2): 6 túi, bóng dưới đất báo chỗ rơi, giữa các túi chừa khe rộng để đứng
+    muaTui() {
+      const r = this.room, day = (r.h - 2) * T, buoc = (r.w - 3) * T / 6;
+      for (let i = 0; i < 6; i++) {
+        const x = T * 1.5 + (i + 0.3 + Math.random() * 0.4) * buoc, life = 0.9 + i * 0.06;
+        this.shots.push({ type: 'bao', x: x - 22, y: day - 8, w: 44, h: 8, life, max: life });
+      }
+    },
+    // Túi, lưới bị chém phản lại: bay theo hướng chém, gần đúng hướng boss thì tự lái về phía boss
+    phanLai(s, ang) {
+      const b = this.boss, cx = s.x + s.w / 2, cy = s.y + s.h / 2;
+      let a = ang;
+      if (b && b.active && !b.dead) {
+        const ab = Math.atan2(b.y + b.h / 2 - cy, b.x + b.w / 2 - cx), d = Math.atan2(Math.sin(ab - ang), Math.cos(ab - ang));
+        if (Math.abs(d) < 0.75) a = ab;
+      }
+      Object.assign(s, { phan: true, vx: Math.cos(a) * 780, vy: Math.sin(a) * 780, g: 0, life: 1.3 });
+      this.ring(cx, cy, '#fff6c8', 50, 0.25, 3);
+      this.spark(cx, cy, '#fff6c8');
+      HSX.emit('phan');
+    },
+
+    // ---------- Ná Tái Chế ----------
+    // Hạt nhựa bay vòng cung (tốc độ v, trọng lực g): trúng quái (mạnh bằng một nhát chém), túi / lưới đang bay,
+    // lưới ma giăng, đống rác thì vỡ; ra khỏi phòng thì mất.
+    // Trúng thì được khoảng nửa năng lượng so với chém (NL_BAN), để chém vẫn là cách nạp năng lượng chính.
+    // Quái, đống rác, lưới ma bị hạt ná phá thì đồ rơi ra tự bay về Mầm (banPha: drop đánh dấu hut), khỏi phải chạy tới nhặt.
+    banHat(x, y, a, v, g) {
+      this.shots.push({ type: 'hat', x: x - 6, y: y - 6, w: 12, h: 12, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g, life: 3, t: 0 });
+      this.fxp({ k: 'glow', x, y, life: 0.12, r: 22, color: 'rgba(232,244,255,0.7)', add: true });
+      this.kick.x -= Math.cos(a) * 2;
+    },
+    bayHat(s, dt) {
+      const r = this.room, P = HSX.Player, tia = () => this.spark(s.x + s.w / 2, s.y + s.h / 2, '#e8f4ff');
+      const pha = f => { this.banPha = true; const kq = f(); this.banPha = false; return kq; };   // đồ rơi trong lúc này tự bay về Mầm
+      s.t += dt;
+      for (let k = 0; k < 3; k++) {   // chia nhỏ bước: hạt bay nhanh không xuyên qua tường mỏng, quái nhỏ
+        s.vy += s.g * dt / 3;
+        s.x += s.vx * dt / 3;
+        s.y += s.vy * dt / 3;
+        const cx = s.x + s.w / 2, cy = s.y + s.h / 2, tx = Math.floor(cx / T), ty = Math.floor(cy / T), ang = Math.atan2(s.vy, s.vx);
+        if (cx < 0 || cx > r.w * T || cy > r.h * T) return false;
+        if (r.tile(tx, ty) === 'n') {
+          tia();
+          this.napNL(NL_BAN.luoi, cx, cy);
+          pha(() => this.chatLuoi(this.tamLuoi(tx, ty), tx, ty, ang));
+          return false;
+        }
+        if (r.solid(tx, ty)) { this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff'); return false; }
+        const e = this.enemies.find(x => !x.dead && (x.kind !== 'boss' || x.active) && Phys.overlap(s, x));
+        if (e) {
+          const res = pha(() => HSX.Enemies.damage(e, Calc.weaponDmg(), P, 'ban', cx));
+          if (res === 'giap') { this.spark(cx, cy, '#cfd3e0'); this.napNL(NL_BAN.giap, cx, cy); }
+          else if (res !== 'block') { this.hitFx(cx, cy, ang, (e.def.chip || [])[0]); this.napNL(NL_BAN.quai, cx, cy); }
+          return false;
+        }
+        const o = r.objs.find(x => x.type === 'heap' && Phys.overlap(s, { x: x.x + 2, y: x.y + 8, w: T - 4, h: T - 8 }));
+        if (o) {
+          tia();
+          this.napNL(NL_BAN.rac, cx, cy);
+          o.hp--; o.shake = 0.15;
+          this.chips(o.x + T / 2, o.y + T / 2, RAC, 4, 220);
+          if (o.hp <= 0) pha(() => this.breakHeap(o));
+          return false;
+        }
+        const sh = this.shots.find(x => (x.type === 'bag' || x.type === 'net') && !x.phan && !x.huy && Phys.overlap(s, x));
+        if (sh) {
+          sh.huy = true;
+          this.napNL(NL_BAN.dan, cx, cy);
+          this.burst(sh.x + sh.w / 2, sh.y + sh.h / 2, sh.type === 'net' ? '#9fd3a8' : '#d8d0ff', 10);
+          this.chips(sh.x + sh.w / 2, sh.y + sh.h / 2, sh.type === 'net' ? LUOI : ['#e8e8f0', '#b9b9c9'], 5, 200);
+          return false;
+        }
+      }
+      return s.life > 0;
+    },
+    // Túi / lưới đã bị chém phản lại: bay thẳng, trúng quái thì Enemies.phanDon lo phần còn lại
+    bayPhan(s, dt) {
+      const r = this.room;
+      s.t += dt;
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      const cx = s.x + s.w / 2, cy = s.y + s.h / 2, mau = s.type === 'net' ? '#9fd3a8' : '#d8d0ff';
+      if (r.solid(Math.floor(cx / T), Math.floor(cy / T))) { this.burst(cx, cy, mau, 10); return false; }
+      const hop = s.type === 'net' ? { x: s.x + s.w * 0.2, y: s.y + s.h * 0.2, w: s.w * 0.6, h: s.h * 0.6 } : s;
+      const e = this.enemies.find(x => !x.dead && (x.kind !== 'boss' || x.active) && Phys.overlap(hop, x));
+      if (e) {
+        this.burst(cx, cy, mau, 16);
+        this.ring(cx, cy, '#fff6c8', 90, 0.35, 4);
+        this.hitstop = Math.max(this.hitstop, 0.08);
+        this.shake = Math.max(this.shake, 8);
+        HSX.Enemies.phanDon(e, s.type, HSX.Player, cx);
+        return false;
+      }
+      return s.life > 0;
+    },
+
+    // Lướt né: đang lướt mà dính đòn thì xuyên qua. Mỗi 1,5 giây được thưởng một lần: thời gian chậm lại, thêm năng lượng.
+    luotNe(P, nguon) {
+      P.inv = Math.max(P.inv, 0.4);
+      const now = HSX.S.stats.time, thuong = now - this.neLuc >= 1.5;
+      HSX.emit('luotne', { nguon, thuong });
+      if (!thuong) return;
+      this.neLuc = now;
+      const S = HSX.S, truoc = S.energy;
+      this.chamT = 0.45;
+      S.energy = Math.min(99, S.energy + 11);
+      if (S.energy > truoc) this.orbs(P.cx(), P.cy(), 3);
+      this.text(P.cx(), P.b.y - 14, 'Né!', '#bff5ff', 18);
+      this.ring(P.cx(), P.cy(), '#bff5ff', 70, 0.35, 3);
+      this.flash(P.cx(), P.cy(), 160, '190,245,255', 0.3);
+    },
+
     updateShots(dt, pb) {
-      const P = HSX.Player, r = this.room;
+      const P = HSX.Player, r = this.room, moi = [];
       this.shots = this.shots.filter(s => {
+        if (s.huy) return false;
         s.life -= dt;
-        if (s.type === 'bag') {
+        // của Mầm: hạt ná, túi / lưới đã bị chém phản lại
+        if (s.type === 'hat') return this.bayHat(s, dt);
+        if (s.phan) return this.bayPhan(s, dt);
+        if (s.type === 'bao') {   // bóng báo chỗ túi sắp rơi (mưa túi): hết giờ thì túi rơi từ trần xuống
+          if (s.life <= 0) moi.push({ type: 'bag', roi: true, x: s.x + s.w / 2 - 17, y: T * 0.6, w: 34, h: 34, vx: 0, vy: 150, life: 3, t: Math.random() * 6 });
+          return s.life > 0;
+        }
+        if (s.type === 'bag' && s.roi) {
+          s.t += dt;
+          s.vy = Math.min(900, s.vy + 1500 * dt);
+          s.y += s.vy * dt;
+          if (r.solid(Math.floor((s.x + s.w / 2) / T), Math.floor((s.y + s.h) / T))) {
+            this.burst(s.x + s.w / 2, s.y + s.h - 4, '#d8d0ff', 8);
+            this.dust(s.x + s.w / 2, s.y + s.h, 3);
+            return false;
+          }
+        } else if (s.type === 'vung') {
+          s.t += dt;
+        } else if (s.type === 'bag') {
           s.t += dt;
           const dx = P.cx() - (s.x + s.w / 2), dy = P.cy() - (s.y + s.h / 2), d = Math.hypot(dx, dy) || 1;
           s.vx += (dx / d * 170 - s.vx) * dt * 1.4;
@@ -744,14 +913,15 @@
           if (r.solid(tx, Math.floor((s.y + s.h / 2) / T))) { this.dust(s.x + s.w / 2, s.y + s.h, 6); return false; }
           if (Math.random() < 0.5) this.dust(s.x + s.w / 2, s.y + s.h, 1);
         }
-        if (Phys.overlap(s.type === 'net' ? { x: s.x + s.w * 0.2, y: s.y + s.h * 0.2, w: s.w * 0.6, h: s.h * 0.6 } : s, pb)) {
-          const dau = P.hurt(1, s.x + s.w / 2);
+        if (s.kieu === 'quay' ? this.trongElip(s, pb) : Phys.overlap(s.type === 'net' ? { x: s.x + s.w * 0.2, y: s.y + s.h * 0.2, w: s.w * 0.6, h: s.h * 0.6 } : s, pb)) {
+          this.nguonDau = 'dan:' + s.type + (s.roi ? ':roi' : s.kieu ? ':' + s.kieu : '');
+          const dau = P.hurt(1, s.tu !== undefined ? s.tu : s.x + s.w / 2);
           if (s.type === 'bag') { this.burst(s.x + s.w / 2, s.y + s.h / 2, '#d8d0ff', 8); return false; }
           // lưới trùm trúng: Mầm bị quấn, chém liên tục để thoát
           if (s.type === 'net' && dau) { P.troi = 1.1; this.chips(P.cx(), P.cy(), LUOI, 8, 180); HSX.emit('quan'); return false; }
         }
         return s.life > 0;
-      });
+      }).concat(moi);
     },
 
     // ---------- Lồng tinh linh ----------

@@ -43,6 +43,7 @@ HSX.DATA = {
     // Công cụ: có là dùng được
     kinh_lup:       { kind: 'tool', name: 'Kính Lúp Phân Loại', emoji: '🔍', desc: 'Nhìn xuyên tường giả để đi qua. Puzzle phân loại có thêm gợi ý.', fact: 'thuytinh' },
     xuong_phao:     { kind: 'tool', name: 'Xuồng Phao', emoji: '🛶', desc: 'Nổi trên nước độc: đi qua sông tới Đảo Rác.' },
+    na_tai_che:     { kind: 'tool', name: 'Ná Tái Chế', emoji: '🎯', desc: 'Cán ống nhựa, dây bện từ lưới cũ, túi đạn cắt từ lon nhôm. Giữ {ban} để ngắm: hạt bay vòng cung, giữ lâu bắn xa hơn, thả ra để bắn. Mỗi phát chờ chừng 1 giây. Trúng thì được chừng nửa năng lượng so với chém; đồ rơi từ quái, đống rác bị bắn vỡ tự bay về.' },
     // Công trình
     rao_chan:       { kind: 'structure', name: 'Rào Chắn Ổ Trứng', emoji: '🚧', desc: 'Dựng ở Bãi đẻ rùa để rùa mẹ yên tâm đẻ trứng.' },
     dan_tach_rac:   { kind: 'structure', name: 'Dàn Tách Rác', emoji: '🗑️', desc: 'Mỗi lần nghỉ ở Trạm nhận thêm 3 nguyên liệu.' },
@@ -63,6 +64,7 @@ HSX.DATA = {
     { id: 'r_khien', out: 'khien_lon', station: 'che_tao', cost: { lon_nhom: 4, day_thung: 1 } },
     { id: 'r_kinh_lup', out: 'kinh_lup', station: 'che_tao', cost: { manh_thuy_tinh: 3, hat_nhua: 1 } },
     { id: 'r_xuong', out: 'xuong_phao', station: 'che_tao', cost: { phao_nhua: 4, day_thung: 2 } },
+    { id: 'r_na', out: 'na_tai_che', station: 'che_tao', cost: { ong_nhua: 1, day_thung: 1, lon_nhom: 2 } },
     { id: 'r_rao', out: 'rao_chan', station: 'che_tao', cost: { gach_sinh_thai: 4, day_thung: 1 } },
     { id: 'r_gach', out: 'gach_sinh_thai', station: 'che_tao', cost: { chai_pet: 1, tui_nilon: 3 }, hidden: true, hint: 'Nhồi túi nilon thật chặt vào một chai nhựa.' },
     { id: 'r_chuong', out: 'chuong_gio', station: 'che_tao', cost: { vo_so: 3, day_thung: 1 }, hidden: true, hint: 'Vỏ sò buộc với dây thừng, gió sẽ hát.' },
@@ -74,11 +76,11 @@ HSX.DATA = {
   spiritOrder: ['sen', 'gio', 'gau', 'taiche'],
   spirits: {
     sen:    { name: 'Hoa Sen', emoji: '🌸', color: '#ff9cc8', glow: '255,150,200', ability: 'heal',
-              skill: 'Giữ nút Hồi (F) khi đứng yên: tốn 33 năng lượng, hồi 1 lá.' },
+              skill: 'Giữ nút Hồi ({hoi}) khi đứng yên: tốn 33 năng lượng, hồi 1 lá.' },
     gio:    { name: 'Gió', emoji: '🍃', color: '#7ef0b0', glow: '140,255,190', ability: 'dash',
-              skill: 'Bấm Lướt (C) để lướt ngang, cả khi đang nhảy. Vượt được vực gai rộng.' },
+              skill: 'Bấm Lướt ({luot}) để lướt ngang, cả khi đang nhảy. Vượt được vực gai rộng. Lướt đúng lúc đòn sắp trúng thì xuyên qua, không mất máu.' },
     gau:    { name: 'Gấu Rừng', emoji: '🐻', color: '#e0a46a', glow: '255,200,140', ability: 'slam',
-              skill: 'Bấm Phép (V) khi đang nhảy: đập xuống, phá nền rác nứt, gây sóng chấn. Tốn 33 năng lượng.' },
+              skill: 'Bấm Phép ({dap}) khi đang nhảy: đập xuống, phá nền rác nứt, gây sóng chấn. Tốn 33 năng lượng.' },
     taiche: { name: 'Tái Chế', emoji: '♻️', color: '#7cc8ff', glow: '140,200,255', ability: 'magnet',
               skill: 'Tự hút nguyên liệu ở gần, +20% nguyên liệu rơi.' },
   },
@@ -101,11 +103,11 @@ HSX.DATA = {
   },
   // sub: dòng chữ nhỏ dưới tên boss khi trận đánh bắt đầu
   bosses: {
-    cua_khong_lo: { name: 'Cua Lon Khổng Lồ', img: 'cua_lon', emoji: '🥫', color: '#8d969e', hp: 70, w: 130, h: 100, shell: true, sub: 'Kẻ canh lồng Gấu Rừng',
+    cua_khong_lo: { name: 'Cua Lon Khổng Lồ', img: 'cua_lon', emoji: '🥫', color: '#8d969e', hp: 60, w: 130, h: 100, shell: true, sub: 'Kẻ canh lồng Gấu Rừng',
                     chip: ['#c9ccd1', '#d0453a', '#8a5a3a', '#6b6f75'], drops: { lon_nhom: 10, vo_so: 6, luoi_cu: 4 } },
-    vua_nilon:    { name: 'Vua Túi Nilon', img: 'vua_nilon', emoji: '🛍️', color: '#8e7cc3', hp: 90, layers: 5, layerHp: 15, w: 150, h: 170, sub: 'Kẻ đẻ ra Sương Độc',
+    vua_nilon:    { name: 'Vua Túi Nilon', img: 'vua_nilon', emoji: '🛍️', color: '#8e7cc3', hp: 80, layers: 5, layerHp: 15, w: 150, h: 170, sub: 'Kẻ đẻ ra Sương Độc',
                     chip: ['#ecebf4', '#b9b6cc', '#e05a5a', '#f2c14e', '#4a90d9'], drops: { chai_pet: 15, tui_nilon: 20, lon_nhom: 10, luoi_cu: 8 } },
-    luoi_ma_khong_lo: { name: 'Lưới Ma Khổng Lồ', img: 'luoi_ma_khong_lo', emoji: '🕸️', color: '#6f8794', hp: 120, w: 140, h: 150, fly: true,
+    luoi_ma_khong_lo: { name: 'Lưới Ma Khổng Lồ', img: 'luoi_ma_khong_lo', emoji: '🕸️', color: '#6f8794', hp: 150, w: 140, h: 150, fly: true,
                     sub: 'Kết từ trăm tấm lưới bị bỏ lại', chip: ['#5f8f6a', '#9fd3a8', '#c49bff', '#3d6b8a'], drops: { luoi_cu: 12, day_thung: 3, rong_bien: 6 } },
   },
 
@@ -125,16 +127,16 @@ HSX.DATA = {
       cach: 'Lượn chậm rồi đuổi theo khi thấy Mầm. Đứng chờ nó tới gần rồi chém, đừng chạy vào chỗ hẹp.' },
     cua_khong_lo: { rac: 'Lon nhôm', can: 1, fact: 'nhom', boss: true,
       mo_ta: 'Cua Lon to nhất bãi, canh giữ lồng của Gấu Rừng ở Ghềnh Đá. Mai lon dày và đôi càng nặng như búa.',
-      cach: 'Giơ càng thì sắp đập đất tạo sóng chấn: nhảy qua. Lùi lại lấy đà thì sắp lao: tránh để nó đâm tường, choáng lật ngửa thì chém liên tục.' },
+      cach: 'Mai lon trước mặt đỡ đòn chém ngang và hạt ná; chém sau lưng hai nhát là nó quay ngoắt lại kẹp. Giơ càng thì sắp đập đất: nhảy qua sóng chấn, càng kẹt dưới cát là sơ hở. Lấy đà thì sắp lao: lướt né hoặc nhảy qua để nó đâm tường lật ngửa, lúc đó dồn đòn. Đứng sát trước mặt lâu là bị kẹp. Còn nửa máu: lao dội tường rồi lao tiếp, đập hai nhịp.' },
     vua_nilon: { rac: 'Nhựa dùng một lần', can: 1, fact: 'motlan', boss: true,
       mo_ta: 'Kẻ đẻ ra Sương Độc, ghép từ vô số túi nilon, đội vương miện nắp chai. Mỗi lớp túi xé ra lại có lớp khác bên trong.',
-      cach: 'Pha 1: chém túi bay tới, nhảy qua sóng chấn khi nó đập đất, tránh cú lao. Xé hết 5 lớp túi thì sang pha 2: nhanh hơn, nuốt rác và nhả ra Slime Nilon.' },
+      cach: 'Lớp túi dai: lúc nó thủ thế, chém chỉ được nửa đòn. Chém trúng túi bay tới thì túi bay ngược lại, trúng Vua là xé ngay 1 lớp. Nhảy qua sóng chấn: đập đất xong nó lún xuống cát, lao đâm tường thì choáng, đó là lúc dồn đòn. Chém xuống trúng vương miện thì giáp không chặn. Đứng sát lâu là nó phồng lên nổ túi. Pha 2: nhanh hơn, nhả Slime, túi rơi như mưa (đứng vào khe giữa các bóng tím).' },
     hop_xop: { rac: 'Hộp xốp, phao xốp', can: 3, fact: 'xop',
       mo_ta: 'Hộp xốp đựng cơm, phao xốp của đầm tôm bị vứt lại ven bờ. Nhẹ, nổi, trôi theo nước vào tận gốc đước.',
       cach: 'Nhảy cóc chậm. Chém vỡ thì nó tách thành hai Mảnh Xốp nhỏ nhảy loạn xạ: dọn luôn kẻo sót lại.' },
     luoi_ma_khong_lo: { rac: 'Lưới đánh cá bỏ đi', can: 1, fact: 'luoibo', boss: true,
       mo_ta: 'Kết từ hàng trăm tấm lưới bị cắt bỏ giữa biển rồi trôi vào rừng đước. Nó quấn lấy mọi thứ đi qua: cá, cua, rễ cây và cả ánh sáng.',
-      cach: 'Rướn ra sau là sắp quăng lưới: chạy tránh, bị quấn thì chém liên tục để thoát. Rướn lên cao là sắp lao chéo xuống: lướt sang bên. Nó bay cao thì nhảy lên bục mà chém lên.' },
+      cach: 'Rướn ra sau là sắp quăng lưới: chém trúng tấm lưới đang bay thì nó bay ngược lại, trúng Lưới Ma là nó tự quấn mình rơi xuống đất, sơ hở lớn. Bị quấn thì chém liên tục để thoát. Rướn lên cao là sắp lao chéo xuống: lướt né, nó cắm xuống đất kẹt lại. Đứng dưới bụng nó lâu là bị sập lưới. Chém dồn 2 nhát lúc nó thủ thế là nó quẫy lưới ra xung quanh, rủ xuống tới đất: thấy vòng nét đứt thì lùi ra. Nó bay cao thì bắn ná hoặc nhảy lên bục mà chém lên.' },
   },
 
   // Nguyên liệu rơi từ đống rác, theo khu vực

@@ -64,12 +64,12 @@ HSX.LEVELS.m2 = {
       doors: { 1: ['bo_bao', 2], 2: ['nha_me_duoc', 1], 3: ['ran_ban', 1] },
       tips: [
         { x: 12, y: 13, k: 'Bãi bồi trống trơn. Cây gì mọc được trên bùn ngập nước nhỉ?', t: 'Bãi bồi trống trơn. Cây gì mọc được trên bùn ngập nước nhỉ?', khi: () => !HSX.S.flags.trongDuoc },
-        { x: 12, y: 13, k: '↑ hoặc E: cắm trụ mầm đước. Rễ lớn lên sẽ bắc cầu lên cao', t: '▲: cắm trụ mầm đước. Rễ lớn lên sẽ bắc cầu lên cao', khi: () => HSX.S.flags.trongDuoc },
+        { x: 12, y: 13, k: '{tuongTac}: cắm trụ mầm đước. Rễ lớn lên sẽ bắc cầu lên cao', t: '▲: cắm trụ mầm đước. Rễ lớn lên sẽ bắc cầu lên cao', khi: () => HSX.S.flags.trongDuoc },
       ],
       map: [
         '################33######################',
         '#......................................#',
-        '#......................................#',
+        '#..............====....................#',
         '#......................................#',
         '#.............######...................#',
         '#......................................#',
@@ -91,7 +91,7 @@ HSX.LEVELS.m2 = {
       doors: { 1: ['rung_chet', 2], 2: ['lach_nuoc', 1] },
       story: [{ x: 13, y: 11, r: 5, canh: 'gap_me_duoc' }],
       tips: [
-        { x: 20, y: 11, k: '↑ hoặc E: cắm trụ mầm đước ở bãi bồi. Rễ lớn lên sẽ bắc cầu qua nước', t: '▲: cắm trụ mầm đước ở bãi bồi. Rễ lớn lên sẽ bắc cầu qua nước', khi: () => HSX.S.flags.trongDuoc },
+        { x: 20, y: 11, k: '{tuongTac}: cắm trụ mầm đước ở bãi bồi. Rễ lớn lên sẽ bắc cầu qua nước', t: '▲: cắm trụ mầm đước ở bãi bồi. Rễ lớn lên sẽ bắc cầu qua nước', khi: () => HSX.S.flags.trongDuoc },
       ],
       map: [
         '..........................................',
@@ -116,7 +116,7 @@ HSX.LEVELS.m2 = {
       doors: { 1: ['nha_me_duoc', 2], 3: ['hang_re', 1] },
       story: [{ x: 6, y: 7, r: 5, canh: 'thay_lach', khi: () => !HSX.S.flags.xa_lach_nuoc }],
       tips: [
-        { x: 31, y: 7, k: 'Rác bịt kín cống, nước tù ngập lạch. Đứng trên đống rác này, nhảy lên rồi bấm V để đập vỡ', t: 'Rác bịt kín cống. Đứng trên đống rác này, nhảy lên rồi bấm Phép để đập vỡ', khi: () => !HSX.S.flags.xa_lach_nuoc },
+        { x: 31, y: 7, k: 'Rác bịt kín cống, nước tù ngập lạch. Đứng trên đống rác này, nhảy lên rồi bấm {dap} để đập vỡ', t: 'Rác bịt kín cống. Đứng trên đống rác này, nhảy lên rồi bấm Phép để đập vỡ', khi: () => !HSX.S.flags.xa_lach_nuoc },
       ],
       map: [
         '........................................',
@@ -145,7 +145,7 @@ HSX.LEVELS.m2 = {
       map: [
         '########################11##########',
         '#............................n.....#',
-        '#............................n.....#',
+        '#......................====..n.....#',
         '#............................n.....#',
         '#....................########n.....#',
         '#......n.....................n.....#',

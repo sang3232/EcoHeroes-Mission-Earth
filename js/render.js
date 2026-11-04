@@ -49,6 +49,7 @@
   const RIM = {
     mam:  { line: 'rgba(160,255,195,0.5)', top: 'rgba(230,255,238,0.9)' },
     quai: { line: 'rgba(205,150,255,0.55)', top: 'rgba(205,220,255,0.75)' },
+    soho: { line: 'rgba(255,214,110,0.95)', top: 'rgba(255,244,200,1)' },   // boss đang sơ hở: viền vàng, luôn sáng rõ
   };
   const RIM_PAD = 6;
   // Màu vệt chém theo cấp Vợt (Thô, Sạch, Tinh khiết): [lõi, mép]
@@ -139,6 +140,7 @@
       c.save();
       c.translate(-cam.x, -cam.y);
       if (HSX.Player.atkT > 0) this.slash(HSX.Player);
+      this.veSang(W, t);
       this.drawFx(W.fx, true);
       this.drawDomDom(r, t);
       c.restore();
@@ -1147,6 +1149,7 @@
 
     drawShot(s) {
       const c = this.ctx;
+      if (s.type === 'hat' || s.type === 'bao' || s.type === 'vung') return;   // vẽ sau ánh sáng (veSang)
       if (s.type === 'bag') { this.emoji('🛍️', s.x + s.w / 2, s.y + s.h - 2, 32); return; }
       if (s.type === 'net') { this.luoiBay(s.x + s.w / 2, s.y + s.h / 2, s.w / 2, s.t); return; }
       const g = c.createLinearGradient(0, s.y, 0, s.y + s.h);
@@ -1157,6 +1160,121 @@
       c.moveTo(s.x, s.y + s.h);
       c.quadraticCurveTo(s.x + s.w / 2, s.y - 10, s.x + s.w, s.y + s.h);
       c.fill();
+    },
+
+    // Vẽ sau ánh sáng để phòng tối vẫn thấy rõ: hạt ná, quầng vàng quanh túi / lưới bị phản lại, bóng báo mưa túi,
+    // vùng đánh của boss, báo trước chiêu boss sắp ra
+    veSang(W, t) {
+      const c = this.ctx;
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      W.shots.forEach(s => {
+        const cx = s.x + s.w / 2, cy = s.y + s.h / 2;
+        if (s.type === 'hat') {   // hạt nhựa: lõi trắng, vệt sáng phía sau
+          const sp = Math.hypot(s.vx, s.vy) || 1, ux = s.vx / sp, uy = s.vy / sp;
+          c.strokeStyle = 'rgba(200,230,255,0.55)';
+          c.lineWidth = 5;
+          c.lineCap = 'round';
+          c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx - ux * 34, cy - uy * 34); c.stroke();
+          c.fillStyle = '#f4fbff';
+          c.beginPath(); c.arc(cx, cy, 5, 0, 6.283); c.fill();
+        } else if (s.phan) {   // túi / lưới đang bay ngược về phía boss
+          const g = c.createRadialGradient(cx, cy, 4, cx, cy, s.w * 0.8);
+          g.addColorStop(0, 'rgba(255,240,170,0.55)');
+          g.addColorStop(1, 'rgba(255,240,170,0)');
+          c.fillStyle = g;
+          c.fillRect(cx - s.w, cy - s.w, s.w * 2, s.w * 2);
+        } else if (s.type === 'bao') {   // bóng tím dưới đất: túi sắp rơi xuống chỗ này
+          const k = 1 - s.life / s.max;
+          c.fillStyle = `rgba(190,130,255,${0.15 + 0.4 * k})`;
+          c.beginPath(); c.ellipse(cx, s.y + s.h / 2, 10 + 14 * k, 4 + 3 * k, 0, 0, 6.283); c.fill();
+          c.strokeStyle = `rgba(230,200,255,${0.3 + 0.5 * k})`;
+          c.lineWidth = 1.5;
+          c.beginPath(); c.moveTo(cx, s.y - 6); c.lineTo(cx, s.y - 6 - 40 * k); c.stroke();
+        } else if (s.type === 'vung') {
+          const a = Math.max(0, s.life / s.max);
+          if (s.kieu === 'kep') {   // vệt càng kẹp
+            c.strokeStyle = `rgba(255,236,190,${0.9 * a})`;
+            c.lineWidth = 6;
+            c.beginPath(); c.arc(s.dir > 0 ? s.x : s.x + s.w, cy, s.w * 0.9, s.dir > 0 ? -0.9 : Math.PI - 0.9, s.dir > 0 ? 0.9 : Math.PI + 0.9); c.stroke();
+          } else if (s.kieu === 'sap') {   // màn lưới sập xuống
+            c.globalAlpha = a;
+            c.strokeStyle = 'rgba(160,220,180,0.8)';
+            c.lineWidth = 1.5;
+            c.beginPath();
+            for (let x = s.x; x <= s.x + s.w; x += 12) { c.moveTo(x, s.y); c.lineTo(x + 18, s.y + s.h); c.moveTo(x + 18, s.y); c.lineTo(x, s.y + s.h); }
+            c.stroke();
+            c.globalAlpha = 1;
+          } else if (s.kieu === 'quay') {   // sợi lưới quẫy tung ra tới mép vùng bầu dục
+            const rx = s.w / 2, ry = s.h / 2;
+            c.strokeStyle = `rgba(160,240,190,${0.75 * a})`;
+            c.lineWidth = 2;
+            c.beginPath();
+            for (let k = 0; k < 16; k++) {
+              const g = k / 16 * 6.283 + s.t * 4;
+              c.moveTo(cx + Math.cos(g) * rx * 0.25, cy + Math.sin(g) * ry * 0.25);
+              c.quadraticCurveTo(cx + Math.cos(g + 0.3) * rx * 0.7, cy + Math.sin(g + 0.3) * ry * 0.7, cx + Math.cos(g + 0.2) * rx, cy + Math.sin(g + 0.2) * ry);
+            }
+            c.stroke();
+            c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, 6.283); c.stroke();
+          }
+        }
+      });
+      W.enemies.forEach(e => { if (e.kind === 'boss' && e.active && !e.dead) this.baoTruoc(e, t); });
+      if (HSX.Player.ngam && HSX.Player.ngamT > 0.05) this.duongNgam(HSX.Player, t);
+      c.restore();
+    },
+    // Đường bay vòng cung của hạt ná khi đang ngắm: chấm mờ dần theo quãng bay, vòng ở chỗ hạt sẽ chạm (đỏ nếu trúng quái)
+    duongNgam(P, t) {
+      const c = this.ctx, W = HSX.World, r = W.room, a = P.banAng, d = P.diemBan(a), v = P.tocBan(P.luc()), g = P.C.BAN_G, dt = 1 / 60;
+      let x = d.x, y = d.y, vx = Math.cos(a) * v, vy = Math.sin(a) * v, cham = null;
+      c.fillStyle = '#eef8ff';
+      for (let i = 1; i <= 110 && !cham; i++) {
+        vy += g * dt; x += vx * dt; y += vy * dt;
+        const tx = Math.floor(x / T), ty = Math.floor(y / T);
+        if (x < 0 || x > r.w * T || y > r.h * T || r.solid(tx, ty)) cham = { x, y };
+        else if (W.enemies.some(e => !e.dead && (e.kind !== 'boss' || e.active) && x > e.x && x < e.x + e.w && y > e.y && y < e.y + e.h)) cham = { x, y, quai: true };
+        else if (i % 3 === 0) {
+          c.globalAlpha = Math.max(0.15, 0.85 - i / 140);
+          c.beginPath(); c.arc(x, y, i % 6 === 0 ? 3 : 2, 0, 6.283); c.fill();
+        }
+      }
+      if (cham) {
+        c.globalAlpha = 0.85;
+        c.strokeStyle = cham.quai ? '#ff9a8a' : '#eef8ff';
+        c.lineWidth = 2;
+        c.beginPath(); c.arc(cham.x, cham.y, 7 + Math.sin(t * 10) * 1.5, 0, 6.283); c.stroke();
+      }
+      c.globalAlpha = 1;
+    },
+    // Báo trước chiêu boss: cột dưới bụng Lưới Ma sắp sập lưới, vòng quanh Vua sắp nổ túi, vùng trước mặt Cua sắp kẹp
+    baoTruoc(e, t) {
+      const c = this.ctx, cx = e.x + e.w / 2, nhap = 0.5 + 0.5 * Math.sin(t * 18);
+      if (e.state === 'sap' && !e.sap && e.t > 0) {
+        const y0 = e.y + e.h * 0.55, day = (HSX.World.room.h - 2) * T, w = e.w * 0.84;
+        const g = c.createLinearGradient(0, y0, 0, day);
+        g.addColorStop(0, `rgba(190,130,255,${0.04 + 0.08 * nhap})`);
+        g.addColorStop(1, `rgba(190,130,255,${0.14 + 0.18 * nhap})`);
+        c.fillStyle = g;
+        c.fillRect(cx - w / 2, y0, w, day - y0);
+      } else if (e.state === 'no' && !e.no && e.t > 0) {   // sắp nổ túi
+        c.strokeStyle = `rgba(230,213,255,${0.25 + 0.35 * nhap})`;
+        c.lineWidth = 3;
+        c.setLineDash([10, 8]);
+        c.beginPath(); c.ellipse(cx, e.y + e.h / 2, 160, e.h / 2 + 30, 0, 0, 6.283); c.stroke();
+        c.setLineDash([]);
+      } else if (e.state === 'quay' && !e.quay && e.t > 0) {   // sắp quẫy lưới: đúng vùng bầu dục sẽ trúng (Enemies.QUAY)
+        const q = HSX.Enemies.QUAY, cy = e.y + e.h / 2 + q.lech;
+        c.fillStyle = `rgba(170,240,200,${0.04 + 0.07 * nhap})`;
+        c.strokeStyle = `rgba(170,240,200,${0.25 + 0.35 * nhap})`;
+        c.lineWidth = 3;
+        c.setLineDash([10, 8]);
+        c.beginPath(); c.ellipse(cx, cy, q.rx, q.ry, 0, 0, 6.283); c.fill(); c.stroke();
+        c.setLineDash([]);
+      } else if (e.state === 'kep' && !e.kep && e.t > 0) {
+        c.fillStyle = `rgba(255,220,160,${0.06 + 0.12 * nhap})`;
+        c.fillRect(e.dir > 0 ? e.x + e.w - 20 : e.x - 90, e.y + e.h * 0.2, 110, e.h * 0.75);
+      }
     },
 
     // Tấm lưới đang bay (Lưới Ma Khổng Lồ quăng) hoặc đang trùm lên Mầm: hình tròn mắt lưới, phao nhựa ở mép
@@ -1188,8 +1306,8 @@
     drawEnemy(e, o) {
       const c = this.ctx, t = performance.now() / 1000, img = A.get('enemies/' + e.img);
       const cx = e.x + e.w / 2, by = e.y + e.h, fr = e.kind === 'boss' && this.bossFrame(e, o);
-      // có khung hoạt ảnh thì không cần rung, nghiêng giả bằng code
-      const wobble = !fr && (e.state === 'windup' || e.state === 'raise') ? Math.sin(t * 60) * 2 : 0;
+      // có khung hoạt ảnh thì không cần rung, nghiêng giả bằng code; boss rướn lâu (đòn giả) thì rung người
+      const wobble = (!fr && (e.state === 'windup' || e.state === 'raise') ? Math.sin(t * 60) * 2 : 0) + (!o && e.gia && e.t > 0 ? Math.sin(t * 75) * 2.5 : 0);
       c.save();
       c.translate(cx + wobble, by + (e.def.fly ? Math.sin(e.ph * 3) * 3 : 0));
       if (e.dir > 0) c.scale(-1, 1);
@@ -1198,7 +1316,7 @@
       // chớp trắng khi trúng đòn; xác boss chỉ chớp trong khoảnh khắc đầu (e.flash không còn giảm sau khi chết)
       if ((e.flash > 0 && !o) || (o && o.pop) || (o && o.chet < 0.08)) c.filter = 'brightness(2.6)';
       if (e.state === 'stun' && !fr) c.rotate(Math.sin(t * 12) * 0.05);
-      const size = e.h / 0.8 * (e.kind === 'boss' ? 1.08 : 1.15), rim = o ? null : 'quai';
+      const size = e.h / 0.8 * (e.kind === 'boss' ? 1.08 : 1.15), rim = o ? null : e.open > 0 ? 'soho' : 'quai';
       if (fr) {
         // khung boss: khổ chung G, (fr.x, fr.y) là chỗ ảnh đã cắt sát nằm trong khổ đó; thân dáng đứng cao bằng ảnh gốc
         const G = HSX.KHUNG_QUAI_CO, u = size * 0.8 / G.cao;
@@ -1223,7 +1341,7 @@
           c.stroke();
         }
       }
-      if (e.state === 'stun') this.emoji('💫', cx, e.y - 4, 22);
+      if (e.state === 'stun' || e.state === 'choang' || e.state === 'quan') this.emoji('💫', cx, e.y - 4, 22);
       if (e.state === 'windup' && e.kind === 'enemy') this.emoji('❗', cx, e.y - 4, 18);
     },
 
@@ -1253,6 +1371,10 @@
           if (st === 'throw') return pick('nem', t0 / 0.6, (K.nem || []).length - 1);   // khung cuối là lúc buông tay
           if (st === 'leap') return e.t > 0 ? fr('nhay', t0 < 0.12 ? 0 : 1) : fr('nhay', e.vy < 0 ? 2 : 3);
           if (st === 'charge') return e.t > 0 ? fr('lao', 1) : loop('lao', 10, 1);   // lấy đà: chúi người về trước
+          if (st === 'lun') return cuoi('nhay');                                      // lún xuống cát sau cú nhảy đập
+          if (st === 'choang') return loop('dau', 5, 1);                              // đâm tường, choáng
+          if (st === 'no') return e.no ? cuoi('gam') : pick('gam', t0 / 0.5);         // phồng lên rồi nổ túi
+          if (st === 'mua') return pick('gam', t0 / 0.7);
           if (truoc === 'throw' && t0 < 0.3) return cuoi('nem');
           if (truoc === 'leap' && t0 < 0.35) return cuoi('nhay');
           return null;
@@ -1263,12 +1385,18 @@
           if (st === 'goi') return pick('goi', t0 / 0.9);
           if (st === 'quang') return e.nem ? cuoi('quang') : pick('quang', t0 / 0.6, (K.quang || []).length - 1);
           if (st === 'lao') return e.t > 0 ? fr('lao', 1) : fr('lao', 2);
+          if (st === 'ket') return cuoi('lao');                                       // cắm xuống đất sau cú lao
+          if (st === 'quan') return fr('chet', 0);                                    // tự quấn trong lưới, rũ xuống
+          if (st === 'sap') return e.sap ? cuoi('quang') : pick('quang', t0 / 0.45, 2);
+          if (st === 'quay') return e.quay ? cuoi('goi') : pick('goi', t0 / 0.3, 2);    // bị chém dồn: quẫy lưới
           if (truoc === 'lao' && t0 < 0.3) return cuoi('lao');
           if (e.flash > 0.03) return fr('dau', 1);   // vừa trúng đòn: giật người
           return loop('dung', 4);
         }
         // Cua Lon Khổng Lồ
         if (st === 'raise') return pick('dap', t0 / 0.5, (K.dap || []).length - 1);
+        if (st === 'ket') return cuoi('dap');                                         // càng kẹt dưới cát
+        if (st === 'kep') return e.kep ? cuoi('dap') : pick('dap', t0 / 0.32, 2);     // giơ càng rồi kẹp
         if (st === 'windup') return pick('lao', t0 / 0.65, 2);
         if (st === 'charge') return loop('lao', 12, 2);
         if (st === 'stun') return loop('choang', 4, 1);
@@ -1435,6 +1563,8 @@
         c.restore();
       } else if (img) this.mamImg(img, x, y, P.face, 'mam');
       else this.mam(x, y, P.face, this.pose(P, t));
+      if (P.ngam) this.na(x, b.y + b.h / 2 - 6, P.banAng, 1, P.luc());
+      else if (P.banT > 0) this.na(x, b.y + b.h / 2 - 6, P.banAng, P.banT / 0.25);
       c.globalAlpha = 1;
       if (P.troi > 0) this.luoiBay(x, b.y + b.h / 2, 30 + Math.sin(t * 20) * 1.5, t * 0.2);   // bị lưới trùm
       if (P.carry) this.emoji(D.sortItems[P.carry.k % D.sortItems.length].emoji, x, b.y - 8, 26);
@@ -1449,6 +1579,28 @@
         c.lineWidth = 2;
         c.beginPath(); c.arc(x, b.y + b.h / 2, 30, 0, 6.283); c.stroke();
       }
+    },
+
+    // Ná Tái Chế trên tay Mầm: cán ống nhựa xanh, chạc lon nhôm, dây bện. Đang ngắm (keo: lực 0-1) thì dây kéo căng về sau,
+    // vừa bắn (k: 1 → 0) thì dây bật lại
+    na(x, y, a, k, keo) {
+      const c = this.ctx;
+      c.save();
+      c.globalAlpha *= Math.min(1, k * 2.5);
+      c.translate(x + Math.cos(a) * 16, y + Math.sin(a) * 16);
+      c.rotate(a);
+      c.lineCap = 'round';
+      c.strokeStyle = '#3f8fd0';
+      c.lineWidth = 5;
+      c.beginPath(); c.moveTo(-6, 0); c.lineTo(6, 0); c.stroke();
+      c.strokeStyle = '#c9ccd1';
+      c.lineWidth = 3.5;
+      c.beginPath(); c.moveTo(6, 0); c.lineTo(15, -9); c.moveTo(6, 0); c.lineTo(15, 9); c.stroke();
+      const lui = keo !== undefined ? 8 + 14 * keo : 10 * Math.max(0, k - 0.6);   // kéo căng, hoặc còn rung về sau một chút
+      c.strokeStyle = '#c9b98a';
+      c.lineWidth = 1.6;
+      c.beginPath(); c.moveTo(15, -9); c.lineTo(15 - lui, 0); c.lineTo(15, 9); c.stroke();
+      c.restore();
     },
 
     // Khung ảnh Qwen: khổ vuông 480, mặt nạ ở giữa, dòng chân ở 400 (xem dong_goi_mam trong qwen/cong_cu.py)
@@ -1644,7 +1796,7 @@
       this.rimQ.forEach(q => {
         c.save();
         c.setTransform(q.m);
-        c.globalAlpha = q.a * s;
+        c.globalAlpha = q.a * (q.rim === 'soho' ? 0.75 + 0.25 * Math.sin(performance.now() / 70) : s);
         c.drawImage(this.rimTex(q.img, q.dw, q.dh, q.rim), q.dx - p, q.dy - p, q.dw + 2 * p, q.dh + 2 * p);
         c.restore();
       });
@@ -1812,7 +1964,7 @@
     drawTipPrompt(W, khongTip) {
       const c = this.ctx, P = HSX.Player, touch = HSX.Input.usingTouch;
       if (W.tip && !khongTip) {
-        const t = W.tip, text = touch ? t.t : t.k, x = HSX.clamp(t.x * T + T / 2, W.cam.x + 200, W.cam.x + VW - 200);
+        const t = W.tip, text = touch ? t.t : HSX.phimChu(t.k), x = HSX.clamp(t.x * T + T / 2, W.cam.x + 200, W.cam.x + VW - 200);
         const y = t.y * T - 34 - (W.prompt && Math.abs(W.prompt.y - (t.y * T - 34)) < 40 ? 44 : 0);
         c.font = `14px ${FONT}`;
         const w = c.measureText(text).width + 24;
@@ -1823,7 +1975,7 @@
         this.label(text, x, y - 4, 14, '#e8f5ea', 1, true);
       }
       if (W.prompt && W.mode === 'play') {
-        const p = W.prompt, key = touch ? '▲' : '↑/E';
+        const p = W.prompt, key = HSX.phim('tuongTac');
         this.label(`${key} ${p.label}`, p.x, p.y + Math.sin(performance.now() / 250) * 2, 14, '#fff6c8');
       }
       void P;
@@ -1892,6 +2044,18 @@
         const x = 106 + max * 30 + 6, ready = HSX.Player.shieldT <= 0;
         c.globalAlpha = ready ? 1 : 0.35;
         this.emoji('🛡️', x, 50, 20);
+        c.globalAlpha = 1;
+      }
+      // Ná Tái Chế: ô nhỏ dưới quả cầu năng lượng, vòng sáng chạy hết là bắn được
+      if (S.owned.na_tai_che) {
+        const P = HSX.Player, nx = ox, ny = oy + 47, k = Math.max(0, P.banCd) / P.C.BAN_CD;
+        c.fillStyle = 'rgba(0,0,0,0.6)';
+        c.beginPath(); c.arc(nx, ny, 12, 0, 6.283); c.fill();
+        c.strokeStyle = k > 0 ? 'rgba(232,245,234,0.35)' : '#bfe6ff';
+        c.lineWidth = 2.5;
+        c.beginPath(); c.arc(nx, ny, 12, -Math.PI / 2, -Math.PI / 2 + 6.283 * (1 - k)); c.stroke();
+        c.globalAlpha = k > 0 ? 0.45 : 1;
+        this.emoji('🎯', nx, ny + 5, 13);
         c.globalAlpha = 1;
       }
       c.textAlign = 'left';

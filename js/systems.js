@@ -66,7 +66,7 @@
     pay(cost) { for (const k in cost) HSX.S.inv[k] -= cost[k]; },
     isUnique(id) { return !!UNIQUE[D.items[id].kind]; },
     grant(id, n) {
-      if (this.isUnique(id)) { if (!HSX.S.owned[id]) HSX.S.owned[id] = { tier: 0 }; }
+      if (this.isUnique(id)) { if (!HSX.S.owned[id]) HSX.S.owned[id] = { tier: 0 }; HSX.emit('co', id); }
       else this.addItem(id, n);
     },
     totalMaterials() { let n = 0; for (const id in HSX.S.inv) n += Math.floor(HSX.S.inv[id]); return n; },

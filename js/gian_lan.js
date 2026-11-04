@@ -67,7 +67,7 @@
 
   // ---------- Các mã ----------
   const L = () => HSX.LEVELS[HSX.S.level];
-  const MOC = { kinh_lup: 1, xuong_phao: 1, khien_lon: 1, chuong_gio: 1, phao_quay_dau: 1, rao_chan: 1 };
+  const MOC = { kinh_lup: 1, xuong_phao: 1, na_tai_che: 1, khien_lon: 1, chuong_gio: 1, phao_quay_dau: 1, rao_chan: 1 };
   function giu(fn) {   // làm việc gì đó với phòng hiện tại rồi nạp lại phòng, giữ nguyên chỗ đứng
     const x = P.b.x, y = P.b.y;
     fn();
@@ -85,6 +85,38 @@
   }
   const bat = (k, v) => { on[k] = v === undefined ? !on[k] : v; return `${TEN[k]}: ${on[k] ? 'BẬT' : 'tắt'}`; };
 
+  // Boss: tìm theo tên gõ (cua, vua, luoi hoặc id), phòng boss, vào thẳng pha 2
+  const BOSS = { cua: 'cua_khong_lo', vua: 'vua_nilon', nilon: 'vua_nilon', luoi: 'luoi_ma_khong_lo' };
+  const pha2Hoi = arg => /(^|\s)2$/.test(norm(arg || ''));
+  function timBoss(arg) {
+    const a = norm(arg || '').replace(/(^|\s)2$/, '').replace(/\s+/g, '');
+    if (!a) return null;
+    if (D.bosses[a]) return a;
+    const k = Object.keys(BOSS).find(x => a.includes(x));
+    return k ? BOSS[k] : null;
+  }
+  function phongBoss(id) {
+    for (const lv in HSX.LEVELS) for (const r in HSX.LEVELS[lv].rooms) if (HSX.LEVELS[lv].rooms[r].boss === id) return r;
+    return null;
+  }
+  function vaoPha2(b) {
+    if (b.layers) { b.layers = 1; HSX.Enemies.xeLop(b); }
+    else if (b.phase === 1) { b.hp = Math.floor(b.maxHp / 2); HSX.Enemies.pha2(b); }
+  }
+  // Boss gọi bằng mã (b.danhLai): đánh luôn không diễn cảnh gặp, hạ xong không diễn cảnh kết, không hiện lại bảng tổng kết màn
+  const startBoss = W.startBoss;
+  W.startBoss = function () { return this.boss && this.boss.danhLai ? this.batDauDanh(this.boss) : startBoss.call(this); };
+  const bossDefeated = W.bossDefeated;
+  W.bossDefeated = function (e) {
+    if (!e.danhLai) return bossDefeated.call(this, e);
+    const S = HSX.S, k = 'thua_' + e.type, daXem = S.story[k];
+    S.story[k] = true;
+    bossDefeated.call(this, e);
+    S.story[k] = daXem;
+    this.victoryT = 0;
+    this.banner(`Đã hạ lại ${e.def.name}`, 'Gõ phongboss hoặc goiboss để đánh nữa', 2.6);
+  };
+
   const MA = {
     battu: ['Bật/tắt bất tử: quái, gai, nước độc không làm mất máu', () => { HSX.DEBUG_GOD = !HSX.DEBUG_GOD; return `bất tử: ${HSX.DEBUG_GOD ? 'BẬT' : 'tắt'}`; }],
     bay: ['Bật/tắt bay xuyên tường: phím hướng để bay, giữ Lướt bay nhanh', () => bat('bay')],
@@ -92,7 +124,7 @@
     themla: ['Thêm 1 lá máu tối đa (như ghép đủ 4 Mảnh Lá)', () => { HSX.S.shards += 4; HSX.S.hp = Calc.maxHp(); return `máu tối đa ${Calc.maxHp()}`; }],
     nangluong: ['Bật/tắt năng lượng luôn đầy', () => bat('nangluong')],
     tinhlinh: ['Có đủ 4 tinh linh (hồi máu, lướt, đập xuống, hút đồ)', () => { D.spiritOrder.forEach(id => { HSX.S.spirits[id] = true; }); HSX.Spirits.sync(); return 'đủ 4 tinh linh'; }],
-    congcu: ['Có Kính Lúp, Xuồng Phao, Rào Chắn và 3 bùa (đeo bùa ở Trạm)', () => { Object.keys(MOC).forEach(id => Sys.grant(id, 1)); R.tilesDirty = true; return 'đủ công cụ và bùa'; }],
+    congcu: ['Có Kính Lúp, Xuồng Phao, Ná Tái Chế, Rào Chắn và 3 bùa (đeo bùa ở Trạm)', () => { Object.keys(MOC).forEach(id => Sys.grant(id, 1)); R.tilesDirty = true; return 'đủ công cụ và bùa'; }],
     giau: ['+20 mỗi nguyên liệu, +30 hạt giống, đầy năng lượng', () => {
       Object.keys(D.items).forEach(id => { if (D.items[id].kind === 'material' || D.items[id].kind === 'consumable') Sys.addItem(id, 20); });
       HSX.S.seeds += 30; HSX.S.energy = 99;
@@ -160,6 +192,49 @@
       HSX.Enemies.damage(b, 9999, P, 'down');
       return `hạ ${b.def.name}`;
     }],
+    goiboss: ['goiboss <cua | vua | luoi> [2]: gọi boss ra đánh ngay trong phòng đang đứng, thêm 2 để vào thẳng pha 2. Ví dụ "goiboss vua 2"', arg => {
+      const id = timBoss(arg);
+      if (!id) return { loi: 'Gõ: goiboss cua | vua | luoi (thêm 2 để vào pha 2)' };
+      if (HSX.Truyen.active()) HSX.Truyen.skip();
+      W.fadeTo = null; W.fade = 0; W.mode = 'play';
+      const r = W.room;
+      W.enemies = W.enemies.filter(e => e.kind !== 'boss');
+      W.shots = [];
+      // đứng trên đất, cách Mầm 6 ô về phía trước (sát tường thì sang phía sau)
+      const ox = Math.floor(P.cx() / T);
+      let tx = ox + P.face * 6;
+      if (tx < 3 || tx > r.w - 4) tx = ox - P.face * 6;
+      tx = HSX.clamp(tx, 3, r.w - 4);
+      let ty = Math.max(0, Math.floor((P.b.y + P.b.h - 1) / T));
+      while (ty < r.h - 2 && !r.solid(tx, ty + 1)) ty++;
+      const b = HSX.Enemies.createBoss(id, tx, ty);
+      W.boss = b;
+      W.enemies.push(b);
+      HSX.Assets.loadBoss(id);
+      b.danhLai = true;
+      W.batDauDanh(b);
+      if (pha2Hoi(arg)) vaoPha2(b);
+      return `gọi ${b.def.name}${b.phase === 2 ? ' (pha 2)' : ''}`;
+    }],
+    phongboss: ['phongboss <cua | vua | luoi> [2]: tới phòng boss, boss hồi sinh để đánh lại từ đầu (không diễn cảnh truyện), thêm 2 để vào thẳng pha 2', arg => {
+      const id = timBoss(arg) || W.room.def.boss;
+      if (!id) return { loi: 'Gõ: phongboss cua | vua | luoi (thêm 2 để vào pha 2)' };
+      const S = HSX.S, phong = phongBoss(id);
+      S.bosses[id] = false;
+      S.mo[HSX.roomLevel(phong)] = true;
+      if (HSX.Truyen.active()) HSX.Truyen.skip();
+      W.fadeTo = null; W.fade = 0; W.mode = 'play';
+      W.load(phong, { start: true });
+      const b = W.boss;
+      b.danhLai = true;
+      if (pha2Hoi(arg)) vaoPha2(b);
+      return `tới ${HSX.roomDef(phong).name}, ${b.def.name} đã hồi sinh${b.phase === 2 ? ' (pha 2)' : ''}`;
+    }],
+    nhatky: ['nhatky [tatca]: tải file nhật ký trận boss gần nhất (thêm "tatca" để tải cả 10 trận đã ghi)', arg => {
+      const G = HSX.GhiTran, ds = G ? G.dsTran() : [];
+      if (!ds.length) return { loi: 'Chưa có trận boss nào được ghi' };
+      return 'đã tải ' + G.tai(/tat|all/.test(norm(arg || '')) ? ds : ds[ds.length - 1]);
+    }],
     binhminh: ['Coi như đã hạ Vua Túi Nilon: bình minh lên, Màn 2 mở', () => {
       const S = HSX.S;
       S.bosses.vua_nilon = true; S.dawn = true; S.xong.m1 = true; S.mo.m2 = true; W.dawnT = 0;
@@ -193,13 +268,20 @@
     }],
   };
   // Tên khác (gõ có cách, gõ bằng bộ gõ Telex hay bị nuốt chữ)
-  const KHAC = { bos: 'boss', hitbox: 'hop', hitbo: 'hop', hopvacham: 'hop', god: 'battu', noclip: 'bay', fly: 'bay', nl: 'nangluong', tele: 'toi', di: 'toi', help: '?', trogiup: '?' };
+  const KHAC = { bos: 'boss', hitbox: 'hop', hitbo: 'hop', hopvacham: 'hop', god: 'battu', noclip: 'bay', fly: 'bay', nl: 'nangluong', tele: 'toi', di: 'toi', help: '?', trogiup: '?',
+    trieuhoi: 'goiboss', trieuhoiboss: 'goiboss', danhlai: 'phongboss', hoisinh: 'phongboss', hoisinhboss: 'phongboss',
+    nhatkytran: 'nhatky', log: 'nhatky' };
 
   function GL(text) {
     const s = norm(text);
     if (!s) return '';
-    let code = s.replace(/\s+/g, ''), arg = '';
-    if (!MA[code] && !MA[KHAC[code]] && code !== '?') { const m = s.match(/^(\S+)\s*(.*)$/); code = m[1]; arg = m[2]; }
+    // tên mã có thể gõ tách chữ ("trieu hoi vua", "phong boss cua 2"): ghép dần các chữ đầu cho tới khi ra tên mã
+    const chu = s.split(/\s+/);
+    let code = chu[0], arg = chu.slice(1).join(' ');
+    for (let k = chu.length; k >= 1; k--) {
+      const c = chu.slice(0, k).join('');
+      if (MA[c] || KHAC[c] || c === '?') { code = c; arg = chu.slice(k).join(' '); break; }
+    }
     code = KHAC[code] || code;
     if (code === '?') return { help: true };
     if (!MA[code]) return { loi: `Không có mã "${text}". Gõ ? để xem danh sách.` };
@@ -306,7 +388,9 @@
       <button data-go="1">Tới phòng</button>
       <button data-ma="tinhlinh">Đủ tinh linh</button><button data-ma="congcu">Công cụ + bùa</button><button data-ma="giau">+ Nguyên liệu</button>
       <button data-ma="sach">Sạch 100%</button><button data-ma="battu">Bất tử</button><button data-ma="bay">Bay</button>
-      <button data-ma="hop">Hộp va chạm</button><button data-ma="boss">Hạ boss</button><button data-o="1">Gõ mã (\`)</button>`;
+      <button data-ma="hop">Hộp va chạm</button><button data-ma="boss">Hạ boss</button>
+      <button data-ma="phongboss cua">Đánh lại Cua</button><button data-ma="phongboss vua">Đánh lại Vua</button><button data-ma="phongboss luoi">Đánh lại Lưới Ma</button>
+      <button data-o="1">Gõ mã (\`)</button>`;
     document.body.appendChild(el);
     el.addEventListener('click', e => {
       const b = e.target.closest('button');
