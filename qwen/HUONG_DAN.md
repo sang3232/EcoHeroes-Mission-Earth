@@ -83,7 +83,10 @@ Game chọn khung của Mầm theo trạng thái (chạy, nhảy, chém...). Thi
 5. **Đóng gói vào game:**
    ```
    PY qwen\cong_cu.py dong_goi
+   node kiem_tra\tao_manifest.js
    ```
+   Bước thứ hai ghi lại `assets/manifest.js`. Game chỉ tải ảnh có trong danh sách này (ảnh thiếu dùng emoji / code vẽ),
+   nên quên bước đó thì ảnh vừa đóng gói sẽ không hiện.
    Mọi khung của một nhân vật được đưa về cùng khổ vuông, chân chạm đáy, trọng tâm ở giữa, cùng độ lớn, nên khi đổi khung nhân vật không bị nhảy vị trí.
    Riêng Mầm (`neo_mat`) căn theo **mặt nạ trắng** (cùng cỡ, cùng chỗ) và **đáy thân** (đã lọc bỏ cán vợt, vệt chém mảnh), khổ 480 px, dòng chân ở 400 px. Vì vậy vợt chĩa lên hay xuống không làm Mầm nhảy vị trí. Đổi các số này thì sửa cả `MAM_DRAW` trong `js/render.js`. Ảnh nền xa và bản đồ thế giới thu về cao 540 px. Lớp gần (`bai_bien_gan`, `rung_gan`) đã được cắt sát nội dung nên giữ tỉ lệ, rộng 1600 px, game đặt sát đáy màn hình (lớp rừng cao hơn nên game thu nhỏ cho không quá 300 px). Mẫu ô gạch về 192 px. Tải lại game là thấy.
 

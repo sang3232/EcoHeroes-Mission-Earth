@@ -19,6 +19,12 @@ body {
   -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
 }
 button { font: inherit; color: inherit; }
+/* Bàn phím: luôn thấy rõ đang ở nút nào (chuột / cảm ứng thì không hiện viền) */
+:focus-visible { outline: 2px solid #9ff0b5; outline-offset: 3px; border-radius: 6px; }
+.modal:focus { outline: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
 h3 { margin: 14px 0 6px; font-size: 14px; color: #bfe6c8; letter-spacing: .02em; }
 p { margin: 6px 0; }
 code { background: #0b1118; padding: 0 4px; border-radius: 4px; }
@@ -75,6 +81,19 @@ code { background: #0b1118; padding: 0 4px; border-radius: 4px; }
   align-items: center; justify-content: center; font-size: 18px; text-align: center; padding: 24px;
 }
 @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
+
+/* Màn hình cứu khi không mở được ván (js/main.js) */
+#cuu-van {
+  position: fixed; inset: 0; z-index: 120; background: rgba(3, 6, 10, .96); padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cuu-hop { max-width: 560px; background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; box-shadow: var(--shadow); user-select: text; }
+.cuu-hop h2 { margin: 0 0 8px; font-size: 18px; color: #ffd7a0; }
+.cuu-hop p { margin: 8px 0; }
+.cuu-loi {
+  background: #0b1118; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+  font-size: 12px; color: #ffb4b4; overflow-x: auto; white-space: pre-wrap;
+}
 
 /* ---------- Hộp thoại và menu ---------- */
 #modal-root:empty { display: none; }
@@ -232,7 +251,8 @@ svg.map { width: 100%; height: auto; max-height: 470px; background: #0b1118; bor
 .pz-stars span { color: #3a4650; }
 
 /* ---------- Thông báo ---------- */
-#toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 60; width: min(560px, calc(100vw - 32px)); pointer-events: none; }
+/* Dưới lớp hộp thoại (50): thông báo không che nội dung menu đang mở */
+#toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 45; width: min(560px, calc(100vw - 32px)); pointer-events: none; }
 .toast { background: rgba(10, 18, 14, .9); color: var(--ink); border: 1px solid #2e6b46; padding: 8px 14px; border-radius: 12px; font-size: 13px; box-shadow: 0 6px 20px rgba(0, 0, 0, .4); animation: tin .25s ease-out; transition: opacity .45s, transform .45s; text-align: center; }
 .toast.fact { background: rgba(44, 38, 18, .95); border-color: #6b5a22; }
 .toast.out { opacity: 0; transform: translateY(8px); }
