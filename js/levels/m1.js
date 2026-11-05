@@ -26,8 +26,8 @@ HSX.LEVELS = {
         name: 'Bến thuyền', area: 'bai_bien', spirit: 'sen',
         doors: { 1: ['bai_tam', 1] },
         tips: [
-          { x: 2, y: 11, k: '← → hoặc A D để chạy · Space để nhảy, giữ lâu thì nhảy cao', t: '◀ ▶ để chạy · Nhảy: giữ lâu thì nhảy cao' },
-          { x: 11, y: 11, k: 'X hoặc chuột trái để chém · Chém vỡ lồng để giải cứu tinh linh', t: 'Chém vỡ lồng để giải cứu tinh linh' },
+          { x: 2, y: 11, k: '{chay} để chạy · {nhay} để nhảy, giữ lâu thì nhảy cao', t: '◀ ▶ để chạy · Nhảy: giữ lâu thì nhảy cao' },
+          { x: 11, y: 11, k: '{chem} để chém · Chém vỡ lồng để giải cứu tinh linh', t: 'Chém vỡ lồng để giải cứu tinh linh' },
           { x: 5, y: 11, k: '{tuongTac}: ngồi Trạm Tái Chế để lưu game, hồi máu, chế đồ', t: '▲: ngồi Trạm Tái Chế để lưu game, hồi máu, chế đồ' },
         ],
         map: [
@@ -51,7 +51,7 @@ HSX.LEVELS = {
       bai_tam: {
         name: 'Bãi tắm', area: 'bai_bien',
         doors: { 1: ['ben_thuyen', 1], 2: ['rang_phi_lao', 1], 3: ['dun_cat', 1] },
-        tips: [{ x: 26, y: 13, k: 'Bục gỗ: nhảy xuyên lên từ dưới · ↓ + Space để xuống', t: 'Bục gỗ: nhảy xuyên lên từ dưới · ▼ + Nhảy để xuống' }],
+        tips: [{ x: 26, y: 13, k: 'Bục gỗ: nhảy xuyên lên từ dưới · {xuong} + {nhay} để xuống', t: 'Bục gỗ: nhảy xuyên lên từ dưới · ▼ + Nhảy để xuống' }],
         map: [
           '............................33..........',
           '........................................',
@@ -123,7 +123,7 @@ HSX.LEVELS = {
         name: 'Trạm canh cũ', area: 'bai_bien', spirit: 'gio', cageLock: 'enemies', journal: 1,
         doors: { 1: ['dun_cat', 3], 2: ['hang_cong', 1] },
         tips: [
-          { x: 16, y: 10, k: 'Lồng được bảo vệ: hạ hết quái trong phòng để mở', t: 'Hạ hết quái trong phòng để mở lồng' },
+          { x: 16, y: 10, k: 'Lồng được bảo vệ: hạ hết quái trong phòng để mở', t: 'Hạ hết quái trong phòng để mở lồng', khi: () => !HSX.World.cageOpen() },
           { x: 26, y: 10, k: 'Vực gai quá rộng: nhảy rồi bấm {luot} để lướt qua', t: 'Vực gai quá rộng: nhảy rồi bấm Lướt' },
         ],
         map: [

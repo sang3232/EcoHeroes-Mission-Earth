@@ -161,6 +161,10 @@
       cv.addEventListener('contextmenu', e => e.preventDefault());
       addEventListener('keydown', e => {
         if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+        // Menu / hộp thoại đang mở: nhường Tab, Enter, Space và phím mũi tên cho trình duyệt
+        // để người chơi điều hướng và bấm nút bằng bàn phím, không biến chúng thành thao tác game.
+        if (HSX.UI && HSX.UI.blocking() &&
+          (e.code === 'Tab' || e.code === 'Enter' || e.code === 'Space' || MUI_TEN[e.code])) return;
         if (!this.key[e.code]) doanBoPhim(e.code);
         const a = hanhDong(e.code);
         if (!a) return;
@@ -243,6 +247,15 @@
         const y0 = Math.floor(b.y / T), y1 = Math.floor((b.y + b.h - 0.01) / T);
         const tx = dx > 0 ? Math.floor((b.x + b.w - 0.01) / T) : Math.floor(b.x / T);
         for (let ty = y0; ty <= y1; ty++) {
+          const ch = room.tile(tx, ty);
+          if (ch === '?') {
+            // kinh_lup wall: check if kinh_lup is owned
+            if (!HSX.S.owned.kinh_lup) {
+              // Kinh_lup wall blocked without kinh_lup: trigger shake and hint
+              if (HSX.World) { HSX.World.shake = Math.max(HSX.World.shake || 0, 8); }
+              if (HSX.World && HSX.World.hint) { HSX.World.hint('kinh_lup', 'Cần 🔍 Kính Lúp Phân Loại để nhìn xuyên tường'); }
+            }
+          }
           if (!room.solid(tx, ty)) continue;
           if (dx > 0) { b.x = tx * T - b.w; b.wallR = true; } else { b.x = (tx + 1) * T; b.wallL = true; }
           b.vx = 0;
@@ -257,12 +270,24 @@
         if (dy > 0) {
           const ty = Math.floor((b.y + b.h - 0.01) / T);
           for (let tx = x0; tx <= x1; tx++) {
+            const ch = room.tile(tx, ty);
+            if (ch === '?' && !HSX.S.owned.kinh_lup) {
+              // Kinh_lup wall blocked without kinh_lup: trigger shake and hint
+              if (HSX.World) { HSX.World.shake = Math.max(HSX.World.shake || 0, 8); }
+              if (HSX.World && HSX.World.hint) { HSX.World.hint('kinh_lup', 'Cần 🔍 Kính Lúp Phân Loại để nhìn xuyên tường'); }
+            }
             const one = !b.drop && bottom0 <= ty * T + 1 && room.oneWay(tx, ty, b);
             if (room.solid(tx, ty) || one) { b.y = ty * T - b.h; b.vy = 0; b.ground = true; break; }
           }
         } else {
           const ty = Math.floor(b.y / T);
           for (let tx = x0; tx <= x1; tx++) {
+            const ch = room.tile(tx, ty);
+            if (ch === '?' && !HSX.S.owned.kinh_lup) {
+              // Kinh_lup wall blocked without kinh_lup: trigger shake and hint
+              if (HSX.World) { HSX.World.shake = Math.max(HSX.World.shake || 0, 8); }
+              if (HSX.World && HSX.World.hint) { HSX.World.hint('kinh_lup', 'Cần 🔍 Kính Lúp Phân Loại để nhìn xuyên tường'); }
+            }
             if (room.solid(tx, ty)) { b.y = (ty + 1) * T; b.vy = 0; b.ceil = true; break; }
           }
         }

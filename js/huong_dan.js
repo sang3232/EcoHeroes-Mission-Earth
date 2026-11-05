@@ -68,6 +68,8 @@
     { id: 'nhay', ten: 'Nhảy', phim: PHIM.nhay, chu: 'Nhấn để nhảy', su: 'jump' },
     { id: 'nhaycao', ten: 'Nhảy cao', phim: PHIM.nhay, chu: 'Giữ lâu để nhảy cao, lên bục gỗ phía trước',
       xong: () => P().b.ground && W().room.onOneWay(P().b), dich: () => bucGo() },
+    { id: 'duoiChan', ten: 'Đi xuống platform', phim: PHIM.dap, chu: 'Giữ nút S và bấm nhảy để đi xuống platform', su: 'drop', het: 15,
+      khi: () => P().b.ground && W().room.onOneWay(P().b) && !S().tut.duoiChan },
     { id: 'tram', ten: 'Trạm Tái Chế', phim: PHIM.tuongTac, chu: 'Ngồi nghỉ ở Trạm: lưu game, hồi đầy máu, chế đồ', su: 'rest',
       phong: 'ben_thuyen', dich: () => tam(obj('bench')) },
     { id: 'chem', ten: 'Chém', phim: PHIM.chem, chu: 'Chém bằng Vợt Bắt Rác', su: 'attack' },

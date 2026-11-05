@@ -2,13 +2,13 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#05070c">
 <title>Hồi Sinh Xanh</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div id="wrap"><canvas id="game" aria-label="Hồi Sinh Xanh"></canvas></div>
+<div id="wrap"><canvas id="game" aria-label="Hồi Sinh Xanh — màn chơi" role="img">Trình duyệt không hỗ trợ canvas.</canvas></div>
 
 <div id="touch" hidden>
   <div class="tpad">
@@ -30,15 +30,17 @@
 <div id="rotate">📱 Xoay ngang điện thoại để chơi</div>
 
 <div id="modal-root"></div>
-<div id="toasts"></div>
+<div id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
 
 <script src="js/data.js"></script>
+<script src="js/audio.js"></script>
 <script src="js/levels/m1.js"></script>
 <script src="js/levels/m2.js"></script>
 <script src="js/state.js"></script>
 <script src="assets/player/khung.js"></script>
 <script src="assets/enemies/khung.js"></script>
 <script src="assets/props/do_vat.js"></script>
+<script src="assets/manifest.js"></script>
 <script src="js/assets.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/systems.js"></script>

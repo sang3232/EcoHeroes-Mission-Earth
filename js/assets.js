@@ -24,13 +24,24 @@ HSX.Assets = {
     new Set(keys).forEach(key => this.add(key));
   },
 
+  // Danh sách ảnh có thật (assets/manifest.js, tạo bằng `node kiem_tra/tao_manifest.js`).
+  // Ảnh chưa có trong danh sách thì không gọi tải: không còn 404, phần đó dùng emoji / code vẽ thay.
+  // Chưa có manifest (bản cũ) thì giữ cách cũ: thử tải hết file .png.
+  file(key) {
+    const M = window.HSX_ASSET_FILES;
+    if (!M) return 'assets/' + key + '.png';
+    return M[key] ? 'assets/' + key + '.' + M[key] : null;
+  },
+
   add(key) {
+    const src = this.file(key);
+    if (!src) return;
     const img = new Image();
     img.onload = () => {
       this.imgs[key] = img;
       if ((key.startsWith('bg/o_') || key.startsWith('props/')) && HSX.Render) HSX.Render.tilesDirty = true;
     };
-    img.src = 'assets/' + key + '.png';
+    img.src = src;
   },
 
   // Khung hoạt ảnh boss (assets/enemies/khung.js): nhiều và nặng nên chỉ nạp khi vào phòng boss hoặc mở Sổ quái vật
