@@ -14,6 +14,7 @@
   function levelRooms(lv) { return HSX.LEVELS[lv || HSX.S.level].rooms; }
 
   const heapCount = {};   // số đống rác của từng màn (đếm một lần)
+  let pollT = 0, pollRoom = '';   // nhịp đom đóm thụ phấn (giây) và phòng đang tính
   const Calc = HSX.Calc = {
     charmFx(key) {
       let sum = 0;
@@ -209,10 +210,12 @@
     },
     tickTrees(dt) {
       const s = HSX.S;
+      // Đom đóm thụ phấn: mọi cây lớn nhanh hơn (trần 2× để không vỡ nhịp chơi)
+      const growMult = Math.min(2, 1 + Calc.speciesFx('growBonus'));
       for (const r in s.trees) for (const i in s.trees[r]) {
         const t = s.trees[r][i];
         if (t.g >= 1) continue;
-        t.g = Math.min(1, t.g + (dt / D.trees[t.type].grow) * (t.c ? 2 : 1));
+        t.g = Math.min(1, t.g + (dt / D.trees[t.type].grow) * (t.c ? 2 : 1) * growMult);
         if (t.g >= 1) {
           this.checkSpecies();
           const W = HSX.World, cau = W.room && W.room.id === r && W.room.rootSegs.some(sg => sg.idx === +i);
@@ -220,6 +223,43 @@
           else HSX.UI.toast(`${D.trees[t.type].emoji} ${D.trees[t.type].name} đã lớn và tỏa sáng`);
         }
       }
+      this.pollinate(dt);
+    },
+
+    // Phòng có bần trưởng thành + đom đóm: cứ ~15 giây đom đóm giúp rừng một việc
+    pollinate(dt) {
+      const s = HSX.S, W = HSX.World;
+      if (!s.species.dom_dom || !W || !W.room) return;
+      const room = W.room, trees = s.trees[room.id] || {};
+      if (pollRoom !== room.id) { pollRoom = room.id; pollT = 0; }
+      let ban = 0;
+      for (const i in trees) if (trees[i].type === 'ban' && trees[i].g >= 1) ban++;
+      if (!ban) return;
+      pollT += dt;
+      if (pollT < 15) return;
+      pollT = 0;
+      // 1) cây trong phòng chưa lớn: thụ phấn cho lớn nhanh
+      const young = [];
+      for (const i in trees) if (trees[i].g < 1) young.push(i);
+      if (young.length) {
+        const t = trees[HSX.pick(young)];
+        t.g = Math.min(0.999, t.g + 0.35);
+        HSX.saveGame();
+        return;
+      }
+      // 2) còn ô đất trống: gieo miễn phí một trụ mầm đước
+      const empty = room.objs.filter(o => o.type === 'plant' && o.dat !== 'boi' && !trees[o.idx]);
+      if (empty.length) {
+        const o = HSX.pick(empty);
+        (s.trees[room.id] = s.trees[room.id] || {})[o.idx] = { type: 'duoc', g: 0, c: false };
+        HSX.emit('trong', { room: room.id, idx: o.idx, type: 'duoc' });
+        HSX.UI.toast('✨ Đom đóm thụ phấn: một trụ mầm đước mọc lên');
+        HSX.saveGame();
+        return;
+      }
+      // 3) hết đất trống: rơi thêm một hạt giống
+      s.seeds += 1;
+      HSX.saveGame();
     },
     matureCount(type) {
       let n = 0;
@@ -261,6 +301,18 @@
       s.puzzle.best = Math.max(s.puzzle.best, stars);
       s.puzzle.solved = true;
       if (first) this.grant('dan_tach_rac', 1);
+      HSX.saveGame();
+      return { first };
+    },
+
+    // Cổng Rừng (Màn 2): mở đường tới Hang Lưới Ma, thưởng hạt giống
+    onPuzzle2Result(stars) {
+      const s = HSX.S;
+      if (stars <= 0) return { first: false };
+      const first = !s.flags.congRung;
+      s.flags.m2Best = Math.max(s.flags.m2Best || 0, stars);
+      s.flags.congRung = true;
+      if (first) s.seeds += 6;
       HSX.saveGame();
       return { first };
     },

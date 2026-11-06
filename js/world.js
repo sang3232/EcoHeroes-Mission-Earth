@@ -9,6 +9,8 @@
   // Năng lượng mỗi lần hạt ná trúng: quái, giáp boss, đống rác, túi / lưới đang bay, lưới ma giăng
   // (chém trúng được 11, 3, 4, 6, 3: ná được chừng một nửa)
   const NL_BAN = { quai: 5, giap: 1, rac: 2, dan: 3, luoi: 1 };
+  // Cổng đã mở chưa? Màn 1 dùng puzzle phân loại, Màn 2 dùng cờ "cổng rừng"
+  const gateSolved = () => (HSX.S.level === 'm2' ? !!HSX.S.flags.congRung : !!HSX.S.puzzle.solved);
 
   // ---------- Phòng ----------
   function Room(id) {
@@ -107,7 +109,7 @@
     if (c === '#' || c === 'X' || c === 'n') return true;
     if (c === '?') return !HSX.S.owned.kinh_lup;
     if (c === 'D') return !HSX.S.flags.sorted;
-    if (c === 'G') return !HSX.S.puzzle.solved;
+    if (c === 'G') return !gateSolved();
     if (isDoor(c)) return this.locked;
     return false;
   };
@@ -1048,10 +1050,11 @@
         }
       }
       for (const g of r.gates) {
-        if (S.puzzle.solved) break;
+        if (gateSolved()) break;
         if (Math.abs(cx - (g.x + T / 2)) < 80 && Math.abs(feet - (g.y + T)) < T * 3.2) {
           const top = Math.min(...r.gates.map(x => x.y));
-          return { kind: 'gate', label: 'Mở Cổng Phân Loại', x: g.x + T / 2, y: top - 16 };
+          const nhan = S.level === 'm2' ? 'Mở Cổng Rừng' : 'Mở Cổng Phân Loại';
+          return { kind: 'gate', label: nhan, x: g.x + T / 2, y: top - 16 };
         }
       }
       return null;
@@ -1088,8 +1091,14 @@
             : 'Ổ trứng rùa không được bảo vệ. Cần 🚧 Rào Chắn Ổ Trứng (chế ở Trạm).');
           break;
         case 'gate': {
+          const m2 = S.level === 'm2';
           const need = HSX.LEVELS[S.level].gateClean;
-          if (Calc.cleanPct() < need) HSX.UI.toast(`Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`);
+          if (Calc.cleanPct() < need) {
+            const noi = m2
+              ? `Cổng chỉ mở khi ${HSX.LEVELS[S.level].goi} sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy dọn thêm rác.`
+              : `Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`;
+            HSX.UI.toast(noi);
+          } else if (m2) HSX.Puzzle2.open();
           else HSX.Puzzle.open();
           break;
         }
@@ -1181,7 +1190,13 @@
         else if (o.type === 'hut') L.push({ x: cx + 46, y: cy - 150, r: 170, glow: '255,196,120' });
         else if (o.type === 'plant' && trees[o.idx]) {
           const t = trees[o.idx], d = D.trees[t.type];
-          L.push({ x: cx, y: cy - 30, r: d.light * (0.3 + 0.7 * t.g), glow: t.g >= 1 ? '180,255,170' : null });
+          // Bần không tự phát sáng: ánh sáng ấm là của đom đóm tụ về
+          const domDom = t.type === 'ban' && S.species.dom_dom && t.g >= 1;
+          L.push({
+            x: cx, y: cy - 30,
+            r: (domDom ? 130 : d.light) * (0.3 + 0.7 * t.g),
+            glow: domDom ? '230,255,150' : (t.g >= 1 ? '180,255,170' : null),
+          });
         }
       });
       // rễ đước phát sáng yếu dọc theo cầu
@@ -1190,7 +1205,7 @@
         if (g < 0.25) return;
         for (let x = sg.x0; x <= sg.x1; x += 3) L.push({ x: x * T + T, y: sg.y * T + 14, r: 85 * g, glow: '140,255,190' });
       });
-      r.gates.forEach(g => { if (!S.puzzle.solved) L.push({ x: g.x + T / 2, y: g.y + T / 2, r: 50, glow: '120,200,255' }); });
+      r.gates.forEach(g => { if (!gateSolved()) L.push({ x: g.x + T / 2, y: g.y + T / 2, r: 50, glow: S.level === 'm2' ? '120,255,200' : '120,200,255' }); });
       this.enemies.forEach(e => {
         if (e.dead) return;
         if (e.kind === 'boss') L.push({ x: e.x + e.w / 2, y: e.y + e.h / 2, r: 210, glow: '170,90,255' });

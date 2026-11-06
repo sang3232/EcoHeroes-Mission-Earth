@@ -181,14 +181,14 @@ HSX.DATA = {
     phi_lao:    { name: 'Phi lao', emoji: '🌲', cost: 3, grow: 30, light: 130, fact: 'philao', dat: ['cat'], desc: 'Tỏa sáng mạnh nhất.' },
     dua:        { name: 'Dừa', emoji: '🌴', cost: 5, grow: 40, light: 100, dat: ['cat'], desc: 'Mỗi lần nghỉ ở Trạm cho 2 hạt giống.' },
     duoc:       { name: 'Đước', emoji: '🌳', cost: 2, grow: 15, light: 110, fact: 'duoc', dat: ['boi', 'bun'], desc: 'Cắm trụ mầm xuống bùn. Ở bãi bồi, rễ đước vươn ra bắc thành cầu.' },
-    ban:        { name: 'Bần', emoji: '🌳', cost: 3, grow: 25, light: 125, fact: 'ban', dat: ['bun'], desc: 'Mọc ven lạch nước lợ, tỏa sáng mạnh. Đom đóm rất thích cây bần.' },
+    ban:        { name: 'Bần', emoji: '🌳', cost: 3, grow: 25, light: 40, fact: 'ban', dat: ['bun'], desc: 'Mọc ven lạch nước lợ. Đom đóm tụ về, thụ phấn cho rừng lớn nhanh.' },
   },
 
   species: {
     cong_gio: { name: 'Còng gió', emoji: '🦀', room: 'hang_cong', cond: { tree: { muong_bien: 2 } }, buff: { dropBonus: 0.10 }, fact: 'cong' },
     rua_bien: { name: 'Rùa biển (Đồi mồi)', emoji: '🐢', room: 'bai_de_rua', cond: { clean: 0.8, structure: 'rao_chan' }, buff: { seedBonus: 0.25 }, fact: 'rua' },
     ca_thoi_loi: { name: 'Cá thòi lòi', emoji: '🐟', room: 'dam_bo_hoang', cond: { tree: { duoc: 3 } }, buff: { dropBonus: 0.10 }, fact: 'thoiloi' },
-    dom_dom:  { name: 'Đom đóm', emoji: '✨', room: 'ran_ban', cond: { tree: { ban: 2 } }, buff: { seedBonus: 0.15 }, fact: 'domdom' },
+    dom_dom:  { name: 'Đom đóm', emoji: '✨', room: 'ran_ban', cond: { tree: { ban: 2 } }, buff: { seedBonus: 0.15, growBonus: 0.25 }, fact: 'domdom' },
     co_trang: { name: 'Cò trắng', emoji: '🕊️', room: 'nha_me_duoc', cond: { clean: 0.7 }, buff: { seedBonus: 0.15 }, fact: 'co' },
   },
 

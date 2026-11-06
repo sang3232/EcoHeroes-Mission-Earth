@@ -742,12 +742,13 @@
             c.stroke();
             if (hash(x, Math.floor(t)) > 0.8) { c.fillStyle = '#d6a8ff'; c.beginPath(); c.arc(px + hash(x, y) * T, py + 12 + (t % 1) * 10, 3, 0, 6.283); c.fill(); }
           }
-        } else if (ch === 'G' && !S.puzzle.solved) {
-          c.fillStyle = '#2b3a4a';
+        } else if (ch === 'G' && !(S.level === 'm2' ? S.flags.congRung : S.puzzle.solved)) {
+          const m2 = S.level === 'm2';
+          c.fillStyle = m2 ? '#1d3a2b' : '#2b3a4a';
           c.fillRect(px + 8, py, T - 16, T);
-          c.fillStyle = '#7cc8ff';
+          c.fillStyle = m2 ? '#63d69a' : '#7cc8ff';
           for (let i = 0; i < 3; i++) c.fillRect(px + 12 + i * 9, py, 4, T);
-          if (r.tile(x, y - 1) !== 'G') { c.font = `22px ${EMOJI}`; c.textAlign = 'center'; c.fillText('♻️', px + T / 2, py + 30); }
+          if (r.tile(x, y - 1) !== 'G') { c.font = `22px ${EMOJI}`; c.textAlign = 'center'; c.fillText(m2 ? '🌿' : '♻️', px + T / 2, py + 30); }
         } else if (ch === 'D' && !S.flags.sorted) {
           c.fillStyle = '#5b3a1e';
           c.fillRect(px + 10, py, T - 20, T);
@@ -1162,15 +1163,25 @@
         });
       }
     },
-    // Đom đóm ở Rặng bần (vẽ cộng sáng sau lớp ánh sáng, nên luôn lấp lánh trong bóng tối)
+    // Đom đóm: chỉ tụ ở cây bần đã lớn (vẽ sau lớp ánh sáng nên luôn lấp lánh trong bóng tối)
     drawDomDom(r, t) {
-      if (r.id !== 'ran_ban' || !HSX.S.species.dom_dom) return;
+      if (!HSX.S.species.dom_dom) return;
+      const trees = HSX.S.trees[r.id] || {};
+      const ban = [];
+      for (const o of r.objs) {
+        if (o.type !== 'plant') continue;
+        const tr = trees[o.idx];
+        if (tr && tr.type === 'ban' && tr.g >= 1) ban.push(o);
+      }
+      if (!ban.length) return;
+      const key = ban.map(o => o.idx).join(',');
+      if (r._domKey !== key) { r._domKey = key; r._domCay = ban; }   // đổi cây thì dựng lại danh sách
+      const cay = r._domCay;
       const c = this.ctx;
-      const cay = r._domCay || (r._domCay = r.objs.filter(o => o.type === 'plant'));   // lọc một lần mỗi phòng, không lọc lại 34 lần mỗi khung
       const spr = this.glow('rgba(230,255,150,1)');
       c.globalCompositeOperation = 'lighter';
       for (let i = 0; i < 34; i++) {
-        const goc = cay[i % 2] || { x: 10 * T, y: 10 * T };
+        const goc = cay[i % cay.length];
         const x = goc.x + T / 2 + Math.sin(t * 0.5 + i * 1.7) * 90 + Math.sin(t * 1.3 + i) * 20;
         const y = goc.y - 60 + Math.cos(t * 0.4 + i * 2.3) * 60 + Math.sin(t * 1.1 + i) * 14;
         const a = Math.max(0, Math.sin(t * 2.2 + i * 1.9)) * 0.9;

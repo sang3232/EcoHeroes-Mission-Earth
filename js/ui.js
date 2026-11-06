@@ -278,6 +278,13 @@
         case 'pz-bin': HSX.Puzzle.choose(arg); return;
         case 'pz-close': HSX.Puzzle.close(); return;
         case 'pz-retry': HSX.Puzzle.close(); HSX.Puzzle.open(); return;
+        case 'p2-rotate': HSX.Puzzle2.rotateA(+arg); return;
+        case 'p2-toggle': { const p = String(arg).split(','); HSX.Puzzle2.toggleB(+p[0], +p[1]); return; }
+        case 'p2-place': { const p = String(arg).split(','); HSX.Puzzle2.placeB(+p[0], +p[1]); return; }
+        case 'p2-next': HSX.Puzzle2.next(); return;
+        case 'p2-finish': HSX.Puzzle2.finish(); return;
+        case 'p2-close': HSX.Puzzle2.close(); return;
+        case 'p2-retry': HSX.Puzzle2.close(); HSX.Puzzle2.open(); return;
         default: return;
       }
       void S;
@@ -665,7 +672,11 @@
         <div class="reward"><b>Khả năng mới:</b> ${HSX.phimChu(sp.skill)}</div>`, [['Tiếp tục', 'close', true]]);
     },
     showSpecies(id) {
-      const sp = D.species[id], buff = Object.keys(sp.buff).map(k => (k === 'dropBonus' ? `+${pct(sp.buff[k])} nguyên liệu rơi` : `+${pct(sp.buff[k])} hạt giống`)).join(', ');
+      const sp = D.species[id], buff = Object.keys(sp.buff).map(k => (
+        k === 'dropBonus' ? `+${pct(sp.buff[k])} nguyên liệu rơi` :
+        k === 'growBonus' ? `+${pct(sp.buff[k])} tốc độ lớn của cây` :
+        `+${pct(sp.buff[k])} hạt giống`
+      )).join(', ');
       this.modal(`${sp.emoji} ${sp.name} đã quay về!`, `<div class="big-emo">${icon('species', id, sp.emoji, 'xl')}</div>
         <p class="center">Nơi sống đã đủ tốt. Thưởng: <b>${buff}</b>.</p><div class="fact-box">💡 <b>Bạn có biết?</b> ${D.facts[sp.fact]}</div>`, [['Tuyệt vời!', 'close', true]]);
     },

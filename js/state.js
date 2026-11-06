@@ -19,7 +19,7 @@ HSX.newState = function () {
     known, hints: {},
     spirits: {},                 // tinh linh đã giải cứu
     heaps: {}, dead: {}, picked: {}, broken: {},   // theo phòng: chỉ số vật đã phá / quái đã hạ / đồ đã nhặt / ô X đã vỡ
-    bosses: {}, flags: {},
+    bosses: {}, flags: { congRung: false, m2Best: 0 },
     puzzle: { solved: false, best: 0 },
     trees: {},                   // theo phòng: { chỉ số ô: { type, g } }
     species: {}, seen: {}, journals: {}, facts: {}, visited: {},
@@ -102,6 +102,8 @@ HSX.migrate = function (s) {
   ['inv', 'known', 'hints', 'spirits', 'heaps', 'dead', 'picked', 'broken', 'bosses', 'flags',
     'trees', 'species', 'seen', 'journals', 'facts', 'visited', 'tut', 'quai', 'story', 'mo',
     'xong', 'benches'].forEach(k => { s[k] = laObj(s[k]) || {}; });
+  s.flags.congRung = !!s.flags.congRung;
+  s.flags.m2Best = laSo(s.flags.m2Best, 0, 0);
   // Giá trị của từng phòng phải là object (không thì ô / quái đã dọn bị hiểu sai)
   ['heaps', 'dead', 'picked', 'broken', 'trees'].forEach(k => {
     for (const id in s[k]) if (!laObj(s[k][id])) delete s[k][id];

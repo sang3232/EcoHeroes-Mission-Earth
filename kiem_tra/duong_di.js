@@ -27,6 +27,7 @@ const MAN = {
     ['Bắt đầu Màn 2 (lướt, đập)', { dash: true, slam: true }],
     ['+ Mẹ Đước dạy trồng đước', { dash: true, slam: true, roots: true }],
     ['+ Phá cống, nước lạch rút', { dash: true, slam: true, roots: true, drained: true }],
+    ['+ Giải Cổng Rừng', { dash: true, slam: true, roots: true, drained: true, puzzle: true }],
   ],
 };
 
