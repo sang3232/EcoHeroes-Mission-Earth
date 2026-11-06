@@ -75,13 +75,67 @@
       $('modal-root').addEventListener('click', e => this.handle(e));
       addEventListener('keydown', e => {
         if (!this.blocking() || HSX.Puzzle.active) return;
-        if (e.code === 'Escape' || (this.view && this.view.kind === 'pause' && (e.code === 'Tab' || e.code === 'KeyM'))) {
+        if (e.code === 'Escape') { e.preventDefault(); this.closeModal(); return; }
+        // M: mở thẳng thẻ Bản đồ (trước đây Tab/M đều đóng menu, nay Tab để điều hướng bằng bàn phím)
+        if (e.code === 'KeyM' && this.view && this.view.kind === 'pause') {
           e.preventDefault();
-          this.closeModal();
+          this.view.tab = 'bando';
+          this.renderMenu();
         }
       });
+      // Tab trong hộp thoại: giữ tiêu điểm bên trong, không lọt ra màn chơi phía sau
+      addEventListener('keydown', e => {
+        if (e.key !== 'Tab' || !this.blocking() || HSX.Puzzle.active || this.sel.doiPhim) return;
+        const ds = [...$('modal-root').querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select, textarea, [tabindex]:not([tabindex="-1"])')]
+          .filter(el => el.offsetParent !== null);
+        if (!ds.length) return;
+        const i = ds.indexOf(document.activeElement);
+        const j = e.shiftKey ? (i <= 0 ? ds.length - 1 : i - 1) : (i < 0 || i === ds.length - 1 ? 0 : i + 1);
+        e.preventDefault();
+        ds[j].focus();
+      }, true);
       this.nghePhim();
       this.initTouch();
+    },
+
+    // ---------- Tiêu điểm của hộp thoại ----------
+    // Menu dựng lại toàn bộ HTML sau mỗi thao tác, nên nhớ nút đang chọn để trả lại đúng chỗ;
+    // đóng hộp thoại thì trả tiêu điểm về nút đã mở nó. Có vậy mới dùng được chỉ bằng bàn phím.
+    datHtml(html, key) {
+      const root = $('modal-root');
+      if (!this.blocking() && document.activeElement && document.activeElement !== document.body) this.truocKhiMo = document.activeElement;
+      root.innerHTML = html;
+      const hop = root.querySelector('.modal');
+      if (hop) {
+        hop.setAttribute('role', 'dialog');
+        hop.setAttribute('aria-modal', 'true');
+        if (!hop.hasAttribute('aria-label') && !hop.hasAttribute('aria-labelledby')) {
+          const ten = hop.querySelector('.m-head b, h3, b');
+          if (ten) { if (!ten.id) ten.id = 'hop-ten'; hop.setAttribute('aria-labelledby', ten.id); }
+          else hop.setAttribute('aria-label', 'Hộp thoại');
+        }
+      }
+      this.napTieuDiem(key, hop);
+    },
+    napTieuDiem(key, hop) {
+      const root = $('modal-root'), vaoHop = () => {
+        if (!hop) return;
+        if (!hop.hasAttribute('tabindex')) hop.setAttribute('tabindex', '-1');
+        hop.focus();
+      };
+      if (key) {   // đang ở một nút mà menu dựng lại: trả tiêu điểm về đúng nút đó
+        const i = key.indexOf('|'), act = key.slice(0, i), arg = key.slice(i + 1);
+        const el = root.querySelector(arg ? `[data-act="${act}"][data-arg="${arg}"]` : `[data-act="${act}"]`);
+        if (el && !el.disabled) { el.focus(); return; }
+        vaoHop();   // nút đó vừa bị khoá / biến mất: đừng nhảy về thẻ đầu, để người chơi Tab tiếp
+        return;
+      }
+      const dau = root.querySelector('button:not(:disabled), [href], input:not(:disabled), select, textarea');
+      if (dau) dau.focus(); else vaoHop();
+    },
+    focusKey(el) {
+      const b = el && el.closest ? el.closest('[data-act]') : null;
+      return b ? b.dataset.act + '|' + (b.dataset.arg || '') : null;
     },
 
     // Đang chờ phím mới cho một ô của bộ Tùy chỉnh (sel.doiPhim): phím kế tiếp, hoặc nút chuột bấm ngay trên ô đó, là phím mới.
@@ -131,20 +185,28 @@
     // buttons: [chữ, hành động, nút chính?, tham số]
     modal(title, body, buttons, wide) {
       buttons = buttons || [['Đóng', 'close', true]];
-      const html = `<div class="overlay"><div class="modal ${wide ? 'wide' : ''}"><div class="m-head"><b>${title}</b><button class="x" data-act="close" title="Đóng (Esc)">✕</button></div>
+      const html = `<div class="overlay"><div class="modal ${wide ? 'wide' : ''}"><div class="m-head"><b>${title}</b><button class="x" data-act="close" title="Đóng (Esc)" aria-label="Đóng">✕</button></div>
         <div class="m-body">${body}</div><div class="row end">${buttons.map(([l, a, p, g]) => `<button class="btn ${p ? 'primary' : ''}" data-act="${a}"${g ? ` data-arg="${g}"` : ''}>${l}</button>`).join('')}</div></div></div>`;
       if (this.blocking()) { this.queue.push(html); return; }
       this.view = { kind: 'modal' };
-      $('modal-root').innerHTML = html;
+      this.datHtml(html);
     },
-    openRaw(html) { $('modal-root').innerHTML = `<div class="overlay">${html}</div>`; },
+    openRaw(html) { this.datHtml(`<div class="overlay">${html}</div>`); },
     closeModal() {
+      const quayLai = this.truocKhiMo;
       $('modal-root').innerHTML = '';
       this.view = null;
       this.sel.doiPhim = null;
       HSX.Input.clear();
       const next = this.queue.shift();
-      if (next) { this.view = { kind: 'modal' }; $('modal-root').innerHTML = next; }
+      if (next) {
+        this.view = { kind: 'modal' };
+        $('modal-root').innerHTML = next;
+        this.napTieuDiem(null, $('modal-root').querySelector('.modal'));
+      } else {
+        this.truocKhiMo = null;
+        if (quayLai && document.contains(quayLai)) quayLai.focus();
+      }
     },
     toast(msg, cls, ms) {
       const box = $('toasts'), el = document.createElement('div');
@@ -249,9 +311,11 @@
       }
       const scroll = $('modal-root').querySelector('.m-body');
       const top = scroll ? scroll.scrollTop : 0;
-      $('modal-root').innerHTML = `<div class="overlay"><div class="modal menu">
-        <div class="m-head"><b>${title}</b>${tabs.length ? `<nav class="mtabs">${tabs.map(([id, n]) => `<button class="${v.tab === id ? 'on' : ''}" data-act="tab" data-arg="${id}">${n}</button>`).join('')}</nav>` : ''}<button class="x" data-act="close" title="Đóng (Esc)">✕</button></div>
-        <div class="m-body">${body}</div></div></div>`;
+      // Giữ đúng nút đang chọn qua lần dựng lại này (bấm phím Tab / Enter vẫn đi tiếp được)
+      const key = $('modal-root').contains(document.activeElement) ? this.focusKey(document.activeElement) : null;
+      this.datHtml(`<div class="overlay"><div class="modal menu">
+        <div class="m-head"><b>${title}</b>${tabs.length ? `<nav class="mtabs" aria-label="Thẻ trong menu">${tabs.map(([id, n]) => `<button class="${v.tab === id ? 'on' : ''}" data-act="tab" data-arg="${id}" aria-current="${v.tab === id ? 'true' : 'false'}">${n}</button>`).join('')}</nav>` : ''}<button class="x" data-act="close" title="Đóng (Esc)" aria-label="Đóng">✕</button></div>
+        <div class="m-body">${body}</div></div></div>`, key);
       const nb = $('modal-root').querySelector('.m-body');
       if (nb) nb.scrollTop = top;
       this.xemQuai();
@@ -666,6 +730,12 @@
       const up = e => set(e.pointerId, null);
       box.addEventListener('pointerup', up);
       box.addEventListener('pointercancel', up);
+      // Nhả nút ở ngoài khung, mất tiêu điểm hoặc chuyển tab: nhả hết, tránh kẹt chạy / kẹt chém
+      addEventListener('pointerup', up);
+      addEventListener('pointercancel', up);
+      const nhaHet = () => { held.clear(); HSX.Input.clear(); };
+      addEventListener('blur', nhaHet);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) nhaHet(); });
     },
   };
   void T;

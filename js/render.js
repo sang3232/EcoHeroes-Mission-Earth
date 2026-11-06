@@ -20,6 +20,8 @@
   const NEN_XA = { rung_boss: 'rung', hang_re: 'hang' }, NEN_GAN = { bai_bien: 'bai_bien_gan', rung: 'rung_gan', dam: 'rung_gan' };
   const MAM_DRAW = 114, MAM_DX = 6;   // cỡ vẽ khung Mầm (thân cao ~61 px), dịch tới trước cho thân (không phải mặt nạ) ở giữa hộp va chạm
   const SOLIDISH = c => c === '#' || c === 'X' || (c === '?' && !HSX.S.owned.kinh_lup);
+  // Tường Kính Lúp: không hiển thị khi chưa có đồ, chỉ hiện khi có kinh_lup (vẽ dashed tranlucent)
+  const RENDER_KINH_LUP = c => c === '?' && HSX.S.owned.kinh_lup;
   const hash = (x, y) => { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); };
   const lerp = (a, b, t) => a + (b - a) * t;
   function mix(c1, c2, t) {
@@ -56,7 +58,39 @@
   const SLASH = [['255,255,255', '150,255,190'], ['225,255,240', '90,230,170'], ['255,250,225', '255,210,110']];
 
   const R = HSX.Render = {
-    tilesDirty: true, k: 1, cam: { x: 0, y: 0 }, rimQ: null, leafPop: [], leafBits: [],
+    tilesDirty: true, k: 1, cam: { x: 0, y: 0 }, rimQ: null, leafPop: [], leafBits: [], glowCache: {},
+
+    // Quầng sáng tròn vẽ sẵn một lần rồi dùng lại mỗi khung hình
+    // (createRadialGradient mỗi frame cho hàng chục hạt là chỗ tốn nhất lúc vẽ).
+    glow(color) {
+      let cv = this.glowCache[color];
+      if (cv) return cv;
+      const S = 64;
+      cv = document.createElement('canvas');
+      cv.width = cv.height = S;
+      const g = cv.getContext('2d'), gr = g.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+      gr.addColorStop(0, color);
+      gr.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = gr;
+      g.fillRect(0, 0, S, S);
+      return (this.glowCache[color] = cv);
+    },
+    // Quầng sáng 3 lớp cho đèn / tinh linh (lõi đậm hơn mép), cũng vẽ sẵn một lần theo màu
+    bloom(col) {
+      const key = 'bloom:' + col;
+      let cv = this.glowCache[key];
+      if (cv) return cv;
+      const S = 128;
+      cv = document.createElement('canvas');
+      cv.width = cv.height = S;
+      const g = cv.getContext('2d'), gr = g.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+      gr.addColorStop(0, `rgba(${col},1)`);
+      gr.addColorStop(0.3, `rgba(${col},.45)`);
+      gr.addColorStop(1, `rgba(${col},0)`);
+      g.fillStyle = gr;
+      g.fillRect(0, 0, S, S);
+      return (this.glowCache[key] = cv);
+    },
 
     init(cv) {
       this.cv = cv;
@@ -416,6 +450,7 @@
       g.clearRect(0, 0, cv.width, cv.height);
       for (let y = 0; y < r.h; y++) for (let x = 0; x < r.w; x++) {
         const ch = r.grid[y][x], px = x * T, py = y * T;
+        if (ch === '?') continue;   // tường Kính Lúp: không vẽ ở tile layer, chỉ vẽ khi có kinh_lup ở drawDynamicTiles
         if (SOLIDISH(ch)) {
           g.fillStyle = pat || pal.body;
           g.fillRect(px, py, T, T);
@@ -1131,19 +1166,19 @@
     drawDomDom(r, t) {
       if (r.id !== 'ran_ban' || !HSX.S.species.dom_dom) return;
       const c = this.ctx;
+      const cay = r._domCay || (r._domCay = r.objs.filter(o => o.type === 'plant'));   // lọc một lần mỗi phòng, không lọc lại 34 lần mỗi khung
+      const spr = this.glow('rgba(230,255,150,1)');
       c.globalCompositeOperation = 'lighter';
       for (let i = 0; i < 34; i++) {
-        const goc = r.objs.filter(o => o.type === 'plant')[i % 2] || { x: 10 * T, y: 10 * T };
+        const goc = cay[i % 2] || { x: 10 * T, y: 10 * T };
         const x = goc.x + T / 2 + Math.sin(t * 0.5 + i * 1.7) * 90 + Math.sin(t * 1.3 + i) * 20;
         const y = goc.y - 60 + Math.cos(t * 0.4 + i * 2.3) * 60 + Math.sin(t * 1.1 + i) * 14;
         const a = Math.max(0, Math.sin(t * 2.2 + i * 1.9)) * 0.9;
         if (a < 0.05) continue;
-        const g = c.createRadialGradient(x, y, 0, x, y, 9);
-        g.addColorStop(0, `rgba(230,255,150,${a})`);
-        g.addColorStop(1, 'rgba(160,255,120,0)');
-        c.fillStyle = g;
-        c.fillRect(x - 9, y - 9, 18, 18);
+        c.globalAlpha = a;
+        c.drawImage(spr, x - 9, y - 9, 18, 18);
       }
+      c.globalAlpha = 1;
       c.globalCompositeOperation = 'source-over';
     },
 
@@ -1443,14 +1478,9 @@
             c.lineWidth = p.w * a;
             c.beginPath(); c.arc(p.x, p.y, p.r + (p.r1 - p.r) * (1 - a * a), 0, 6.283); c.stroke();
             break;
-          case 'glow': {
-            const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
-            g.addColorStop(0, p.color);
-            g.addColorStop(1, 'rgba(0,0,0,0)');
-            c.fillStyle = g;
-            c.fillRect(p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
+          case 'glow':   // quầng vẽ sẵn, không tạo gradient mới mỗi hạt mỗi khung
+            c.drawImage(this.glow(p.color), p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
             break;
-          }
           case 'cut': {   // vệt chém trắng, thon hai đầu
             const L = p.r * (0.6 + 0.4 * (1 - a)), w = 5 * a;
             c.save(); c.translate(p.x, p.y); c.rotate(p.rot);
@@ -1493,11 +1523,17 @@
       let a = W.hurtT / 0.45 * 0.55;
       if (S.hp === 1 && W.mode === 'play') a = Math.max(a, 0.16 + 0.14 * Math.pow(Math.max(0, Math.sin(t * 5.5)), 4));
       if (a <= 0.01) return;
-      const g = c.createRadialGradient(VW / 2, VH / 2, VH * 0.3, VW / 2, VH / 2, VW * 0.62);
-      g.addColorStop(0, 'rgba(160,0,20,0)');
-      g.addColorStop(1, `rgba(170,10,30,${a})`);
-      c.fillStyle = g;
+      // Gradient chỉ tạo một lần; độ đậm đổi bằng globalAlpha (trước đây tạo lại mỗi khung bị thương)
+      if (!this.hurtGrad) {
+        this.hurtGrad = c.createRadialGradient(VW / 2, VH / 2, VH * 0.3, VW / 2, VH / 2, VW * 0.62);
+        this.hurtGrad.addColorStop(0, 'rgba(160,0,20,0)');
+        this.hurtGrad.addColorStop(1, 'rgba(170,10,30,1)');
+      }
+      c.save();
+      c.globalAlpha = a;
+      c.fillStyle = this.hurtGrad;
       c.fillRect(0, 0, VW, VH);
+      c.restore();
     },
 
     // Năng lượng nhận được bay về quả cầu năng lượng (toạ độ màn hình)
@@ -1524,11 +1560,10 @@
       const c = this.ctx, t = performance.now() / 1000;
       HSX.Spirits.list.forEach(s => {
         const sp = D.spirits[s.id], img = A.get('heroes/' + s.id);
-        const g = c.createRadialGradient(s.x, s.y, 2, s.x, s.y, 26);
-        g.addColorStop(0, `rgba(${sp.glow},0.55)`);
-        g.addColorStop(1, `rgba(${sp.glow},0)`);
-        c.fillStyle = g;
-        c.beginPath(); c.arc(s.x, s.y, 26, 0, 6.283); c.fill();
+        c.save();
+        c.globalAlpha = 0.55;
+        c.drawImage(this.glow(`rgba(${sp.glow},1)`), s.x - 26, s.y - 26, 52, 52);
+        c.restore();
         if (img) c.drawImage(img, s.x - 21, s.y - 30, 42, 42);
         else this.emoji(sp.emoji, s.x, s.y + 8, 24);
         if (Math.random() < 0.15) HSX.World.fx.push({ x: s.x + (Math.random() - 0.5) * 16, y: s.y + 6, vx: 0, vy: 20, g: 0, life: 0.6, max: 0.6, color: sp.color, r: 1.5 });
@@ -1837,13 +1872,10 @@
         const x = l.x - cam.x, y = l.y - cam.y, r = l.r * (l.glow ? 0.7 : 0.5);
         if (x < -r || y < -r || x > VW + r || y > VH + r) return;
         const col = l.glow || '255,238,205', a = (l.glow ? 0.45 : 0.12) * m.dark * (l.bloom || 1);
-        const g = c.createRadialGradient(x, y, 0, x, y, r);
-        g.addColorStop(0, `rgba(${col},${a})`);
-        g.addColorStop(0.3, `rgba(${col},${a * 0.45})`);
-        g.addColorStop(1, `rgba(${col},0)`);
-        c.fillStyle = g;
-        c.fillRect(x - r, y - r, r * 2, r * 2);
+        c.globalAlpha = a;
+        c.drawImage(this.bloom(col), x - r, y - r, r * 2, r * 2);
       });
+      c.globalAlpha = 1;
       c.globalCompositeOperation = 'source-over';
     },
 
@@ -1952,11 +1984,21 @@
 
     // Viền tối quanh mép màn hình, đậm hơn khi tối, ngả theo màu khu
     drawVignette(m) {
-      const c = this.ctx, g = c.createRadialGradient(VW / 2, VH / 2, VH * 0.38, VW / 2, VH / 2, VW * 0.64);
-      g.addColorStop(0, `rgba(${m.vig},0)`);
-      g.addColorStop(1, `rgba(${m.vig},${0.3 + 0.4 * m.dark})`);
+      // Màu viền theo khu, độ đậm đổi theo độ tối: giữ gradient theo màu, đổi độ đậm bằng globalAlpha
+      const c = this.ctx;
+      this.vigGrad = this.vigGrad || {};
+      let g = this.vigGrad[m.vig];
+      if (!g) {
+        g = c.createRadialGradient(VW / 2, VH / 2, VH * 0.38, VW / 2, VH / 2, VW * 0.64);
+        g.addColorStop(0, `rgba(${m.vig},0)`);
+        g.addColorStop(1, `rgba(${m.vig},1)`);
+        this.vigGrad[m.vig] = g;
+      }
+      c.save();
+      c.globalAlpha = 0.3 + 0.4 * m.dark;
       c.fillStyle = g;
       c.fillRect(0, 0, VW, VH);
+      c.restore();
     },
 
     // ---------- Chữ trong thế giới ----------

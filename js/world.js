@@ -369,14 +369,14 @@
         const res = HSX.Enemies.damage(e, dmg, P, dir), p = at(e);
         hit = true;
         if (res === 'giap') {   // boss đang thủ thế: tia lửa xám, ít năng lượng
-          gain(3, p.x, p.y);
-          this.spark(p.x, p.y, '#cfd3e0');
-          this.ring(p.x, p.y, '#cfd3e0', 30, 0.15, 2);
+          gain(dmg * 0.6, p.x, p.y);
+          HSX.Audio.hit();
         } else if (res !== 'block') {
-          gain(11, p.x, p.y);
-          this.hitFx(p.x, p.y, ang, (e.def.chip || [])[0]);
-          this.kick.x += Math.cos(ang) * 4;
-          this.kick.y += Math.sin(ang) * 4;
+          gain(dmg * 2.2, p.x, p.y);
+          HSX.Audio.hit();
+        } else {
+          // Quái đỡ đòn (block): âm thanh bật lại
+          HSX.Audio.ricochet();
         }
         if (dir === 'down') pogo = true;
       });
@@ -406,6 +406,7 @@
       r.objs.slice().forEach(o => {
         if (o.type === 'heap' && Phys.overlap(box, { x: o.x + 2, y: o.y + 8, w: T - 4, h: T - 8 })) {
           hit = true; gain(4, o.x + T / 2, o.y + T / 2);
+          HSX.Audio.breakHeap();
           if (dir === 'down') pogo = true;
           o.hp--; o.shake = 0.15;
           this.dust(o.x + T / 2, o.y + T - 8, 5);
@@ -415,6 +416,7 @@
         } else if (o.type === 'cage' && Phys.overlap(box, { x: o.x + 2, y: o.y - 30, w: T - 4, h: T + 30 })) {
           hit = true;
           if (!this.cageOpen()) { this.hint('cage', this.cageLockText()); this.spark(o.x + T / 2, o.y, '#c79bff'); return; }
+          HSX.Audio.breakHeap();
           o.hp--; o.shake = 0.15;
           this.spark(o.x + T / 2, o.y, '#ffd6f0');
           if (o.hp <= 0) this.rescue(o);
@@ -776,7 +778,7 @@
     // ---------- Ná Tái Chế ----------
     // Hạt nhựa bay vòng cung (tốc độ v, trọng lực g): trúng quái (mạnh bằng một nhát chém), túi / lưới đang bay,
     // lưới ma giăng, đống rác thì vỡ; ra khỏi phòng thì mất.
-    // Trúng thì được khoảng nửa năng lượng so với chém (NL_BAN), để chém vẫn là cách nạp năng lượng chính.
+    // Trúng năng lượng theo đòn thực tế n = dmg * 0,2 (dmg = sát thương Vợt Bắt Rác × 2), giống như khi chém quái.
     // Quái, đống rác, lưới ma bị hạt ná phá thì đồ rơi ra tự bay về Mầm (banPha: drop đánh dấu hut), khỏi phải chạy tới nhặt.
     banHat(x, y, a, v, g) {
       this.shots.push({ type: 'hat', x: x - 6, y: y - 6, w: 12, h: 12, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g, life: 3, t: 0 });
@@ -795,22 +797,29 @@
         if (cx < 0 || cx > r.w * T || cy > r.h * T) return false;
         if (r.tile(tx, ty) === 'n') {
           tia();
-          this.napNL(NL_BAN.luoi, cx, cy);
+          const dealt = Calc.weaponDmg() * 2;  // actual damage dealt by bullet
+          this.napNL(dealt * 0.15, cx, cy);
+          HSX.Audio.hit();  // âm thanh chạm sàn
           pha(() => this.chatLuoi(this.tamLuoi(tx, ty), tx, ty, ang));
           return false;
         }
-        if (r.solid(tx, ty)) { this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff'); return false; }
+        if (r.solid(tx, ty)) { this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff'); HSX.Audio.ricochet(); return false; }
         const e = this.enemies.find(x => !x.dead && (x.kind !== 'boss' || x.active) && Phys.overlap(s, x));
         if (e) {
-          const res = pha(() => HSX.Enemies.damage(e, Calc.weaponDmg(), P, 'ban', cx));
-          if (res === 'giap') { this.spark(cx, cy, '#cfd3e0'); this.napNL(NL_BAN.giap, cx, cy); }
-          else if (res !== 'block') { this.hitFx(cx, cy, ang, (e.def.chip || [])[0]); this.napNL(NL_BAN.quai, cx, cy); }
+          const res = pha(() => HSX.Enemies.damage(e, Calc.weaponDmg() * 2, P, 'ban', cx));
+          const dealt = res !== 'block' ? Calc.weaponDmg() * 2 : (res === 'giap' ? Calc.weaponDmg() * 2 * 0.4 : 0);
+          const gain = res === 'giap' ? dealt * 0.15 : (res !== 'block' ? dealt * 0.55 : 0);
+          if (res === 'giap') { this.spark(cx, cy, '#cfd3e0'); this.napNL(gain, cx, cy); }
+          else if (res !== 'block') { this.hitFx(cx, cy, ang, (e.def.chip || [])[0]); this.napNL(gain, cx, cy); }
+          HSX.Audio.hit();   // âm thanh trúng quái
+          if (res !== 'block' && e.hp <= 0) HSX.Audio.kill();  // quái bị hạ
           return false;
         }
         const o = r.objs.find(x => x.type === 'heap' && Phys.overlap(s, { x: x.x + 2, y: x.y + 8, w: T - 4, h: T - 8 }));
         if (o) {
           tia();
-          this.napNL(NL_BAN.rac, cx, cy);
+          const dealt = Calc.weaponDmg() * 2;  // actual damage dealt by bullet on trash
+          this.napNL(dealt * 0.2, cx, cy);
           o.hp--; o.shake = 0.15;
           this.chips(o.x + T / 2, o.y + T / 2, RAC, 4, 220);
           if (o.hp <= 0) pha(() => this.breakHeap(o));
@@ -819,7 +828,8 @@
         const sh = this.shots.find(x => (x.type === 'bag' || x.type === 'net') && !x.phan && !x.huy && Phys.overlap(s, x));
         if (sh) {
           sh.huy = true;
-          this.napNL(NL_BAN.dan, cx, cy);
+          const dealt = Calc.weaponDmg() * 2;  // actual damage dealt by bullet on bag/net
+          this.napNL(dealt * 0.3, cx, cy);
           this.burst(sh.x + sh.w / 2, sh.y + sh.h / 2, sh.type === 'net' ? '#9fd3a8' : '#d8d0ff', 10);
           this.chips(sh.x + sh.w / 2, sh.y + sh.h / 2, sh.type === 'net' ? LUOI : ['#e8e8f0', '#b9b9c9'], 5, 200);
           return false;

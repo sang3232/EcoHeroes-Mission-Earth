@@ -48,19 +48,87 @@ HSX.saveOpt = function () {
   try { localStorage.setItem(HSX.OPT_KEY, JSON.stringify(HSX.opt)); } catch (e) { /* bỏ qua */ }
 };
 
-// Sự kiện trong game (nhảy, chém, hạ quái...) cho hướng dẫn và Sổ quái vật nghe, không phải sửa chỗ phát
+// Sự kiện trong game (nhảy, chém, hạ quái...) cho hướng dẫn và Sổ quái vật nghe, không phải sửa chỗ phát.
+// Một chỗ nghe lỗi thì bỏ qua chỗ đó, không làm hỏng cả bước cập nhật / cả màn hình.
 HSX.ev = {};
 HSX.on = (name, fn) => { (HSX.ev[name] = HSX.ev[name] || []).push(fn); };
-HSX.emit = (name, data) => { (HSX.ev[name] || []).forEach(fn => fn(data)); };
+HSX.emit = (name, data) => (HSX.ev[name] || []).forEach(fn => {
+  try { fn(data); } catch (e) { console.error('HSX.emit(' + name + ')', e); }
+});
+
+// ---------- Đọc save ----------
+// Save có thể hỏng (ghi dở khi tắt máy, sửa tay, bản cũ thiếu trường): đưa từng trường về đúng kiểu
+// thay vì để game vỡ ở giữa chừng. Giá trị lạ thì dùng mặc định.
+const laObj = v => (v && typeof v === 'object' && !Array.isArray(v) ? v : null);
+const laSo = (v, def, min, max) => {
+  v = Number(v);
+  if (!isFinite(v)) v = def;
+  if (min !== undefined && v < min) v = min;
+  if (max !== undefined && v > max) v = max;
+  return v;
+};
 
 HSX.migrate = function (s) {
-  const base = HSX.newState();
+  const base = HSX.newState(), D = HSX.DATA;
+  if (!laObj(s)) return base;   // không phải object: coi như chưa có save
   for (const k in base) if (s[k] === undefined) s[k] = base[k];
+  s.v = 2;
+
+  // Phòng đang đứng: phải có thật. Không thì về phòng đầu của màn đang chơi.
+  if (!HSX.LEVELS[s.level]) s.level = 'm1';
+  s.bench = laObj(s.bench) || {};
+  const lvTheoPhong = Object.keys(HSX.LEVELS).find(lv => HSX.LEVELS[lv].rooms[s.bench.room]);
+  if (lvTheoPhong) s.level = lvTheoPhong;
+  const L = HSX.LEVELS[s.level];
+  if (!L.rooms[s.bench.room]) s.bench = { room: L.start, x: null, y: null };
+  s.bench.x = isFinite(s.bench.x) && s.bench.x !== null ? Number(s.bench.x) : null;
+  s.bench.y = isFinite(s.bench.y) && s.bench.y !== null ? Number(s.bench.y) : null;
+
+  // Số liệu: máu luôn còn ít nhất 1 để không chết ngay khi vừa nạp save.
+  s.hp = Math.round(laSo(s.hp, 5, 1, 99));
+  s.shards = Math.round(laSo(s.shards, 0, 0));
+  s.energy = laSo(s.energy, 0, 0);
+  s.seeds = laSo(s.seeds, 0, 0);
+  s.dawn = !!s.dawn;
+  s.stats = laObj(s.stats) || {};
+  s.stats.time = laSo(s.stats.time, 0, 0);
+  s.stats.deaths = Math.round(laSo(s.stats.deaths, 0, 0));
+  s.stats.kills = Math.round(laSo(s.stats.kills, 0, 0));
+  s.puzzle = laObj(s.puzzle) || {};
+  s.puzzle.solved = !!s.puzzle.solved;
+  s.puzzle.best = laSo(s.puzzle.best, 0, 0);
+
+  // Các bảng tra theo id phòng / id vật phẩm
+  ['inv', 'known', 'hints', 'spirits', 'heaps', 'dead', 'picked', 'broken', 'bosses', 'flags',
+    'trees', 'species', 'seen', 'journals', 'facts', 'visited', 'tut', 'quai', 'story', 'mo',
+    'xong', 'benches'].forEach(k => { s[k] = laObj(s[k]) || {}; });
+  // Giá trị của từng phòng phải là object (không thì ô / quái đã dọn bị hiểu sai)
+  ['heaps', 'dead', 'picked', 'broken', 'trees'].forEach(k => {
+    for (const id in s[k]) if (!laObj(s[k][id])) delete s[k][id];
+  });
+  // Trạm đã nghỉ của từng màn: phải trỏ tới phòng có thật
+  for (const lv in s.benches) {
+    const b = laObj(s.benches[lv]);
+    if (!b || !HSX.LEVELS[lv] || !HSX.LEVELS[lv].rooms[b.room]) { delete s.benches[lv]; continue; }
+    b.x = isFinite(b.x) && b.x !== null ? Number(b.x) : null;
+    b.y = isFinite(b.y) && b.y !== null ? Number(b.y) : null;
+    s.benches[lv] = b;
+  }
+
+  // Vợt và bùa: bậc vợt phải có trong bảng, bùa phải là vật phẩm có thật
+  s.owned = laObj(s.owned) || {};
+  s.owned.vot = laObj(s.owned.vot) || {};
+  s.owned.vot.tier = Math.round(laSo(s.owned.vot.tier, 0, 0, D.tiers.length - 1));
+  s.charms = (Array.isArray(s.charms) ? s.charms : []).slice(0, 3);
+  while (s.charms.length < 3) s.charms.push(null);
+  s.charms = s.charms.map(id => (typeof id === 'string' && D.items[id] ? id : null));
+
   // save trước khi có nhiều màn: đã hạ Vua Túi Nilon thì Màn 2 mở sẵn
   if (s.dawn) { s.mo.m2 = true; s.xong.m1 = true; }
-  if (!s.benches[s.level] && s.bench) s.benches[s.level] = s.bench;
+  s.mo.m1 = true;
+  if (!s.benches[s.level] && s.bench.room) s.benches[s.level] = s.bench;
   // công thức mới thêm sau (không phải công thức bí ẩn) thì biết sẵn
-  HSX.DATA.recipes.forEach(r => { if (!r.hidden) s.known[r.id] = true; });
+  D.recipes.forEach(r => { if (!r.hidden) s.known[r.id] = true; });
   return s;
 };
 
@@ -68,7 +136,13 @@ HSX.loadSave = function () {
   let raw = null;
   try { raw = localStorage.getItem(HSX.SAVE_KEY); } catch (e) { return null; }
   if (!raw) return null;
-  try { return HSX.migrate(JSON.parse(raw)); } catch (e) { return null; }
+  try { return HSX.migrate(JSON.parse(raw)); }
+  catch (e) {
+    // Giữ bản hỏng lại để người chơi nhờ cứu được; lần tự lưu sau sẽ không ghi đè mất
+    try { localStorage.setItem(HSX.SAVE_KEY + '-hong', raw); } catch (e2) { /* hết chỗ */ }
+    console.warn('Save hỏng, đã sao lưu sang ' + HSX.SAVE_KEY + '-hong', e);
+    return null;
+  }
 };
 
 // Bản idle cũ đổi lối chơi hoàn toàn nên không chuyển save được, chỉ báo một lần
@@ -79,12 +153,28 @@ HSX.dropOldSave = function () {
   try { localStorage.removeItem(HSX.OLD_SAVE_KEY); } catch (e) { /* bỏ qua */ }
 };
 
+// Trả về false khi trình duyệt chặn bộ nhớ / hết chỗ. Chỉ báo cho người chơi lần đầu để không spam
+// (game tự lưu rất nhiều lần), nhưng vẫn trả false cho chỗ gọi tự xử lý.
 HSX.saveGame = function () {
-  try { localStorage.setItem(HSX.SAVE_KEY, JSON.stringify(HSX.S)); return true; } catch (e) { return false; }
+  try {
+    localStorage.setItem(HSX.SAVE_KEY, JSON.stringify(HSX.S));
+    HSX.saveWarning = false;
+    return true;
+  } catch (e) {
+    if (!HSX.saveWarning) {
+      HSX.saveWarning = true;
+      if (HSX.UI && HSX.UI.toast) HSX.UI.toast('⚠️ Không lưu được tiến trình: trình duyệt đang chặn bộ nhớ hoặc đã hết chỗ.', 'fact', 7000);
+    }
+    return false;
+  }
 };
 
 HSX.exportSave = () => btoa(unescape(encodeURIComponent(JSON.stringify(HSX.S))));
-HSX.importSave = str => HSX.migrate(JSON.parse(decodeURIComponent(escape(atob(str.trim())))));
+HSX.importSave = function (str) {
+  const o = JSON.parse(decodeURIComponent(escape(atob(String(str || '').trim()))));
+  if (!laObj(o)) throw new Error('Mã save không phải object');
+  return HSX.migrate(o);
+};
 
 HSX.fmt = function (n) {
   n = Math.floor(n);

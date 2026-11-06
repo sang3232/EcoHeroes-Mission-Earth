@@ -104,11 +104,12 @@
         if (this.healT >= C.HEAL_T) {
           this.healT = 0;
           S.energy -= 33;
-          S.hp++;
+          S.hp = Math.min(Calc.maxHp(), S.hp + 1);
           W.burst(this.cx(), b.y + 10, '#ff9cc8', 18);
           W.ring(this.cx(), this.cy(), '#ff9cc8', 70, 0.4, 4);
           W.flash(this.cx(), this.cy(), 200, '255,156,200', 0.4);
           W.text(this.cx(), b.y - 10, '+1 🍃', '#9ff0b5');
+          HSX.Audio.energy();
           HSX.emit('heal');
         }
       } else if (this.healT > 0) this.healT = 0;
@@ -133,6 +134,7 @@
             drag: 5, life: 0.22, r: 1.6, color: '#bff5d6', add: true });
         }
         HSX.emit('dash');
+        HSX.Audio.dash();
       }
 
       if (this.dashT > 0) {
@@ -149,7 +151,7 @@
           this.buf = 0;
           this.coyote = 0;
           if (Dn && b.ground && room.onOneWay(b)) { b.drop = 0.25; b.y += 2; }
-          else { b.vy = -C.JUMP; W.dust(this.cx(), b.y + b.h, 4); HSX.emit('jump'); }
+          else { b.vy = -C.JUMP; W.dust(this.cx(), b.y + b.h, 4); HSX.emit('jump'); HSX.Audio.jump(); }
         }
         if (this.slam) b.vy = C.SLAM;
         else {
@@ -208,6 +210,7 @@
         if (this.slam) { this.slam = false; W.slamImpact(this); }
         else if (fallV > 500) { W.dust(this.cx(), b.y + b.h, 6); if (fallV > 800) W.ring(this.cx(), b.y + b.h - 2, '#e8dcc0', 40, 0.25, 2); }
         if (fallV > 300) this.landT = 0;
+        HSX.Audio.land();
       }
       this.landT += dt;
       this.airT = b.ground ? 0 : this.airT + dt;
@@ -314,6 +317,7 @@
       if (!hazard && this.dashT > 0) { W.luotNe(this, nguon); return false; }
       if (!hazard && Calc.charmOn('khien_lon') && this.shieldT <= 0) {
         HSX.emit('khien', { nguon });
+        HSX.Audio.shieldBreak();
         this.shieldT = 20;
         this.inv = 0.6;
         W.burst(this.cx(), this.cy(), '#9fd3ff', 16);
@@ -321,7 +325,7 @@
         return false;
       }
       if (HSX.DEBUG_GOD) return false;
-      S.hp -= n;
+      S.hp = Math.max(0, S.hp - n);   // không để máu âm (HUD vẽ theo số lá, âm sẽ lệch)
       this.inv = C.INV;
       this.hurtT = C.HURT_T;
       this.healT = 0;
@@ -337,6 +341,7 @@
       W.kick.x += dir * 7;
       W.burst(this.cx(), this.cy(), '#ffffff', 12);
       W.ring(this.cx(), this.cy(), '#ff8080', 60, 0.3, 4);
+      HSX.Audio.hurt();
       HSX.emit('dau', { n, nguon });
       if (S.hp <= 0) W.die();
       return true;

@@ -1,0 +1,220 @@
+/* Hệ thống âm thanh: tạo âm thanh bằng Web Audio API (không cần file, chạy từ file://) */
+(function () {
+  const Audio = HSX.Audio = {
+    ctx: null,
+    enabled: true,
+    volume: 0.5,
+    // Pool các oscillator cho âm thanh nhanh, tránh tạo mới liên tục
+    pool: [],
+
+    init() {
+      if (this.ctx) return;
+      try {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        console.warn('Không khởi động được Web Audio:', e);
+        this.enabled = false;
+        return;
+      }
+      // Tự resume khi user tương tác (tránh policy autoplay)
+      const resume = () => {
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        document.removeEventListener('click', resume);
+        document.removeEventListener('keydown', resume);
+      };
+      document.addEventListener('click', resume);
+      document.addEventListener('keydown', resume);
+    },
+
+    // Tạo âm thanh cơ bản: oscillator + envelope
+    tone(freq, dur, type, vol, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = when || ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type || 'square';
+      osc.frequency.value = freq;
+      gain.gain.value = 0;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      // Envelope: attack -> decay -> sustain -> release
+      const a = 0.01, d = 0.05, s = vol * 0.6, r = dur - a - d;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(vol, t + a);
+      gain.gain.linearRampToValueAtTime(s, t + a + d);
+      gain.gain.linearRampToValueAtTime(0, t + dur);
+      osc.start(t);
+      osc.stop(t + dur + 0.02);
+      return { osc, gain };
+    },
+
+    // Chord: phát nhiều nốt cùng lúc
+    chord(freqs, dur, type, vol, when) {
+      freqs.forEach(f => this.tone(f, dur, type, vol / freqs.length, when));
+    },
+
+    // ---- Các hiệu ứng âm thanh game ----
+    // 1. Chém (slash)
+    slash() {
+      this.tone(440, 0.08, 'sawtooth', 0.12);
+      this.tone(880, 0.06, 'square', 0.08);
+    },
+
+    // 2. Trúng đòn (hit enemy)
+    hit() {
+      this.tone(660, 0.06, 'square', 0.1);
+      this.tone(1320, 0.04, 'sine', 0.06);
+    },
+
+    // 3. Hạ quái (kill enemy)
+    kill() {
+      this.chord([880, 1100, 1320], 0.2, 'sine', 0.12);
+      this.tone(440, 0.3, 'triangle', 0.08);
+    },
+
+    // 4. Bị thương (player hurt)
+    hurt() {
+      this.tone(220, 0.15, 'sawtooth', 0.15);
+      this.tone(110, 0.2, 'square', 0.1);
+    },
+
+    // 5. Nhảy (jump)
+    jump() {
+      this.tone(520, 0.06, 'sine', 0.08);
+      this.tone(780, 0.04, 'sine', 0.05);
+    },
+
+    // 6. Đáp đất (land)
+    land() {
+      this.tone(180, 0.08, 'sine', 0.1);
+    },
+
+    // 7. Lướt né (dash)
+    dash() {
+      this.tone(800, 0.05, 'sine', 0.1);
+      this.tone(1200, 0.04, 'sine', 0.06);
+      this.tone(1600, 0.03, 'sine', 0.04);
+    },
+
+    // 8. Nhặt rác / tương tác (pickup/interact)
+    pickup() {
+      this.chord([660, 880, 1100], 0.12, 'sine', 0.1);
+    },
+
+    // 9. Mở lồng / giải cứu tinh linh (cage open)
+    cageOpen() {
+      this.chord([523, 659, 784, 1047], 0.4, 'sine', 0.12); // C major chord
+      this.chord([1319, 1568, 1760], 0.3, 'sine', 0.08);
+    },
+
+    // 10. Nhận năng lượng (energy gain)
+    energy() {
+      this.chord([784, 988, 1175], 0.15, 'triangle', 0.08);
+    },
+
+    // 11. Năng lượng đầy / không thể nhận thêm
+    energyFull() {
+      this.tone(330, 0.1, 'square', 0.1);
+    },
+
+    // 12. Tường Kính Lúp va chạm (wall bump + hint)
+    wallBump() {
+      this.tone(150, 0.08, 'square', 0.12);
+      this.tone(100, 0.12, 'sawtooth', 0.1);
+    },
+
+    // 13. Mở menu / nút bấm (UI click)
+    click() {
+      this.tone(1000, 0.03, 'sine', 0.05);
+    },
+
+    // 14. Thông báo / toast (notification)
+    notify() {
+      this.chord([660, 880], 0.1, 'sine', 0.06);
+    },
+
+    // 15. Phá đống rác (break heap)
+    breakHeap() {
+      this.tone(300, 0.08, 'sawtooth', 0.1);
+      this.tone(200, 0.12, 'square', 0.08);
+    },
+
+    // 23. Đống rác bị chém/viết (cho heap/cage trong world.js)
+    chop() {
+      this.tone(220, 0.12, 'sawtooth', 0.06);
+    },
+
+    // 16. Trúng giáp boss (armor hit)
+    armorHit() {
+      this.tone(500, 0.05, 'square', 0.1);
+      this.tone(400, 0.07, 'sawtooth', 0.08);
+      this.tone(300, 0.1, 'sawtooth', 0.06);
+    },
+
+    // 24. Khiên chặn / vỡ khiên (shield block)
+    shieldBreak() {
+      this.tone(600, 0.1, 'square', 0.12);
+      this.tone(800, 0.1, 'square', 0.12);
+      this.tone(1000, 0.15, 'sawtooth', 0.1);
+    },
+
+    // 25. Bật lại / ricochet khi quái đỡ đòn (block)
+    ricochet() {
+      this.tone(500, 0.06, 'square', 0.06);
+      this.tone(700, 0.05, 'square', 0.05);
+      this.tone(900, 0.08, 'square', 0.06);
+    },
+
+    // 26. Đập xuống / Slam (Gấu Rừng): nhảy rồi đập đất để phá nền
+    slam() {
+      this.tone(120, 0.3, 'sawtooth', 0.12);
+      this.tone(90, 0.4, 'square', 0.1);
+      this.chord([60, 80, 100], 0.2, 'sawtooth', 0.06);
+    },
+
+    // 17. Bán / nâng cấp / chế tạo (craft/upgrade)
+    craft() {
+      this.chord([523, 659, 784], 0.2, 'triangle', 0.1);
+    },
+
+    // 18. Level up / boss defeated
+    victory() {
+      this.chord([523, 659, 784, 1047], 0.5, 'sine', 0.12);
+      setTimeout(() => this.chord([1319, 1568, 1760], 0.4, 'sine', 0.1), 200);
+      setTimeout(() => this.chord([1976, 2349, 2637], 0.5, 'sine', 0.1), 500);
+    },
+
+    // 19. Tự động nhặt đồ rơi (auto pickup)
+    autoPickup() {
+      this.tone(880, 0.04, 'sine', 0.06);
+      this.tone(1100, 0.03, 'sine', 0.04);
+    },
+
+    // 20. Trượt / sliding (cho lướt né xuyên tường)
+    slide() {
+      this.tone(600, 0.08, 'sine', 0.06);
+      this.tone(900, 0.06, 'sine', 0.04);
+    },
+
+    // 21. Cửa mở / chuyển phòng
+    doorOpen() {
+      this.chord([440, 550, 660], 0.2, 'triangle', 0.08);
+    },
+
+    // 22. Kính Lúp - phát hiện tường (hint sound)
+    kinhLupHint() {
+      this.tone(400, 0.1, 'sine', 0.08);
+      this.tone(600, 0.1, 'sine', 0.06);
+      this.tone(800, 0.1, 'sine', 0.04);
+    },
+
+    setVolume(v) {
+      this.volume = Math.max(0, Math.min(1, v));
+    },
+
+    toggle() {
+      this.enabled = !this.enabled;
+      return this.enabled;
+    }
+  };
+})();
