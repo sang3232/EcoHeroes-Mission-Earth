@@ -144,16 +144,18 @@
       this.rumble(0.12, 260, 0.2);                // "bụp" đất, lowpass nên không chói
     },
 
-    // 2. Trúng đòn (hit enemy)
+    // 2. Trúng đòn (hit enemy): hạ một quãng tám, nghe nặng tay hơn
     hit() {
-      this.tone(660, 0.06, 'square', 0.1);
-      this.tone(1320, 0.04, 'sine', 0.06);
+      this.tone(320, 0.06, 'square', 0.12);
+      this.tone(160, 0.08, 'triangle', 0.1);
     },
 
-    // 3. Hạ quái (kill enemy)
+    // 3. Hạ quái (kill enemy): tiếng gục — hạ tần rồi tắt, kèm bụi
     kill() {
-      this.chord([880, 1100, 1320], 0.2, 'sine', 0.12);
-      this.tone(440, 0.3, 'triangle', 0.08);
+      this.sweep(300, 90, 0.3, 'sawtooth', 0.16);   // tiếng "gục" đi xuống
+      this.sweep(110, 55, 0.25, 'sine', 0.2);       // cú trầm chốt hạ
+      this.chord([440, 349, 262], 0.22, 'triangle', 0.08);  // ba nốt đi xuống
+      this.rumble(0.22, 500, 0.1);                  // bụi/tan ra
     },
 
     // 4. Bị thương (player hurt)

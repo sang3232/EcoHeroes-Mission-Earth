@@ -656,6 +656,7 @@
     // ---------- Quái chết, boss ----------
     killEnemy(e) {
       const S = HSX.S, r = this.room;
+      HSX.Audio.kill();   // tiếng chết: mọi đường gây sát thương đều đi qua đây
       e.dead = true;
       S.stats.kills++;
       this.deathFx(e.x + e.w / 2, e.y + e.h / 2, e.def.chip || [e.def.color], Math.max(e.w, e.h));
@@ -827,7 +828,7 @@
           if (res === 'block') HSX.Audio.ricochet();
           else if (res === 'giap') HSX.Audio.armorHit();
           else HSX.Audio.hit();
-          if (res !== 'block' && e.hp <= 0) HSX.Audio.kill();  // quái bị hạ
+          // quái bị hạ: killEnemy() lo tiếng chết (không gọi lại ở đây)
           return false;
         }
         const o = r.objs.find(x => x.type === 'heap' && Phys.overlap(s, { x: x.x + 2, y: x.y + 8, w: T - 4, h: T - 8 }));
