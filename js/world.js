@@ -375,7 +375,7 @@
           HSX.Audio.hit();
         } else if (res !== 'block') {
           gain(dmg * 2.2, p.x, p.y);
-          if (res !== 'dead') HSX.Audio.hit();   // đòn chốt hạ: chỉ nghe tiếng chết (killEnemy)
+          HSX.Audio.hit(res === 'dead' ? 0.45 : 1);   // đòn chốt hạ: vẫn có tiếng đánh nhưng nhỏ hơn
         } else {
           // Quái đỡ đòn (block): âm thanh bật lại
           HSX.Audio.ricochet();
@@ -827,7 +827,7 @@
           // Âm thanh theo kết quả đòn: vỏ đỡ (0 sát thương) → bật lại; giáp boss (ăn 40%) → trúng giáp; còn lại → trúng đòn
           if (res === 'block') HSX.Audio.ricochet();
           else if (res === 'giap') HSX.Audio.armorHit();
-          else if (res !== 'dead') HSX.Audio.hit();   // đòn chốt hạ: chỉ nghe tiếng chết (killEnemy)
+          else HSX.Audio.hit(res === 'dead' ? 0.45 : 1);   // đòn chốt hạ: tiếng đánh nhỏ hơn
           // quái bị hạ: killEnemy() lo tiếng chết (không gọi lại ở đây)
           return false;
         }

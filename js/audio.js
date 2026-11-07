@@ -144,10 +144,12 @@
       this.rumble(0.12, 260, 0.2);                // "bụp" đất, lowpass nên không chói
     },
 
-    // 2. Trúng đòn (hit enemy): hạ một quãng tám, nghe nặng tay hơn
-    hit() {
-      this.tone(320, 0.06, 'square', 0.12);
-      this.tone(160, 0.08, 'triangle', 0.1);
+    // 2. Trúng đòn (hit enemy): hạ một quãng tám, nghe nặng tay hơn.
+    // k: hệ số âm lượng (đòn chốt hạ vẫn phát tiếng đánh nhưng nhỏ hơn).
+    hit(k) {
+      const v = k === undefined ? 1 : k;
+      this.tone(320, 0.06, 'square', 0.12 * v);
+      this.tone(160, 0.08, 'triangle', 0.1 * v);
     },
 
     // 3. Hạ quái (kill enemy): tiếng gục — hạ tần rồi tắt, kèm bụi
