@@ -141,18 +141,18 @@
 
     // Cổng Rừng M2: cảnh thoại khi chưa mở / đã mở
     c_ung_rung_m2: () => [
-      { neu: () => HSX.S.level === 'm2', cho: 0.9 },
+      { neu: () => HSX.S.level === 'm2', buoc: [], cho: 0.9 },
       { den: true, cho: 0.4 },
       { noi: 'mam', chu: 'Rừng quá tối, tinh linh không thể soi đường. Đom đóm chỉ tụ về khi có đủ bần mọc ở chỗ tối.' },
       { neu: () => HSX.Quests && HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok, buoc: [
         { lam: () => { /* animation: đom đóm tụ về */ }, cho: 0.5 },
         { noi: 'mam', chu: 'Nghe thấy tiếng động! Đom đóm đang về kín rặng bần...' },
-        { neu: () => HSX.S.flags.congRung, cho: 0.3 },
+        { neu: () => HSX.S.flags.congRung, buoc: [], cho: 0.3 },
         { noi: 'sen', chu: 'Cổng mở rồi! Chúng ta có thể đi qua.' },
-        { neu: () => !HSX.S.flags.congRung, cho: 0.3 },
+        { neu: () => !HSX.S.flags.congRung, buoc: [], cho: 0.3 },
         { noi: 'sen', chu: 'Chờ một tí, cổng vẫn khóa. Hãy trồng đủ 4 cây bần ở các ô tối, tránh các ô quá sáng.' },
       ] },
-      { neu: () => !HSX.Quests || !HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok, cho: 0.5 },
+      { neu: () => !HSX.Quests || !HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok, buoc: [], cho: 0.5 },
       { noi: 'mam', chu: 'Cổng vẫn khóa. Trong sổ tay Mẹ Đước ghi: trồng đủ 4 cây bần ở ô tối, đừng để cây nào lớn ở ô sáng.' },
     ],
     // Vua Túi Nilon
