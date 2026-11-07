@@ -793,6 +793,7 @@
       const pha = f => { this.banPha = true; const kq = f(); this.banPha = false; return kq; };   // đồ rơi trong lúc này tự bay về Mầm
       s.t += dt;
       for (let k = 0; k < 3; k++) {   // chia nhỏ bước: hạt bay nhanh không xuyên qua tường mỏng, quái nhỏ
+        const ox = s.x, oy = s.y;     // vị trí trước bước nhỏ: biết hạt vào ô rắn từ hướng nào
         s.vy += s.g * dt / 3;
         s.x += s.vx * dt / 3;
         s.y += s.vy * dt / 3;
@@ -808,8 +809,10 @@
         }
         if (r.solid(tx, ty)) {
           this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff');
-          // Rơi xuống chạm đất → tiếng trầm; bay ngang bật tường → tiếng bật
-          if (s.vy > 0 && s.vy > Math.abs(s.vx) * 0.5) HSX.Audio.thud();
+          // Vào ô rắn từ hàng phía trên → chạm mặt đất: tiếng trầm.
+          // Còn lại (đâm ngang vào tường / từ dưới lên) → tiếng bật.
+          const oty = Math.floor((oy + s.h / 2) / T);
+          if (oty < ty) HSX.Audio.thud();
           else HSX.Audio.ricochet();
           return false;
         }

@@ -86,6 +86,27 @@
       src.stop(t + dur + 0.02);
     },
 
+    // Nhiễu trắng qua lowpass: tiếng "bụp" có lực mà không chói
+    rumble(dur, cutoff, vol, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = (when === undefined ? ctx.currentTime : when), buf = this._noise();
+      if (!buf) return;
+      const src = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), gain = ctx.createGain();
+      src.buffer = buf;
+      src.loop = true;
+      flt.type = 'lowpass';
+      flt.frequency.value = cutoff || 300;
+      flt.Q.value = 0.8;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(vol, t + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(flt);
+      flt.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(t);
+      src.stop(t + dur + 0.02);
+    },
+
     // Nốt trượt tần số (dây ná bật)
     sweep(f0, f1, dur, type, vol, when) {
       if (!this.enabled || !this.ctx) return;
@@ -116,10 +137,11 @@
       this.whoosh(0.13, 2800, 900, 0.1, 2);
     },
 
-    // 28. Hạt ná chạm đất: chỉ tiếng trầm, đục — không lẫn lớp nhiễu cao
+    // 28. Hạt ná chạm đất: trầm, đục, đủ lực — không lẫn lớp nhiễu cao
     thud() {
-      this.sweep(130, 42, 0.16, 'sine', 0.26);
-      this.tone(56, 0.2, 'triangle', 0.14);
+      this.sweep(170, 55, 0.18, 'sine', 0.42);    // cú đục đi xuống
+      this.tone(95, 0.22, 'triangle', 0.24);      // thân trầm, nghe rõ trên loa nhỏ
+      this.rumble(0.12, 260, 0.2);                // "bụp" đất, lowpass nên không chói
     },
 
     // 2. Trúng đòn (hit enemy)
@@ -151,11 +173,10 @@
       this.tone(180, 0.08, 'sine', 0.1);
     },
 
-    // 7. Lướt né (dash)
+    // 7. Lướt né (dash): gió vụt qua — dài, loãng, khác tiếng chém
     dash() {
-      this.tone(800, 0.05, 'sine', 0.1);
-      this.tone(1200, 0.04, 'sine', 0.06);
-      this.tone(1600, 0.03, 'sine', 0.04);
+      this.whoosh(0.26, 700, 260, 0.14, 0.9);     // luồng gió chính, hạ dần
+      this.whoosh(0.22, 1800, 700, 0.05, 2.2);    // lớp mảnh phía sau
     },
 
     // 8. Nhặt rác / tương tác (pickup/interact)
