@@ -250,10 +250,13 @@
 
     // 26. Đập xuống / Slam (Gấu Rừng): nhảy rồi đập đất để phá nền
     slam() {
+      this.sweep(120, 38, 0.5, 'sine', 0.45);     // cú nện trầm, dài và nặng
+      this.tone(70, 0.45, 'triangle', 0.3);       // thân sub nghe rõ trên loa nhỏ
       this.tone(120, 0.3, 'sawtooth', 0.12);
       this.tone(90, 0.4, 'square', 0.1);
-      this.chord([60, 80, 100], 0.2, 'sawtooth', 0.06);
-      this.whoosh(0.18, 700, 120, 0.1, 0.7);   // lớp gió/đất bụi khi chạm nền
+      this.chord([60, 80, 100], 0.2, 'sawtooth', 0.08);
+      this.rumble(0.3, 200, 0.28);                // đất bụi nặng, lowpass nên không chói
+      this.whoosh(0.18, 700, 120, 0.1, 0.7);      // lớp gió khi chạm nền
     },
 
     // 17. Bán / nâng cấp / chế tạo (craft/upgrade)
