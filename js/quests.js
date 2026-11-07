@@ -64,6 +64,15 @@
       return true;
     },
 
+    // Nhận xẻng qua lời thoại Mẹ Đước (quest bắc cầu đã xong nhưng chưa lấy được).
+    // Không hoàn toàn tuỳ: chỉ cấp nếu player chưa có xẻng.
+    recvBacCau(s) {
+      if (!s || !this.daXong('bac_cau')) return false;
+      if (!s.owned.xeng && HSX.Sys && HSX.Sys.grant) HSX.Sys.grant('xeng', 1);
+      else if (!s.owned.xeng) s.owned.xeng = true;
+      return !!(s.owned.xeng);
+    },
+
     tick(dt) {
       tickT += dt;
       if (tickT < 0.4) return;

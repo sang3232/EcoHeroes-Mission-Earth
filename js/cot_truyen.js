@@ -265,8 +265,9 @@
         } else if (Q.daXong('dom_dom')) {
           buoc.push({ noi: 'me_duoc', chu: 'Đêm qua đom đóm về kín rặng bần. Cổng Rừng sáng lên như có đèn. Con giỏi lắm.' });
         } else if (Q.daXong('bac_cau')) {
+          Q.recvBacCau(s);
           buoc.push(
-            { noi: 'me_duoc', chu: 'Cây cầu rễ chắc rồi. Cầm lấy cái xẻng này. Rặng bần ven lạch đang thiếu bần; chỗ nào đèn chiếu sáng quá thì đom đóm không đậu.' },
+            { noi: 'me_duoc', chu: 'Cây cầu rễ chắc rồi. Con tới nhà bà, bà sẽ giao cho cái xẻng.' },
             { noi: 'mam', chu: 'Con trồng bần ở mấy ô tối, đủ bốn cây. Cây mọc nhầm chỗ sáng thì con đào lên.' });
         }
       }

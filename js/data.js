@@ -207,13 +207,9 @@ HSX.DATA = {
         { text: 'Đợi rễ đước vươn thành cầu cho Mẹ Đước đi lại' },
       ],
       xong: () => { const t = (HSX.S.trees.nha_me_duoc || {})[0]; return !!(t && t.type === 'duoc' && t.g >= 1); },
-      xongText: 'Mẹ Đước đưa con chiếc xẻng 🪏 và 6 trụ mầm — từ giờ có thể đào cây đã trồng lên.',
-      khiXong: () => {
-        const s = HSX.S;
-        if (HSX.Sys && HSX.Sys.grant) HSX.Sys.grant('xeng', 1);
-        else s.owned.xeng = true;
-        s.seeds += 6;
-      },
+      xongText: 'Rễ cầu rễ chắc rồi — con tới nhà bà để bà trao xẻng.',
+      // Xẻng không tự động cấp: chỉ khi người chơi ghé nhà Mẹ Đước mới lấy (đảm bảo đi tới chỗ bà rồi).
+      khiXong: () => { const s = HSX.S; s.seeds += 6; },
     },
     dom_dom: {
       ten: 'Đom đóm về rặng bần',

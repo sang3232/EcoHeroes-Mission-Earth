@@ -169,6 +169,13 @@
       W.xaNuoc();
       return 'nước đã rút';
     }],
+    veban: ['ve ban: xóa cây bần vườn đom đóm + reset quest Rặng Bần (làm lại)', () => {
+      const s = HSX.S;
+      const tr = s.trees.ran_ban || {};
+      for (const i in tr) delete tr[i];
+      Object.assign(s.quests, { bac_cau: { state: 'moi', buoc: 0 }, dom_dom: { state: 'moi', buoc: 0 } });
+      return 'vườn bần rộng răi, quest đã reset';
+    }],
     truyen: ['truyen <tên cảnh>: xem lại một cảnh truyện, ví dụ "truyen mo_dau". Gõ "truyen" để xem danh sách', arg => {
       const id = Object.keys(HSX.CANH).find(k => norm(k).replace(/_/g, '') === norm(arg || '').replace(/[_\s]/g, ''));
       if (!id) return { loi: 'Cảnh: ' + Object.keys(HSX.CANH).join(', ') };

@@ -67,9 +67,13 @@ if (Q.buoc('bac_cau') !== 1) bao('Đã có trụ mầm đước nhưng chưa chu
 S.trees.nha_me_duoc[0].g = 1;
 Q.tick(1);
 if (!Q.daXong('bac_cau')) bao('Rễ đước lớn mà nhiệm vụ bắc cầu chưa xong.');
-if (!S.owned.xeng) bao('Hoàn thành bắc cầu phải mở khoá xẻng.');
+// Xẻng không tự động cấp: chỉ khi người chơi ghé nhà Mẹ Đước (mô phỏng bằng Q.recvBacCau).
+if (S.owned.xeng) bao('Hoàn thành bắc cầu không được tự động cấp xẻng — phải đi tới nhà bà.');
+Q.recvBacCau(S);
+if (!S.owned.xeng) bao('Gọi recvBacCau (tiếng nói mẹ) phải mở khóa xẻng.');
+Q.tick(1); // tick để moKhi dom_dom được đánh giá
 if (!Q.dangLam('dom_dom')) bao('Có xẻng rồi phải tự nhận nhiệm vụ đom đóm.');
-if (!loi) ok('Bắc cầu: nhận → chờ rễ → hoàn thành → nhận xẻng → mở nhiệm vụ đom đóm.');
+if (!loi) ok('Bắc cầu: nhận → chờ rễ → hoàn thành → đi nhà bà nhận xẻng → mở nhiệm vụ đom đóm.');
 
 const truoc = S.seeds;
 S.trees.ran_ban = Object.assign(cay([0, 1, 2, 3], 1), { 4: { type: 'ban', g: 1 } });
@@ -86,7 +90,7 @@ if (S.seeds !== truoc + 6) bao(`Hoàn thành đom đóm phải thưởng 6 hạt
 const sau = S.seeds;
 Q.tick(1);
 if (S.seeds !== sau) bao('Nhiệm vụ đã xong vẫn thưởng thêm hạt giống.');
-if (!loi) ok('Đom đóm: chặn ô sáng → đủ 4 cây tối → mở cổng, thưởng đúng một lần.');
+if (!loi) ok('Đom đóm: chắn ô sáng → đủ 4 cây tối → mở cổng, thưởng đúng một lần.');
 
 // ---------- Trạng thái lưu ----------
 if (!Q.list().length) bao('list() phải trả về danh sách nhiệm vụ.');
