@@ -813,7 +813,10 @@
           const gain = res === 'giap' ? dealt * 0.15 : (res !== 'block' ? dealt * 0.55 : 0);
           if (res === 'giap') { this.spark(cx, cy, '#cfd3e0'); this.napNL(gain, cx, cy); }
           else if (res !== 'block') { this.hitFx(cx, cy, ang, (e.def.chip || [])[0]); this.napNL(gain, cx, cy); }
-          HSX.Audio.hit();   // âm thanh trúng quái
+          // Âm thanh theo kết quả đòn: vỏ đỡ (0 sát thương) → bật lại; giáp boss (ăn 40%) → trúng giáp; còn lại → trúng đòn
+          if (res === 'block') HSX.Audio.ricochet();
+          else if (res === 'giap') HSX.Audio.armorHit();
+          else HSX.Audio.hit();
           if (res !== 'block' && e.hp <= 0) HSX.Audio.kill();  // quái bị hạ
           return false;
         }
