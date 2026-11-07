@@ -346,3 +346,26 @@ node --check (10 files)     → all pass
 - Real jump-over attempt at the gate column.
 - Pollination toast cadence (15 s) in live play.
 
+---
+
+## 11. Closeout (06-11-2026)
+
+**Archive-readiness**: READY — plan contract satisfied, all automated gates green, work committed.
+
+- Plan moved to `process/general-plans/completed/`.
+- Closeout report: `process/general-plans/reports/ecoheroes-m2-minigame_closeout_06-11-2026.md`.
+- Commits: `41cd9eb` (feature + tests), `1289f23` (plan/docs). Branch `feature/ecoheroes-fixes`, **not pushed**.
+- Outstanding: three manual browser checks listed above. They are polish/confirmation items, not
+  blockers — the gate is enforced by both the level geometry and the headless path solver.
+
+**Durable learnings** (captured in the closeout report because this repo has no `process/context/` tree yet):
+
+1. A blocking gate must be ≥3 tiles tall; 2 tiles (96 px) is jumpable at `C.JUMP 800 / C.GRAV 2400`
+   (≈133 px apex). Pair it with a solid cliff above so no alternate arc exists.
+2. Every new `G` tile requires a matching `MAN.<level>` stage with `puzzle: true`, otherwise
+   `kiem_tra/duong_di.js` under-reports and silently marks the boss reachable.
+3. `S.puzzle.solved` is a global M1 flag. Any M2 gate logic must go through a level-aware
+   `gateSolved()` helper, never `S.puzzle` directly.
+4. Repo has no `process/context/`, `process/features/`, or `process/development-protocols/`.
+   `vc-audit-context` / `vc-audit-vc` cannot run here until `vc-setup` or `vc-generate-context` seeds them.
+
