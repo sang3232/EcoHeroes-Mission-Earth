@@ -53,11 +53,67 @@
       freqs.forEach(f => this.tone(f, dur, type, vol / freqs.length, when));
     },
 
+    // Nhiễu trắng (tạo một lần rồi dùng lại) — nền cho tiếng gió
+    _noise() {
+      if (this._noiseBuf || !this.ctx) return this._noiseBuf;
+      const ctx = this.ctx, rate = ctx.sampleRate || 44100;
+      const buf = ctx.createBuffer(1, Math.floor(rate * 0.5), rate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      this._noiseBuf = buf;
+      return buf;
+    },
+
+    // Tiếng gió: nhiễu trắng qua bandpass quét tần số (f0 → f1)
+    whoosh(dur, f0, f1, vol, q, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = (when === undefined ? ctx.currentTime : when), buf = this._noise();
+      if (!buf) return;
+      const src = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), gain = ctx.createGain();
+      src.buffer = buf;
+      src.loop = true;
+      flt.type = 'bandpass';
+      flt.Q.value = q || 1;
+      flt.frequency.setValueAtTime(f0, t);
+      flt.frequency.exponentialRampToValueAtTime(Math.max(40, f1), t + dur);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(vol, t + dur * 0.32);
+      gain.gain.linearRampToValueAtTime(0.0001, t + dur);
+      src.connect(flt);
+      flt.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(t);
+      src.stop(t + dur + 0.02);
+    },
+
+    // Nốt trượt tần số (dây ná bật)
+    sweep(f0, f1, dur, type, vol, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = (when === undefined ? ctx.currentTime : when);
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = type || 'triangle';
+      osc.frequency.setValueAtTime(f0, t);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(vol, t + 0.008);
+      gain.gain.linearRampToValueAtTime(0.0001, t + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dur + 0.02);
+    },
+
     // ---- Các hiệu ứng âm thanh game ----
-    // 1. Chém (slash)
+    // 1. Chém (slash): tiếng gió xé — hai lớp nhiễu quét ngược chiều
     slash() {
-      this.tone(440, 0.08, 'sawtooth', 0.12);
-      this.tone(880, 0.06, 'square', 0.08);
+      this.whoosh(0.18, 2200, 420, 0.16, 1.2);
+      this.whoosh(0.12, 3600, 1400, 0.06, 3.5);
+    },
+
+    // 27. Bắn ná (slingshot): dây bật + hạt xé gió
+    shoot() {
+      this.sweep(340, 105, 0.1, 'triangle', 0.16);
+      this.whoosh(0.13, 2800, 900, 0.1, 2);
     },
 
     // 2. Trúng đòn (hit enemy)

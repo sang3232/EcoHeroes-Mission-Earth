@@ -172,6 +172,7 @@
         else {
           this.atkT = C.ATK_T;
           this.atkCd = C.ATK_CD;
+          HSX.Audio.slash();
           this.chemTruoc = this.chemLuc;
           this.chemLuc = this.anim;
           if (!this.atkAim) {
@@ -273,6 +274,7 @@
       this.banAng = a;
       this.banCd = C.BAN_CD;
       this.banT = 0.25;
+      HSX.Audio.shoot();
       HSX.World.banHat(d.x, d.y, a, this.tocBan(luc), C.BAN_G);
       HSX.emit('ban', { goc: a, luc });
     },
