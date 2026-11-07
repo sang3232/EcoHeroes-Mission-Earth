@@ -171,10 +171,10 @@
     }],
     veban: ['ve ban: xóa cây bần vườn đom đóm + reset quest Rặng Bần (làm lại)', () => {
       const s = HSX.S;
-      const tr = s.trees.ran_ban || {};
-      for (const i in tr) delete tr[i];
+      s.trees.ran_ban = {};   // xóa hết cây đã trồng (không chỉ xóa key)
+      s.flags.congRung = false; // cổng về lại khóa
       Object.assign(s.quests, { bac_cau: { state: 'moi', buoc: 0 }, dom_dom: { state: 'moi', buoc: 0 } });
-      return 'vườn bần rộng răi, quest đã reset';
+      return 'vườn đã cạn, quest reset, cổng Rừng khóa lại';
     }],
     truyen: ['truyen <tên cảnh>: xem lại một cảnh truyện, ví dụ "truyen mo_dau". Gõ "truyen" để xem danh sách', arg => {
       const id = Object.keys(HSX.CANH).find(k => norm(k).replace(/_/g, '') === norm(arg || '').replace(/[_\s]/g, ''));
