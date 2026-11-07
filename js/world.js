@@ -1132,15 +1132,14 @@
               : `Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`;
             HSX.UI.toast(noi);
           } else if (m2) {
-            // Cổng Rừng chỉ mở khi đom đóm tụ về vườn bần: không dùng bảng Puzzle2 nữa.
-            const dat = HSX.Quests ? HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, S.trees.ran_ban || {}) : null;
-            let noi = 'Rừng tối quá, tinh linh không thể soi đường. Đom đóm chỉ tụ về khi có đủ bần mọc ở chỗ tối.';
-            if (dat) {
-              noi += ` Hiện có ${dat.dat}/${dat.can} cây bần đã lớn ở chỗ tối`;
-              noi += dat.sai ? `, ${dat.sai} cây đang lớn ở chỗ quá sáng.` : '.';
+            if (gateSolved()) {
+              // Cổng Rừng đã mở, không cần cảnh
+            } else {
+              if (HSX.Truyen && HSX.Truyen.play) {
+                const dat = HSX.Quests ? HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, S.trees.ran_ban || {}) : null;
+                HSX.Truyen.play('c_ung_rung_m2', { khongLuu: true });
+              }
             }
-            noi += ' Sổ tay Mẹ Đước ở Rặng Bần có ghi.';
-            HSX.UI.toast(noi, '', 7000);
           } else HSX.Puzzle.open();
           break;
         }
