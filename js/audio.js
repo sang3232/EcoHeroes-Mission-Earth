@@ -53,23 +53,111 @@
       freqs.forEach(f => this.tone(f, dur, type, vol / freqs.length, when));
     },
 
+    // Nhiễu trắng (tạo một lần rồi dùng lại) — nền cho tiếng gió
+    _noise() {
+      if (this._noiseBuf || !this.ctx) return this._noiseBuf;
+      const ctx = this.ctx, rate = ctx.sampleRate || 44100;
+      const buf = ctx.createBuffer(1, Math.floor(rate * 0.5), rate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      this._noiseBuf = buf;
+      return buf;
+    },
+
+    // Tiếng gió: nhiễu trắng qua bandpass quét tần số (f0 → f1)
+    whoosh(dur, f0, f1, vol, q, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = (when === undefined ? ctx.currentTime : when), buf = this._noise();
+      if (!buf) return;
+      const src = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), gain = ctx.createGain();
+      src.buffer = buf;
+      src.loop = true;
+      flt.type = 'bandpass';
+      flt.Q.value = q || 1;
+      flt.frequency.setValueAtTime(f0, t);
+      flt.frequency.exponentialRampToValueAtTime(Math.max(40, f1), t + dur);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(vol, t + dur * 0.32);
+      gain.gain.linearRampToValueAtTime(0.0001, t + dur);
+      src.connect(flt);
+      flt.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(t);
+      src.stop(t + dur + 0.02);
+    },
+
+    // Nhiễu trắng qua lowpass: tiếng "bụp" có lực mà không chói
+    rumble(dur, cutoff, vol, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = (when === undefined ? ctx.currentTime : when), buf = this._noise();
+      if (!buf) return;
+      const src = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), gain = ctx.createGain();
+      src.buffer = buf;
+      src.loop = true;
+      flt.type = 'lowpass';
+      flt.frequency.value = cutoff || 300;
+      flt.Q.value = 0.8;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(vol, t + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(flt);
+      flt.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(t);
+      src.stop(t + dur + 0.02);
+    },
+
+    // Nốt trượt tần số (dây ná bật)
+    sweep(f0, f1, dur, type, vol, when) {
+      if (!this.enabled || !this.ctx) return;
+      const ctx = this.ctx, t = (when === undefined ? ctx.currentTime : when);
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = type || 'triangle';
+      osc.frequency.setValueAtTime(f0, t);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(vol, t + 0.008);
+      gain.gain.linearRampToValueAtTime(0.0001, t + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dur + 0.02);
+    },
+
     // ---- Các hiệu ứng âm thanh game ----
-    // 1. Chém (slash)
+    // 1. Chém (slash): tiếng gió xé — hai lớp nhiễu quét ngược chiều
     slash() {
-      this.tone(440, 0.08, 'sawtooth', 0.12);
-      this.tone(880, 0.06, 'square', 0.08);
+      this.whoosh(0.18, 2200, 420, 0.16, 1.2);
+      this.whoosh(0.12, 3600, 1400, 0.06, 3.5);
     },
 
-    // 2. Trúng đòn (hit enemy)
-    hit() {
-      this.tone(660, 0.06, 'square', 0.1);
-      this.tone(1320, 0.04, 'sine', 0.06);
+    // 27. Bắn ná (slingshot): dây bật + hạt xé gió
+    shoot() {
+      this.sweep(340, 105, 0.1, 'triangle', 0.16);
+      this.whoosh(0.13, 2800, 900, 0.1, 2);
     },
 
-    // 3. Hạ quái (kill enemy)
+    // 28. Hạt ná chạm đất: trầm, đục, đủ lực — không lẫn lớp nhiễu cao
+    thud() {
+      this.sweep(170, 55, 0.18, 'sine', 0.42);    // cú đục đi xuống
+      this.tone(95, 0.22, 'triangle', 0.24);      // thân trầm, nghe rõ trên loa nhỏ
+      this.rumble(0.12, 260, 0.2);                // "bụp" đất, lowpass nên không chói
+    },
+
+    // 2. Trúng đòn (hit enemy): hạ một quãng tám, nghe nặng tay hơn.
+    // k: hệ số âm lượng (đòn chốt hạ vẫn phát tiếng đánh nhưng nhỏ hơn).
+    hit(k) {
+      const v = k === undefined ? 1 : k;
+      this.tone(320, 0.06, 'square', 0.12 * v);
+      this.tone(160, 0.08, 'triangle', 0.1 * v);
+    },
+
+    // 3. Hạ quái (kill enemy): tiếng gục — hạ tần rồi tắt, kèm bụi
     kill() {
-      this.chord([880, 1100, 1320], 0.2, 'sine', 0.12);
-      this.tone(440, 0.3, 'triangle', 0.08);
+      this.sweep(300, 90, 0.3, 'sawtooth', 0.16);   // tiếng "gục" đi xuống
+      this.sweep(110, 55, 0.25, 'sine', 0.2);       // cú trầm chốt hạ
+      this.chord([440, 349, 262], 0.22, 'triangle', 0.08);  // ba nốt đi xuống
+      this.rumble(0.22, 500, 0.1);                  // bụi/tan ra
     },
 
     // 4. Bị thương (player hurt)
@@ -89,11 +177,10 @@
       this.tone(180, 0.08, 'sine', 0.1);
     },
 
-    // 7. Lướt né (dash)
+    // 7. Lướt né (dash): gió vụt qua — dài, loãng, khác tiếng chém
     dash() {
-      this.tone(800, 0.05, 'sine', 0.1);
-      this.tone(1200, 0.04, 'sine', 0.06);
-      this.tone(1600, 0.03, 'sine', 0.04);
+      this.whoosh(0.26, 700, 260, 0.14, 0.9);     // luồng gió chính, hạ dần
+      this.whoosh(0.22, 1800, 700, 0.05, 2.2);    // lớp mảnh phía sau
     },
 
     // 8. Nhặt rác / tương tác (pickup/interact)
@@ -167,9 +254,13 @@
 
     // 26. Đập xuống / Slam (Gấu Rừng): nhảy rồi đập đất để phá nền
     slam() {
+      this.sweep(120, 38, 0.5, 'sine', 0.45);     // cú nện trầm, dài và nặng
+      this.tone(70, 0.45, 'triangle', 0.3);       // thân sub nghe rõ trên loa nhỏ
       this.tone(120, 0.3, 'sawtooth', 0.12);
       this.tone(90, 0.4, 'square', 0.1);
-      this.chord([60, 80, 100], 0.2, 'sawtooth', 0.06);
+      this.chord([60, 80, 100], 0.2, 'sawtooth', 0.08);
+      this.rumble(0.3, 200, 0.28);                // đất bụi nặng, lowpass nên không chói
+      this.whoosh(0.18, 700, 120, 0.1, 0.7);      // lớp gió khi chạm nền
     },
 
     // 17. Bán / nâng cấp / chế tạo (craft/upgrade)

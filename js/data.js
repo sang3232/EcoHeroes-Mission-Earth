@@ -44,6 +44,7 @@ HSX.DATA = {
     kinh_lup:       { kind: 'tool', name: 'Kính Lúp Phân Loại', emoji: '🔍', desc: 'Nhìn xuyên tường giả để đi qua. Puzzle phân loại có thêm gợi ý.', fact: 'thuytinh' },
     xuong_phao:     { kind: 'tool', name: 'Xuồng Phao', emoji: '🛶', desc: 'Nổi trên nước độc: đi qua sông tới Đảo Rác.' },
     na_tai_che:     { kind: 'tool', name: 'Ná Tái Chế', emoji: '🎯', desc: 'Cán ống nhựa, dây bện từ lưới cũ, túi đạn cắt từ lon nhôm. Giữ {ban} để ngắm: hạt bay vòng cung, giữ lâu bắn xa hơn, thả ra để bắn. Mỗi phát chờ chừng 1 giây. Trúng thì được chừng nửa năng lượng so với chém; đồ rơi từ quái, đống rác bị bắn vỡ tự bay về.' },
+    xeng:           { kind: 'tool', name: 'Xẻng', emoji: '🪏', desc: 'Đào cây đã trồng lên, hoàn lại hạt giống. Cây đang bắc cầu rễ cho Mẹ Đước đi lại thì không đào được.' },
     // Công trình
     rao_chan:       { kind: 'structure', name: 'Rào Chắn Ổ Trứng', emoji: '🚧', desc: 'Dựng ở Bãi đẻ rùa để rùa mẹ yên tâm đẻ trứng.' },
     dan_tach_rac:   { kind: 'structure', name: 'Dàn Tách Rác', emoji: '🗑️', desc: 'Mỗi lần nghỉ ở Trạm nhận thêm 3 nguyên liệu.' },
@@ -172,7 +173,7 @@ HSX.DATA = {
     3: { title: 'Sổ tay người nuôi tôm',
       text: 'Năm đó giá tôm lên cao, cả xóm rủ nhau phá rừng đào đầm. Ba vụ đầu trúng lớn, nhà nào cũng sắm được xuồng máy. Tới vụ thứ tư thì tôm chết trắng đầm. Đất nhiễm phèn, nước bẩn, con giống thả xuống bao nhiêu chết bấy nhiêu. Giờ tôi mới hiểu: ngày trước con tôm sống được là nhờ rừng che, rừng lọc nước. Chặt rừng là chặt luôn cái nghề của mình.' },
     4: { title: 'Sổ tay Mẹ Đước',
-      text: 'Mùa này đom đóm về đậu kín mấy cây bần ven lạch, cả rặng cây nhấp nháy như có ai thắp đèn. Bọn nhỏ trong xóm hay chèo xuồng ra coi. Từ hồi người ta thắp đèn sáng choang dọc bờ đầm, đom đóm thưa hẳn. Bà trồng lại mấy cây bần, chừa khoảng tối cho tụi nó. Rừng cần cả bóng tối nữa, con à.' },
+      text: 'Đom đóm chỉ tụ ở chỗ tối và kín gió. Sáu ô đất ven lạch này là chỗ chúng hay đậu, nhưng hai ô sát ngọn đèn thì sáng quá, chúng tránh xa. Muốn gọi đom đóm về soi lối qua Cổng Rừng: trồng đủ 4 cây bần ở bốn ô tối, đừng để cây nào lớn ở hai ô sáng. Cây mọc nhầm chỗ thì lấy xẻng đào lên, đừng tiếc. Rừng cần cả bóng tối nữa, con à.' },
   },
 
   // dat: loại ô trồng được. 'cat': ô đất Màn 1 · 'bun': ô đất Màn 2 · 'boi': bãi bồi (Y) Màn 2, cây đước trồng ở đây mọc rễ bắc cầu
@@ -181,15 +182,53 @@ HSX.DATA = {
     phi_lao:    { name: 'Phi lao', emoji: '🌲', cost: 3, grow: 30, light: 130, fact: 'philao', dat: ['cat'], desc: 'Tỏa sáng mạnh nhất.' },
     dua:        { name: 'Dừa', emoji: '🌴', cost: 5, grow: 40, light: 100, dat: ['cat'], desc: 'Mỗi lần nghỉ ở Trạm cho 2 hạt giống.' },
     duoc:       { name: 'Đước', emoji: '🌳', cost: 2, grow: 15, light: 110, fact: 'duoc', dat: ['boi', 'bun'], desc: 'Cắm trụ mầm xuống bùn. Ở bãi bồi, rễ đước vươn ra bắc thành cầu.' },
-    ban:        { name: 'Bần', emoji: '🌳', cost: 3, grow: 25, light: 125, fact: 'ban', dat: ['bun'], desc: 'Mọc ven lạch nước lợ, tỏa sáng mạnh. Đom đóm rất thích cây bần.' },
+    ban:        { name: 'Bần', emoji: '🌳', cost: 3, grow: 25, light: 40, fact: 'ban', dat: ['bun'], desc: 'Mọc ven lạch nước lợ. Đom đóm tụ về, thụ phấn cho rừng lớn nhanh.' },
   },
 
   species: {
     cong_gio: { name: 'Còng gió', emoji: '🦀', room: 'hang_cong', cond: { tree: { muong_bien: 2 } }, buff: { dropBonus: 0.10 }, fact: 'cong' },
     rua_bien: { name: 'Rùa biển (Đồi mồi)', emoji: '🐢', room: 'bai_de_rua', cond: { clean: 0.8, structure: 'rao_chan' }, buff: { seedBonus: 0.25 }, fact: 'rua' },
     ca_thoi_loi: { name: 'Cá thòi lòi', emoji: '🐟', room: 'dam_bo_hoang', cond: { tree: { duoc: 3 } }, buff: { dropBonus: 0.10 }, fact: 'thoiloi' },
-    dom_dom:  { name: 'Đom đóm', emoji: '✨', room: 'ran_ban', cond: { tree: { ban: 2 } }, buff: { seedBonus: 0.15 }, fact: 'domdom' },
+    dom_dom:  { name: 'Đom đóm', emoji: '✨', room: 'ran_ban', cond: { tree: { ban: 2 } }, buff: { seedBonus: 0.15, growBonus: 0.25 }, fact: 'domdom' },
     co_trang: { name: 'Cò trắng', emoji: '🕊️', room: 'nha_me_duoc', cond: { clean: 0.7 }, buff: { seedBonus: 0.15 }, fact: 'co' },
+  },
+
+  // Nhiệm vụ: khai báo dùng chung, HSX.Quests đọc và tự chạy.
+  // moKhi: tự nhận khi đúng · buoc[].xong: tự chuyển bước · xong(): điều kiện hoàn thành
+  // khiXong: trao thưởng / mở đường · xongText: dòng chữ trong thông báo hoàn thành
+  quests: {
+    bac_cau: {
+      ten: 'Bắc lối qua lạch',
+      nguoiGiao: 'me_duoc',
+      moKhi: () => !!(HSX.S.flags.gapMeDuoc && HSX.S.flags.trongDuoc),
+      buoc: [
+        { text: 'Cắm trụ mầm đước ở bãi bồi trước nhà Mẹ Đước',
+          xong: () => { const t = (HSX.S.trees.nha_me_duoc || {})[0]; return !!(t && t.type === 'duoc'); } },
+        { text: 'Đợi rễ đước vươn thành cầu cho Mẹ Đước đi lại' },
+      ],
+      xong: () => { const t = (HSX.S.trees.nha_me_duoc || {})[0]; return !!(t && t.type === 'duoc' && t.g >= 1); },
+      xongText: 'Rễ cầu rễ chắc rồi — con tới nhà bà để bà trao xẻng.',
+      // Xẻng không tự động cấp: chỉ khi người chơi ghé nhà Mẹ Đước mới lấy (đảm bảo đi tới chỗ bà rồi).
+      khiXong: () => { const s = HSX.S; s.seeds += 6; },
+    },
+    dom_dom: {
+      ten: 'Đom đóm về rặng bần',
+      nguoiGiao: 'me_duoc',
+      moKhi: () => !!(HSX.S.owned && HSX.S.owned.xeng),
+      buoc: [
+        { text: 'Trồng 4 cây bần ở các ô đất ven lạch',
+          xong: () => {
+            const trees = HSX.S.trees.ran_ban || {};
+            let n = 0;
+            for (const i in trees) if (trees[i].type === 'ban') n++;
+            return n >= 4;
+          } },
+        { text: 'Đợi bần lớn, đom đóm tụ về — đừng để cây nào lớn ở chỗ quá sáng' },
+      ],
+      xong: () => HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok,
+      xongText: 'Đom đóm tụ về kín rặng bần. Cổng Rừng đã mở! (+6 🌱)',
+      khiXong: () => { const s = HSX.S; s.flags.congRung = true; s.seeds += 6; },
+    },
   },
 
   // Bản đồ thế giới: 8 màn theo kịch bản. x, y: vị trí mốc trên bản đồ (% bề ngang / bề cao). Màn chưa có trong game thì hiện "sắp ra mắt".

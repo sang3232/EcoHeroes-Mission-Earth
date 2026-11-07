@@ -250,6 +250,26 @@ svg.map { width: 100%; height: auto; max-height: 470px; background: #0b1118; bor
 .pz-stars { text-align: center; font-size: 46px; color: var(--gold); letter-spacing: 4px; }
 .pz-stars span { color: #3a4650; }
 
+/* Puzzle Cổng Rừng (Màn 2) */
+.p2-grid { display: grid; gap: 6px; justify-content: center; margin: 12px auto; }
+.p2-cell { position: relative; width: 54px; height: 54px; border-radius: 10px; background: #0b1a24; border: 1px solid #1e3140; padding: 0; cursor: pointer; overflow: hidden; }
+.p2-cell.empty { background: transparent; border: 1px dashed #1b2a33; cursor: default; }
+.p2-cell.flow { background: #0c1d27; }
+.p2-cell.locked { cursor: default; }
+.p2-cell.bun { background: #16281f; border-color: #2c4a36; }
+.p2-cell.nuoc { background: #0d2230; border-color: #1d4055; cursor: default; }
+.p2-cell.to { background: #2a2413; border-color: #5d4f1f; cursor: default; }
+.p2-cell.to.lit { box-shadow: inset 0 0 0 2px #e8d24a, 0 0 12px rgba(232, 210, 74, .55); }
+.p2-cell.den { background: #2a1a12; border-color: #6b3a1f; }
+.p2-cell.den.on { box-shadow: 0 0 14px rgba(255, 190, 90, .75); }
+.p2-cell.done { box-shadow: inset 0 0 0 2px #37d67a; }
+.p2-arm { position: absolute; background: #3f7f9c; border-radius: 3px; }
+.p2-cell.done .p2-arm { background: #4fd07f; }
+.p2-dot { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #58a8c9; }
+.p2-cell.to .p2-dot, .p2-cell.bun .p2-dot { background: rgba(140, 170, 150, .35); }
+.p2-ico { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.p2-sapling { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 27px; }
+
 /* ---------- Thông báo ---------- */
 /* Dưới lớp hộp thoại (50): thông báo không che nội dung menu đang mở */
 #toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 45; width: min(560px, calc(100vw - 32px)); pointer-events: none; }

@@ -169,6 +169,14 @@
       W.xaNuoc();
       return 'nước đã rút';
     }],
+    veban: ['ve ban: xóa cây bần + cây cầu rễ vườn đom đóm + reset quest Rặng Bần (làm lại)', () => {
+      const s = HSX.S;
+      s.trees.nha_me_duoc = {};   // xóa cả cây cầu rễ (để lại Mẹ Đước không còn đủ điều kiện)
+      s.trees.ran_ban = {};       // xóa hết cây bần đã trồng
+      s.flags.congRung = false;  // cổng về lại khóa
+      Object.assign(s.quests, { bac_cau: { state: 'moi', buoc: 0 }, dom_dom: { state: 'moi', buoc: 0 } });
+      return 'đã xóa cây, quest reset, cổng Rừng khóa lại';
+    }],
     truyen: ['truyen <tên cảnh>: xem lại một cảnh truyện, ví dụ "truyen mo_dau". Gõ "truyen" để xem danh sách', arg => {
       const id = Object.keys(HSX.CANH).find(k => norm(k).replace(/_/g, '') === norm(arg || '').replace(/[_\s]/g, ''));
       if (!id) return { loi: 'Cảnh: ' + Object.keys(HSX.CANH).join(', ') };

@@ -9,6 +9,8 @@
   // Năng lượng mỗi lần hạt ná trúng: quái, giáp boss, đống rác, túi / lưới đang bay, lưới ma giăng
   // (chém trúng được 11, 3, 4, 6, 3: ná được chừng một nửa)
   const NL_BAN = { quai: 5, giap: 1, rac: 2, dan: 3, luoi: 1 };
+  // Cổng đã mở chưa? Màn 1 dùng puzzle phân loại, Màn 2 dùng cờ "cổng rừng"
+  const gateSolved = () => (HSX.S.level === 'm2' ? !!HSX.S.flags.congRung : !!HSX.S.puzzle.solved);
 
   // ---------- Phòng ----------
   function Room(id) {
@@ -41,8 +43,13 @@
         case 'B': this.objs.push(Object.assign(o, { type: 'bench' })); break;
         case 'S': if (!S.spirits[def.spirit]) this.objs.push(Object.assign(o, { type: 'cage', spirit: def.spirit, hp: 3, shake: 0 })); break;
         case 'T': { const i = n.heap++; if (!heaps[i]) this.objs.push(Object.assign(o, { type: 'heap', idx: i, hp: 3, shake: 0 })); break; }
-        case 'P': this.objs.push(Object.assign(o, { type: 'plant', idx: n.plant++, dat: lv === 'm1' ? 'cat' : 'bun' })); break;
-        case 'Y': this.objs.push(Object.assign(o, { type: 'plant', idx: n.plant++, dat: 'boi' })); break;
+        case 'P': {
+          const i = n.plant++;
+          // sang: 0 ô tối, 2 ô quá sáng (gần đèn). Vườn đom đóm ở Rặng Bần dùng giá trị này.
+          this.objs.push(Object.assign(o, { type: 'plant', idx: i, dat: lv === 'm1' ? 'cat' : 'bun', sang: (def.plantSang || [])[i] || 0 }));
+          break;
+        }
+        case 'Y': this.objs.push(Object.assign(o, { type: 'plant', idx: n.plant++, dat: 'boi', sang: 0 })); break;
         case 'M': this.objs.push(Object.assign(o, { type: 'npc', npc: 'me_duoc' })); break;
         case 'A': this.objs.push(Object.assign(o, { type: 'hut' })); break;
         case 'H': { const i = n.shard++; if (!picked['H' + i]) this.objs.push(Object.assign(o, { type: 'shard', idx: i })); break; }
@@ -107,7 +114,7 @@
     if (c === '#' || c === 'X' || c === 'n') return true;
     if (c === '?') return !HSX.S.owned.kinh_lup;
     if (c === 'D') return !HSX.S.flags.sorted;
-    if (c === 'G') return !HSX.S.puzzle.solved;
+    if (c === 'G') return !gateSolved();
     if (isDoor(c)) return this.locked;
     return false;
   };
@@ -373,7 +380,7 @@
           HSX.Audio.hit();
         } else if (res !== 'block') {
           gain(dmg * 2.2, p.x, p.y);
-          HSX.Audio.hit();
+          HSX.Audio.hit(res === 'dead' ? 0.45 : 1);   // đòn chốt hạ: vẫn có tiếng đánh nhưng nhỏ hơn
         } else {
           // Quái đỡ đòn (block): âm thanh bật lại
           HSX.Audio.ricochet();
@@ -430,6 +437,7 @@
     // Gấu Rừng đập xuống: phá nền nứt, gây sóng chấn quanh chân
     slamImpact(P) {
       const r = this.room, b = P.b, cx = P.cx(), feet = b.y + b.h;
+      HSX.Audio.slam();
       this.shake = 14;
       this.hitstop = 0.06;
       this.dust(cx, feet, 14);
@@ -653,6 +661,7 @@
     // ---------- Quái chết, boss ----------
     killEnemy(e) {
       const S = HSX.S, r = this.room;
+      HSX.Audio.kill();   // tiếng chết: mọi đường gây sát thương đều đi qua đây
       e.dead = true;
       S.stats.kills++;
       this.deathFx(e.x + e.w / 2, e.y + e.h / 2, e.def.chip || [e.def.color], Math.max(e.w, e.h));
@@ -790,6 +799,7 @@
       const pha = f => { this.banPha = true; const kq = f(); this.banPha = false; return kq; };   // đồ rơi trong lúc này tự bay về Mầm
       s.t += dt;
       for (let k = 0; k < 3; k++) {   // chia nhỏ bước: hạt bay nhanh không xuyên qua tường mỏng, quái nhỏ
+        const ox = s.x, oy = s.y;     // vị trí trước bước nhỏ: biết hạt vào ô rắn từ hướng nào
         s.vy += s.g * dt / 3;
         s.x += s.vx * dt / 3;
         s.y += s.vy * dt / 3;
@@ -803,7 +813,15 @@
           pha(() => this.chatLuoi(this.tamLuoi(tx, ty), tx, ty, ang));
           return false;
         }
-        if (r.solid(tx, ty)) { this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff'); HSX.Audio.ricochet(); return false; }
+        if (r.solid(tx, ty)) {
+          this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff');
+          // Vào ô rắn từ hàng phía trên → chạm mặt đất: tiếng trầm.
+          // Còn lại (đâm ngang vào tường / từ dưới lên) → tiếng bật.
+          const oty = Math.floor((oy + s.h / 2) / T);
+          if (oty < ty) HSX.Audio.thud();
+          else HSX.Audio.ricochet();
+          return false;
+        }
         const e = this.enemies.find(x => !x.dead && (x.kind !== 'boss' || x.active) && Phys.overlap(s, x));
         if (e) {
           const res = pha(() => HSX.Enemies.damage(e, Calc.weaponDmg() * 2, P, 'ban', cx));
@@ -811,8 +829,11 @@
           const gain = res === 'giap' ? dealt * 0.15 : (res !== 'block' ? dealt * 0.55 : 0);
           if (res === 'giap') { this.spark(cx, cy, '#cfd3e0'); this.napNL(gain, cx, cy); }
           else if (res !== 'block') { this.hitFx(cx, cy, ang, (e.def.chip || [])[0]); this.napNL(gain, cx, cy); }
-          HSX.Audio.hit();   // âm thanh trúng quái
-          if (res !== 'block' && e.hp <= 0) HSX.Audio.kill();  // quái bị hạ
+          // Âm thanh theo kết quả đòn: vỏ đỡ (0 sát thương) → bật lại; giáp boss (ăn 40%) → trúng giáp; còn lại → trúng đòn
+          if (res === 'block') HSX.Audio.ricochet();
+          else if (res === 'giap') HSX.Audio.armorHit();
+          else HSX.Audio.hit(res === 'dead' ? 0.45 : 1);   // đòn chốt hạ: tiếng đánh nhỏ hơn
+          // quái bị hạ: killEnemy() lo tiếng chết (không gọi lại ở đây)
           return false;
         }
         const o = r.objs.find(x => x.type === 'heap' && Phys.overlap(s, { x: x.x + 2, y: x.y + 8, w: T - 4, h: T - 8 }));
@@ -1045,13 +1066,18 @@
         if (o.type === 'plant') {
           const t = (S.trees[r.id] || {})[o.idx];
           if (!t) return { kind: 'plant', label: o.dat === 'boi' ? 'Cắm trụ mầm đước' : 'Trồng cây', o, x: ox, y: o.y - 10 };
+          if (S.owned.xeng) {
+            const cau = r.rootSegs.some(sg => sg.idx === o.idx);   // cây đang nuôi cầu rễ: không đào được
+            return { kind: 'dig', label: cau ? 'Cây làm cầu' : 'Đào cây lên', o, x: ox, y: o.y - 10, cau };
+          }
         }
       }
       for (const g of r.gates) {
-        if (S.puzzle.solved) break;
+        if (gateSolved()) break;
         if (Math.abs(cx - (g.x + T / 2)) < 80 && Math.abs(feet - (g.y + T)) < T * 3.2) {
           const top = Math.min(...r.gates.map(x => x.y));
-          return { kind: 'gate', label: 'Mở Cổng Phân Loại', x: g.x + T / 2, y: top - 16 };
+          const nhan = S.level === 'm2' ? 'Mở Cổng Rừng' : 'Mở Cổng Phân Loại';
+          return { kind: 'gate', label: nhan, x: g.x + T / 2, y: top - 16 };
         }
       }
       return null;
@@ -1080,6 +1106,16 @@
           else if (it.o.dat !== 'boi' && !Calc.roomClean(r.id)) HSX.UI.toast('Phá hết đống rác trong phòng này trước, đất mới trồng được cây.');
           else HSX.UI.openPlant(r.id, it.o.idx, it.o.dat);
           break;
+        case 'dig': {
+          if (it.cau) { HSX.UI.toast('Cây này đang giữ cầu rễ cho Mẹ Đước đi lại, không thể đào.'); break; }
+          const got = Sys.digUp(r.id, it.o.idx);
+          if (got) {
+            HSX.Audio.thud();
+            this.burst(it.o.x + T / 2, it.o.y + T - 8, '#c9a66b', 14);
+            this.text(it.o.x + T / 2, it.o.y - 8, `+${got} 🌱`, '#9ff0b5', 15);
+          }
+          break;
+        }
         case 'pick': P.carry = it.o; it.o.held = true; break;
         case 'drop': this.dropCarry(P); break;
         case 'nest':
@@ -1088,9 +1124,23 @@
             : 'Ổ trứng rùa không được bảo vệ. Cần 🚧 Rào Chắn Ổ Trứng (chế ở Trạm).');
           break;
         case 'gate': {
+          const m2 = S.level === 'm2';
           const need = HSX.LEVELS[S.level].gateClean;
-          if (Calc.cleanPct() < need) HSX.UI.toast(`Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`);
-          else HSX.Puzzle.open();
+          if (Calc.cleanPct() < need) {
+            const noi = m2
+              ? `Cổng chỉ mở khi ${HSX.LEVELS[S.level].goi} sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy dọn thêm rác.`
+              : `Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`;
+            HSX.UI.toast(noi);
+          } else if (m2) {
+            if (gateSolved()) {
+              // Cổng Rừng đã mở, không cần cảnh
+            } else {
+              if (HSX.Truyen && HSX.Truyen.play) {
+                const dat = HSX.Quests ? HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, S.trees.ran_ban || {}) : null;
+                HSX.Truyen.play('c_ung_rung_m2', { khongLuu: true });
+              }
+            }
+          } else HSX.Puzzle.open();
           break;
         }
       }
@@ -1181,7 +1231,13 @@
         else if (o.type === 'hut') L.push({ x: cx + 46, y: cy - 150, r: 170, glow: '255,196,120' });
         else if (o.type === 'plant' && trees[o.idx]) {
           const t = trees[o.idx], d = D.trees[t.type];
-          L.push({ x: cx, y: cy - 30, r: d.light * (0.3 + 0.7 * t.g), glow: t.g >= 1 ? '180,255,170' : null });
+          // Bần không tự phát sáng: ánh sáng ấm là của đom đóm tụ về. Ô quá sáng thì đom đóm tránh.
+          const domDom = t.type === 'ban' && t.g >= 1 && !(o.sang >= 2);
+          L.push({
+            x: cx, y: cy - 30,
+            r: (domDom ? 130 : d.light) * (0.3 + 0.7 * t.g),
+            glow: domDom ? '230,255,150' : (t.g >= 1 ? '180,255,170' : null),
+          });
         }
       });
       // rễ đước phát sáng yếu dọc theo cầu
@@ -1190,7 +1246,7 @@
         if (g < 0.25) return;
         for (let x = sg.x0; x <= sg.x1; x += 3) L.push({ x: x * T + T, y: sg.y * T + 14, r: 85 * g, glow: '140,255,190' });
       });
-      r.gates.forEach(g => { if (!S.puzzle.solved) L.push({ x: g.x + T / 2, y: g.y + T / 2, r: 50, glow: '120,200,255' }); });
+      r.gates.forEach(g => { if (!gateSolved()) L.push({ x: g.x + T / 2, y: g.y + T / 2, r: 50, glow: S.level === 'm2' ? '120,255,200' : '120,200,255' }); });
       this.enemies.forEach(e => {
         if (e.dead) return;
         if (e.kind === 'boss') L.push({ x: e.x + e.w / 2, y: e.y + e.h / 2, r: 210, glow: '170,90,255' });
