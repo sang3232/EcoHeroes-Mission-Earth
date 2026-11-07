@@ -116,6 +116,13 @@
       this.whoosh(0.13, 2800, 900, 0.1, 2);
     },
 
+    // 28. Hạt ná chạm đất: tiếng trầm, đục (khác tiếng bật tường)
+    thud() {
+      this.sweep(150, 50, 0.14, 'sine', 0.22);
+      this.tone(64, 0.18, 'triangle', 0.12);
+      this.whoosh(0.07, 500, 140, 0.05, 0.7);
+    },
+
     // 2. Trúng đòn (hit enemy)
     hit() {
       this.tone(660, 0.06, 'square', 0.1);
@@ -226,6 +233,7 @@
       this.tone(120, 0.3, 'sawtooth', 0.12);
       this.tone(90, 0.4, 'square', 0.1);
       this.chord([60, 80, 100], 0.2, 'sawtooth', 0.06);
+      this.whoosh(0.18, 700, 120, 0.1, 0.7);   // lớp gió/đất bụi khi chạm nền
     },
 
     // 17. Bán / nâng cấp / chế tạo (craft/upgrade)

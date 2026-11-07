@@ -432,6 +432,7 @@
     // Gấu Rừng đập xuống: phá nền nứt, gây sóng chấn quanh chân
     slamImpact(P) {
       const r = this.room, b = P.b, cx = P.cx(), feet = b.y + b.h;
+      HSX.Audio.slam();
       this.shake = 14;
       this.hitstop = 0.06;
       this.dust(cx, feet, 14);
@@ -805,7 +806,13 @@
           pha(() => this.chatLuoi(this.tamLuoi(tx, ty), tx, ty, ang));
           return false;
         }
-        if (r.solid(tx, ty)) { this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff'); HSX.Audio.ricochet(); return false; }
+        if (r.solid(tx, ty)) {
+          this.dust(cx, cy, 2); this.spark(cx, cy, '#e8f4ff');
+          // Rơi xuống chạm đất → tiếng trầm; bay ngang bật tường → tiếng bật
+          if (s.vy > 0 && s.vy > Math.abs(s.vx) * 0.5) HSX.Audio.thud();
+          else HSX.Audio.ricochet();
+          return false;
+        }
         const e = this.enemies.find(x => !x.dead && (x.kind !== 'boss' || x.active) && Phys.overlap(s, x));
         if (e) {
           const res = pha(() => HSX.Enemies.damage(e, Calc.weaponDmg() * 2, P, 'ban', cx));
