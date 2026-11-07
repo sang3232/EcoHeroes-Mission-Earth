@@ -116,11 +116,10 @@
       this.whoosh(0.13, 2800, 900, 0.1, 2);
     },
 
-    // 28. Hạt ná chạm đất: tiếng trầm, đục (khác tiếng bật tường)
+    // 28. Hạt ná chạm đất: chỉ tiếng trầm, đục — không lẫn lớp nhiễu cao
     thud() {
-      this.sweep(150, 50, 0.14, 'sine', 0.22);
-      this.tone(64, 0.18, 'triangle', 0.12);
-      this.whoosh(0.07, 500, 140, 0.05, 0.7);
+      this.sweep(130, 42, 0.16, 'sine', 0.26);
+      this.tone(56, 0.2, 'triangle', 0.14);
     },
 
     // 2. Trúng đòn (hit enemy)
