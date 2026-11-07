@@ -3,7 +3,7 @@
   Y  bãi bồi: cắm trụ mầm đước (học từ Mẹ Đước). Đước lớn thì các ô r gần nhất mọc thành cầu rễ
   r  chỗ rễ đước sẽ mọc: thành bục đứng được khi cây đước ở bãi bồi gần nhất đã lớn
   n  lưới ma giăng: chặn đường, chém 3 nhát thì cả tấm lưới (các ô n liền nhau) đứt
-  G  Cổng Rừng: mở khi giải mini-game Cổng Rừng (cống nước + đom đóm)
+  G  Cổng Rừng: mở khi đom đóm tụ về rặng bần (trồng đủ bần ở ô tối, tránh ô quá sáng)
   M  Mẹ Đước     A  nhà sàn (trang trí)     f  Hộp Xốp     N  Lưới Ma Khổng Lồ
 story: cảnh truyện tự chạy khi Mầm tới gần ô (x, y) trong r ô (một lần), khi: điều kiện thêm.
 tips: như Màn 1, khi: chỉ hiện khi điều kiện đúng. */
@@ -192,8 +192,15 @@ HSX.LEVELS.m2 = {
 
     ran_ban: {
       name: 'Rặng bần', area: 'rung', journal: 4,
+      // 6 ô trồng (P) theo thứ tự trái sang phải; 2 ô cuối gần đèn nên quá sáng.
+      // plantNeed: số cây bần đã lớn cần có trên ô tối để đom đóm tụ về.
+      plantSang: [0, 0, 0, 0, 2, 2],
+      plantNeed: 4,
       doors: { 1: ['rung_chet', 3] },
-      tips: [{ x: 7, y: 11, k: 'Ô đất ven lạch: trồng cây bần, đom đóm sẽ tìm về', t: 'Ô đất ven lạch: trồng cây bần, đom đóm sẽ tìm về' }],
+      tips: [
+        { x: 7, y: 11, k: 'Bần ưa chỗ tối ven lạch. Trồng đủ 4 cây, tránh ô có đèn chiếu sáng quá', t: 'Bần ưa chỗ tối ven lạch. Trồng đủ 4 cây, tránh ô có đèn chiếu sáng quá' },
+        { x: 21, y: 10, k: 'Đèn chiếu sáng quá: đom đóm không đậu ở mấy ô này', t: 'Đèn chiếu sáng quá: đom đóm không đậu ở mấy ô này' },
+      ],
       map: [
         '##################################',
         '#................................#',
@@ -201,14 +208,14 @@ HSX.LEVELS.m2 = {
         '#.....H..........................#',
         '#....====........................#',
         '#................................#',
-        '#..........====.........L........#',
+        '#..........====..................#',
         '#................................#',
         '#......====......................#',
-        '#................................#',
+        '#....................L...........#',
         '#..........====..................#',
-        '#..T...P..............P..s.J..T..#',
-        '################..################',
-        '################11################',
+        '#..T.P..P...P...P...P..P..s.J..T.#',
+        '##################..##############',
+        '##################11##############',
       ],
     },
 

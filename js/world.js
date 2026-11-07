@@ -43,8 +43,13 @@
         case 'B': this.objs.push(Object.assign(o, { type: 'bench' })); break;
         case 'S': if (!S.spirits[def.spirit]) this.objs.push(Object.assign(o, { type: 'cage', spirit: def.spirit, hp: 3, shake: 0 })); break;
         case 'T': { const i = n.heap++; if (!heaps[i]) this.objs.push(Object.assign(o, { type: 'heap', idx: i, hp: 3, shake: 0 })); break; }
-        case 'P': this.objs.push(Object.assign(o, { type: 'plant', idx: n.plant++, dat: lv === 'm1' ? 'cat' : 'bun' })); break;
-        case 'Y': this.objs.push(Object.assign(o, { type: 'plant', idx: n.plant++, dat: 'boi' })); break;
+        case 'P': {
+          const i = n.plant++;
+          // sang: 0 ô tối, 2 ô quá sáng (gần đèn). Vườn đom đóm ở Rặng Bần dùng giá trị này.
+          this.objs.push(Object.assign(o, { type: 'plant', idx: i, dat: lv === 'm1' ? 'cat' : 'bun', sang: (def.plantSang || [])[i] || 0 }));
+          break;
+        }
+        case 'Y': this.objs.push(Object.assign(o, { type: 'plant', idx: n.plant++, dat: 'boi', sang: 0 })); break;
         case 'M': this.objs.push(Object.assign(o, { type: 'npc', npc: 'me_duoc' })); break;
         case 'A': this.objs.push(Object.assign(o, { type: 'hut' })); break;
         case 'H': { const i = n.shard++; if (!picked['H' + i]) this.objs.push(Object.assign(o, { type: 'shard', idx: i })); break; }
@@ -1061,6 +1066,10 @@
         if (o.type === 'plant') {
           const t = (S.trees[r.id] || {})[o.idx];
           if (!t) return { kind: 'plant', label: o.dat === 'boi' ? 'Cắm trụ mầm đước' : 'Trồng cây', o, x: ox, y: o.y - 10 };
+          if (S.owned.xeng) {
+            const cau = r.rootSegs.some(sg => sg.idx === o.idx);   // cây đang nuôi cầu rễ: không đào được
+            return { kind: 'dig', label: cau ? 'Cây làm cầu' : 'Đào cây lên', o, x: ox, y: o.y - 10, cau };
+          }
         }
       }
       for (const g of r.gates) {
@@ -1097,6 +1106,16 @@
           else if (it.o.dat !== 'boi' && !Calc.roomClean(r.id)) HSX.UI.toast('Phá hết đống rác trong phòng này trước, đất mới trồng được cây.');
           else HSX.UI.openPlant(r.id, it.o.idx, it.o.dat);
           break;
+        case 'dig': {
+          if (it.cau) { HSX.UI.toast('Cây này đang giữ cầu rễ cho Mẹ Đước đi lại, không thể đào.'); break; }
+          const got = Sys.digUp(r.id, it.o.idx);
+          if (got) {
+            HSX.Audio.thud();
+            this.burst(it.o.x + T / 2, it.o.y + T - 8, '#c9a66b', 14);
+            this.text(it.o.x + T / 2, it.o.y - 8, `+${got} 🌱`, '#9ff0b5', 15);
+          }
+          break;
+        }
         case 'pick': P.carry = it.o; it.o.held = true; break;
         case 'drop': this.dropCarry(P); break;
         case 'nest':
@@ -1112,8 +1131,17 @@
               ? `Cổng chỉ mở khi ${HSX.LEVELS[S.level].goi} sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy dọn thêm rác.`
               : `Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`;
             HSX.UI.toast(noi);
-          } else if (m2) HSX.Puzzle2.open();
-          else HSX.Puzzle.open();
+          } else if (m2) {
+            // Cổng Rừng chỉ mở khi đom đóm tụ về vườn bần: không dùng bảng Puzzle2 nữa.
+            const dat = HSX.Quests ? HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, S.trees.ran_ban || {}) : null;
+            let noi = 'Rừng tối quá, tinh linh không thể soi đường. Đom đóm chỉ tụ về khi có đủ bần mọc ở chỗ tối.';
+            if (dat) {
+              noi += ` Hiện có ${dat.dat}/${dat.can} cây bần đã lớn ở chỗ tối`;
+              noi += dat.sai ? `, ${dat.sai} cây đang lớn ở chỗ quá sáng.` : '.';
+            }
+            noi += ' Sổ tay Mẹ Đước ở Rặng Bần có ghi.';
+            HSX.UI.toast(noi, '', 7000);
+          } else HSX.Puzzle.open();
           break;
         }
       }
@@ -1204,8 +1232,8 @@
         else if (o.type === 'hut') L.push({ x: cx + 46, y: cy - 150, r: 170, glow: '255,196,120' });
         else if (o.type === 'plant' && trees[o.idx]) {
           const t = trees[o.idx], d = D.trees[t.type];
-          // Bần không tự phát sáng: ánh sáng ấm là của đom đóm tụ về
-          const domDom = t.type === 'ban' && S.species.dom_dom && t.g >= 1;
+          // Bần không tự phát sáng: ánh sáng ấm là của đom đóm tụ về. Ô quá sáng thì đom đóm tránh.
+          const domDom = t.type === 'ban' && t.g >= 1 && !(o.sang >= 2);
           L.push({
             x: cx, y: cy - 30,
             r: (domDom ? 130 : d.light) * (0.3 + 0.7 * t.g),

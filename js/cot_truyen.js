@@ -254,6 +254,22 @@
       const s = S();
       if (!s.flags.gapMeDuoc) { TR().play('gap_me_duoc', { lai: true }); return; }
       const buoc = [];
+      // Lời theo nhiệm vụ: bắc cầu → nhận xẻng → trồng bần gọi đom đóm
+      const Q = HSX.Quests;
+      if (Q) {
+        if (Q.dangLam('bac_cau')) {
+          const b = Q.buoc('bac_cau');
+          buoc.push({ noi: 'me_duoc', chu: b === 0
+            ? 'Cái bãi bồi ngay trước hiên nhà, con cắm một trụ mầm đước xuống đó. Rễ nó vươn ra là bà qua được bên kia.'
+            : 'Rễ đước đang bám bùn rồi. Đợi thêm chút, bà nghe được tiếng rễ siết.' });
+        } else if (Q.daXong('dom_dom')) {
+          buoc.push({ noi: 'me_duoc', chu: 'Đêm qua đom đóm về kín rặng bần. Cổng Rừng sáng lên như có đèn. Con giỏi lắm.' });
+        } else if (Q.daXong('bac_cau')) {
+          buoc.push(
+            { noi: 'me_duoc', chu: 'Cây cầu rễ chắc rồi. Cầm lấy cái xẻng này. Rặng bần ven lạch đang thiếu bần; chỗ nào đèn chiếu sáng quá thì đom đóm không đậu.' },
+            { noi: 'mam', chu: 'Con trồng bần ở mấy ô tối, đủ bốn cây. Cây mọc nhầm chỗ sáng thì con đào lên.' });
+        }
+      }
       if (s.seeds < 2) {
         buoc.push({ noi: 'me_duoc', chu: 'Hết trụ mầm rồi hả con? Bà còn mấy cây đây, cầm lấy.',
           lam: () => { s.seeds += 3; W().text(P().cx(), P().b.y - 16, '+3 🌱', '#9ff0b5', 16); } });

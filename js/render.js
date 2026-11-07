@@ -958,11 +958,22 @@
           break;
         }
         case 'plant': {
-          const tr = (S.trees[r.id] || {})[o.idx], boi = o.dat === 'boi';
+          const tr = (S.trees[r.id] || {})[o.idx], boi = o.dat === 'boi', sang = o.sang || 0;
           // bãi bồi: gò bùn ướt bóng nước; ô đất thường: luống đất
           c.fillStyle = boi ? '#3a3020' : '#4a3220';
           c.beginPath(); c.ellipse(cx, by - 2, boi ? 24 : 20, boi ? 8 : 7, 0, Math.PI, 0); c.fill();
           if (boi) { c.fillStyle = 'rgba(150,200,210,0.35)'; c.beginPath(); c.ellipse(cx - 6, by - 6, 8, 2, 0, 0, 6.283); c.fill(); }
+          // Ô quá sáng: quầng đèn ấm + dấu nắng nhấp nháy để người chơi biết đom đóm sẽ tránh
+          if (sang >= 2) {
+            const gl = c.createRadialGradient(cx, by - 10, 3, cx, by - 10, 36);
+            gl.addColorStop(0, `rgba(255,206,120,${0.16 + 0.08 * Math.sin(t * 3)})`);
+            gl.addColorStop(1, 'rgba(255,206,120,0)');
+            c.fillStyle = gl;
+            c.fillRect(cx - 38, by - 50, 76, 56);
+            c.globalAlpha = 0.5 + 0.28 * Math.sin(t * 3);
+            this.emoji('☀️', cx, by - (tr ? 86 : 34), 14);
+            c.globalAlpha = 1;
+          }
           if (!tr) {
             const g = boi ? 0.35 + 0.3 * Math.sin(t * 3) : 0.5;   // bãi bồi nhấp nháy mời cắm trụ mầm
             c.fillStyle = `rgba(160,230,150,${g})`;
@@ -1163,15 +1174,14 @@
         });
       }
     },
-    // Đom đóm: chỉ tụ ở cây bần đã lớn (vẽ sau lớp ánh sáng nên luôn lấp lánh trong bóng tối)
+    // Đom đóm: chỉ tụ ở cây bần đã lớn và ở ô tối (vẽ sau lớp ánh sáng nên luôn lấp lánh trong bóng tối)
     drawDomDom(r, t) {
-      if (!HSX.S.species.dom_dom) return;
       const trees = HSX.S.trees[r.id] || {};
       const ban = [];
       for (const o of r.objs) {
         if (o.type !== 'plant') continue;
         const tr = trees[o.idx];
-        if (tr && tr.type === 'ban' && tr.g >= 1) ban.push(o);
+        if (tr && tr.type === 'ban' && tr.g >= 1 && !(o.sang >= 2)) ban.push(o);
       }
       if (!ban.length) return;
       const key = ban.map(o => o.idx).join(',');

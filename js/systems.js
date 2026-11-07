@@ -208,6 +208,17 @@
       HSX.saveGame();
       return true;
     },
+    // Đào cây đã trồng lên (cần xẻng): trả lại hạt giống đã tốn. Cây làm cầu rễ do World chặn.
+    digUp(roomId, idx) {
+      const s = HSX.S, t = (s.trees[roomId] || {})[idx];
+      if (!t) return 0;
+      const cost = (D.trees[t.type] && D.trees[t.type].cost) || 0;
+      delete s.trees[roomId][idx];
+      s.seeds += cost;
+      HSX.emit('dao', { room: roomId, idx, type: t.type });
+      HSX.saveGame();
+      return cost;
+    },
     tickTrees(dt) {
       const s = HSX.S;
       // Đom đóm thụ phấn: mọi cây lớn nhanh hơn (trần 2× để không vỡ nhịp chơi)
@@ -224,6 +235,7 @@
         }
       }
       this.pollinate(dt);
+      if (HSX.Quests) HSX.Quests.tick(dt);
     },
 
     // Phòng có bần trưởng thành + đom đóm: cứ ~15 giây đom đóm giúp rừng một việc
@@ -247,8 +259,13 @@
         HSX.saveGame();
         return;
       }
-      // 2) còn ô đất trống: gieo miễn phí một trụ mầm đước
-      const empty = room.objs.filter(o => o.type === 'plant' && o.dat !== 'boi' && !trees[o.idx]);
+      // 2) còn ô đất trống: gieo miễn phí một trụ mầm đước.
+      // Rặng bần là vườn đom đóm: đừng gieo chen vào ô của người chơi, nhất là ô quá sáng.
+      const empty = room.objs.filter(o => {
+        if (o.type !== 'plant' || o.dat === 'boi' || trees[o.idx]) return false;
+        if (room.id === 'ran_ban' && (!s.flags.congRung || (o.sang || 0) >= 2)) return false;
+        return true;
+      });
       if (empty.length) {
         const o = HSX.pick(empty);
         (s.trees[room.id] = s.trees[room.id] || {})[o.idx] = { type: 'duoc', g: 0, c: false };
