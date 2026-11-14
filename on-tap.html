@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#060a10">
+<title>Ôn tập Flashcard — Hồi Sinh Xanh</title>
+<link rel="icon" href="assets/web/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/web.css">
+</head>
+<body>
+<header id="dau-trang" data-trang="on-tap"></header>
+
+<main class="muc" style="padding-top:48px">
+  <div class="khung" style="max-width:880px">
+    <div class="dau-muc">
+      <span class="nhan">Trò chơi · Ôn tập</span>
+      <h2>Flashcard Quiz</h2>
+      <p>Kiến thức lấy từ chính trong game. Lật thẻ để học, rồi làm bài kiểm tra nhanh. Kết quả được lưu vào thống kê của em.</p>
+    </div>
+
+    <div class="chon-chu-de" role="group" aria-label="Chủ đề" id="chu-de"></div>
+    <div class="tab-trang" role="tablist" aria-label="Chế độ">
+      <button role="tab" id="tab-lat" aria-selected="true" aria-controls="o-lat">🃏 Lật thẻ</button>
+      <button role="tab" id="tab-kt" aria-selected="false" aria-controls="o-kt">✏️ Kiểm tra 10 câu</button>
+    </div>
+
+    <section id="o-lat" role="tabpanel" aria-labelledby="tab-lat">
+      <p class="trong" id="lat-trong" hidden>Em đã thuộc hết thẻ của chủ đề này. Bấm "Học lại từ đầu" để ôn tiếp.</p>
+      <div class="the-lat" id="the-lat" tabindex="0" role="button" aria-label="Lật thẻ">
+        <div class="trong-the">
+          <div class="mat truoc"><div class="emo" id="lat-emo"></div><div class="cau" id="lat-cau"></div><div class="goi-y">Bấm hoặc nhấn Space để lật</div></div>
+          <div class="mat sau"><div class="dap" id="lat-dap"></div><p id="lat-giai"></p></div>
+        </div>
+      </div>
+      <p class="trong" style="padding:0 0 12px" id="lat-dem"></p>
+      <div class="hang-nut" style="justify-content:center">
+        <button class="nut" type="button" id="nut-on-lai">🔁 Ôn lại</button>
+        <button class="nut chinh" type="button" id="nut-thuoc">✔ Đã thuộc</button>
+        <button class="nut nho" type="button" id="nut-lam-lai">Học lại từ đầu</button>
+      </div>
+    </section>
+
+    <section id="o-kt" role="tabpanel" aria-labelledby="tab-kt" hidden>
+      <div id="kt-dang">
+        <div class="thanh-cong-cu"><span id="kt-so"></span><span class="gian"></span><span id="kt-diem"></span></div>
+        <div class="thanh" style="margin-bottom:22px"><i id="kt-thanh" style="width:0"></i></div>
+        <div class="cau-hoi" id="kt-cau"></div>
+        <div class="dap-an" id="kt-dap"></div>
+        <div id="kt-giai" class="bao tin" style="margin-top:16px" hidden></div>
+        <div class="hang-nut" style="justify-content:flex-end"><button class="nut chinh" type="button" id="kt-tiep" hidden>Câu tiếp →</button></div>
+      </div>
+      <div id="kt-xong" hidden></div>
+    </section>
+  </div>
+</main>
+
+<footer id="chan-trang"></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0/dist/umd/supabase.min.js"></script>
+<script src="js/web/cau_hinh.js"></script>
+<script src="js/web/tai_khoan.js"></script>
+<script src="js/web/dong_bo.js"></script>
+<script src="js/web/chung.js"></script>
+<script src="js/data.js"></script>
+<script src="js/web/on_tap.js"></script>
+</body>
+</html>

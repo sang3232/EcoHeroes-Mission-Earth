@@ -4,7 +4,7 @@ Game hành động 2D kiểu Hollow Knight về bảo vệ môi trường. Bạn
 
 ## Chạy game
 
-Bấm đúp `index.html` để mở bằng Chrome hoặc Edge, không cần cài gì thêm. Game tự lưu trong trình duyệt khi bạn ngồi ở Trạm Tái Chế, khi sang phòng mới và khi nhặt đồ quan trọng.
+Bấm đúp `hoi-sinh-xanh.html` để mở game bằng Chrome hoặc Edge, không cần cài gì thêm. Game tự lưu trong trình duyệt khi bạn ngồi ở Trạm Tái Chế, khi sang phòng mới và khi nhặt đồ quan trọng. `index.html` giờ là trang Giới thiệu của web, có nút "Chơi ngay" dẫn vào game.
 
 Điện thoại: mở bằng trình duyệt rồi xoay ngang máy, nút cảm ứng sẽ tự hiện.
 
@@ -140,9 +140,27 @@ Menu tạm dừng → **🌏 Thế giới**: bản đồ vẽ tay cả 8 màn th
 | `js/ghi_tran.js` | Nhật ký trận boss: ghi hành động của Mầm và boss, giữ 10 trận, tải file JSON (xem mục "Nhật ký trận boss") |
 | `js/phat_lai.js` | Xem lại trận boss như phim từ nhật ký: dựng lại bằng trình vẽ của game, tua, đổi tốc độ |
 | `js/puzzle.js` | Puzzle Cổng Phân Loại |
+| `js/thong_ke.js` | Ghi kết quả học tập (Cổng Phân Loại, Lều ném rác, trồng cây) vào máy, không đụng save. Xem mục "Web, tài khoản và thống kê" |
 | `js/gian_lan.js` | Mã gian lận để thử nhanh, gỡ được (xem bên dưới) |
 | `qwen/` | Công cụ sinh ảnh bằng Qwen Image, xem `qwen/HUONG_DAN.md` |
 | `kiem_tra/` | Công cụ kiểm tra màn chơi (xem bên dưới) |
+
+## Web, tài khoản và thống kê
+
+Web gồm các trang tĩnh, chạy trên GitHub Pages, không cần build:
+
+| Trang | Nội dung |
+|---|---|
+| `index.html` | Giới thiệu: phần mở đầu kể vì sao Mầm thức dậy giữa bãi rác (cuộn để đọc), vấn đề thật, tính năng, dành cho giáo viên, đọc truyện tranh 24 trang, hỏi đáp |
+| `hoi-sinh-xanh.html` | Game |
+| `on-tap.html` | Flashcard Quiz: lật thẻ và kiểm tra 10 câu, câu hỏi lấy từ `js/data.js` |
+| `thong-ke.html` | Khách: số liệu trên máy. Học sinh: độ chính xác minigame, tỉ lệ trồng cây, điểm Flashcard, so với trung bình lớp. Giáo viên: quản lý lớp, phân tích, AI tóm tắt tiếng Việt, xuất `.xlsx` / `.pdf` |
+| `dang-nhap.html` | Học sinh: mã lớp + tên đăng nhập + mật khẩu (giáo viên tạo hộ). Giáo viên: email |
+
+- Style riêng ở `css/web.css`, mã ở `js/web/`. Ảnh web (khung truyện WebP, logo) ở `assets/web/`.
+- Kết quả học tập ghi vào `localStorage['hoi-sinh-xanh-hoc-tap']` (`js/thong_ke.js`, `js/web/on_tap.js`). Khi học sinh đã đăng nhập, `js/web/dong_bo.js` gửi lên Supabase; mất mạng thì giữ lại gửi sau.
+- Máy chủ lớp học là Supabase: bảng và quyền ở `supabase/schema.sql`, hai hàm máy chủ ở `supabase/functions/`. Cách dựng từ đầu: `supabase/HUONG_DAN.md`. Chưa điền `js/web/cau_hinh.js` thì web vẫn chạy ở chế độ khách.
+- Game không cần mạng: mở bằng `file://` hay khi không tải được thư viện thì chỉ mất phần gửi kết quả lên lớp.
 
 ## Kiểm tra
 
@@ -162,7 +180,7 @@ Mở ô gõ mã:
 - **Máy tính:** nhấn phím **`** (cạnh số 1), gõ mã rồi Enter. Esc để đóng. Game tạm dừng khi ô đang mở.
 - **Điện thoại:** chạm nhanh 5 lần vào góc trên bên trái màn chơi (chỗ quả cầu năng lượng).
 - **Console** của trình duyệt: `GL('battu')`, `GL('toi hang vua')`, `GL('?')`.
-- Mở `index.html?thu=1` để hiện thêm **bảng nút bấm** ở đầu màn hình: chọn phòng để tới, đủ tinh linh, công cụ, nguyên liệu, sạch 100%, bất tử, bay, hộp va chạm, hạ boss, đánh lại Cua / Vua / Lưới Ma.
+- Mở `hoi-sinh-xanh.html?thu=1` để hiện thêm **bảng nút bấm** ở đầu màn hình: chọn phòng để tới, đủ tinh linh, công cụ, nguyên liệu, sạch 100%, bất tử, bay, hộp va chạm, hạ boss, đánh lại Cua / Vua / Lưới Ma.
 
 Gõ có dấu hay không dấu, có cách hay không đều được: "bất tử", "bat tu", "battu" là một.
 
@@ -203,7 +221,7 @@ Gõ có dấu hay không dấu, có cách hay không đều được: "bất t�
 
 Mã nào đang bật thì hiện ở góc dưới bên trái (🧪). Các mã bật/tắt được nhớ trong thẻ trình duyệt đang mở, tải lại trang vẫn còn. Đóng thẻ thì mất.
 
-**Gỡ khỏi game** (trước khi phát hành): xoá file `js/gian_lan.js` và dòng `<script src="js/gian_lan.js">` ở cuối `index.html`. Không cần sửa gì khác: file này tự móc vào game từ bên ngoài, game không gọi tới nó. Gỡ xong thì phím `, chạm 5 lần, `GL()` và `?thu=1` đều không còn tác dụng. Còn sót một biến `HSX.DEBUG_GOD` trong `js/player.js`, giữ lại vì bộ thử trong `kiem_tra/` dùng nó, và nó không làm gì khi không ai bật.
+**Gỡ khỏi game** (trước khi phát hành): xoá file `js/gian_lan.js` và dòng `<script src="js/gian_lan.js">` ở cuối `hoi-sinh-xanh.html`. Không cần sửa gì khác: file này tự móc vào game từ bên ngoài, game không gọi tới nó. Gỡ xong thì phím `, chạm 5 lần, `GL()` và `?thu=1` đều không còn tác dụng. Còn sót một biến `HSX.DEBUG_GOD` trong `js/player.js`, giữ lại vì bộ thử trong `kiem_tra/` dùng nó, và nó không làm gì khi không ai bật.
 
 ## Không khí và ánh sáng
 

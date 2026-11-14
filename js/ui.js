@@ -525,6 +525,7 @@
         <div class="row"><button class="btn small ${HSX.opt.huongDan ? 'on' : ''}" data-act="hd-bat">${HSX.opt.huongDan ? 'Đang bật' : 'Đang tắt'}</button><button class="btn small" data-act="hd-lai">Xem lại từ đầu</button></div>
         ${this.nhatKyTran()}
         <h3>Thống kê</h3><p class="small">Thời gian chơi ${HSX.fmtTime(S.stats.time)} · Quái đã hạ ${fmt(S.stats.kills)} · Số lần ngã ${S.stats.deaths}</p>
+        ${HSX.HocTap ? HSX.HocTap.dongTaiKhoan() : ''}
         <h3>Lưu game</h3><p class="small muted">Game tự lưu khi ngồi Trạm, khi sang phòng mới và khi nhặt đồ quan trọng.</p>
         <div class="row"><button class="btn" data-act="save">Lưu ngay</button><button class="btn" data-act="fullscreen">Toàn màn hình</button></div>
         <div class="row"><button class="btn" data-act="export">Xuất mã save</button><button class="btn" data-act="import">Nhập mã save</button><button class="btn danger" data-act="reset">Chơi lại từ đầu</button></div>

@@ -269,7 +269,7 @@
       if (empty.length) {
         const o = HSX.pick(empty);
         (s.trees[room.id] = s.trees[room.id] || {})[o.idx] = { type: 'duoc', g: 0, c: false };
-        HSX.emit('trong', { room: room.id, idx: o.idx, type: 'duoc' });
+        HSX.emit('trong', { room: room.id, idx: o.idx, type: 'duoc', tu: 'domdom' });   // tu: tách với cây người chơi tự trồng
         HSX.UI.toast('✨ Đom đóm thụ phấn: một trụ mầm đước mọc lên');
         HSX.saveGame();
         return;
