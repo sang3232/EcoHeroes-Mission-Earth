@@ -107,7 +107,7 @@
     function chu(c, co, dam, mau) { doc.setFont('BVP', dam ? 'bold' : 'normal'); doc.setFontSize(co); doc.setTextColor.apply(doc, mau || [20, 32, 26]); doc.text(c, LE, y); }
     function canTrang(cao) { if (y + cao > 285) { doc.addPage(); y = 16; } }
 
-    chu('Hồi Sinh Xanh · Báo cáo lớp ' + tt.lop.ten, 17, true, [27, 122, 67]); y += 7;
+    chu('Hồi Sinh Xanh · Báo cáo lớp ' + tt.lop.ten, 17, true, [17, 49, 42]); y += 7;
     chu('Mã lớp ' + tt.lop.ma_lop + ' · xuất ngày ' + new Date().toLocaleString('vi-VN'), 10, false, [90, 100, 95]); y += 8;
 
     // ô số liệu
@@ -126,17 +126,17 @@
     });
     y += 27;
 
-    // biểu đồ (vẽ trên nền tối như trên web)
+    // biểu đồ (nền trắng như trên web, viền mảnh)
     function veAnh(a, x, rong, cao) {
-      doc.setFillColor(17, 26, 36); doc.roundedRect(x, y, rong, cao, 2, 2, 'F');
-      doc.addImage(a.anh, 'JPEG', x + 1, y + 1, rong - 2, cao - 2);
+      doc.setFillColor(255, 255, 255); doc.setDrawColor(207, 224, 214); doc.roundedRect(x, y, rong, cao, 2, 2, 'FD');
+      doc.addImage(a.anh, 'JPEG', x + 1.5, y + 1.5, rong - 3, cao - 3);
     }
-    // Ảnh biểu đồ: phủ nền tối, thu về tối đa 1200 px ngang, nén JPEG cho file nhẹ
+    // Ảnh biểu đồ: phủ nền trắng, thu về tối đa 1200 px ngang, nén JPEG cho file nhẹ
     var anh = (cacAnh || []).map(function (a) {
       var k = Math.min(1, 1200 / a.rong), c = document.createElement('canvas');
       c.width = Math.round(a.rong * k); c.height = Math.round(a.cao * k);
       var g = c.getContext('2d');
-      g.fillStyle = '#111a24'; g.fillRect(0, 0, c.width, c.height);
+      g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, c.width, c.height);
       g.drawImage(a.img, 0, 0, c.width, c.height);
       return { anh: c.toDataURL('image/jpeg', 0.82), rong: c.width, cao: c.height };
     });
@@ -165,7 +165,7 @@
           h.soO ? h.soCay + '/' + h.soO : '—', h.saoCong || '—', Math.round((h.thoiGian || 0) / 60), SL.ngay(h.cuoi)];
       }),
       styles: { font: 'BVP', fontSize: 8.5, cellPadding: 1.8 },
-      headStyles: { font: 'BVP', fontStyle: 'bold', fillColor: [46, 157, 91], textColor: 255 },
+      headStyles: { font: 'BVP', fontStyle: 'bold', fillColor: [17, 49, 42], textColor: 255 },
       alternateRowStyles: { fillColor: [244, 249, 246] },
     });
     y = doc.lastAutoTable.finalY + 8;
@@ -187,7 +187,7 @@
       var tieuDe = /^#{1,4}\s+/.test(d);
       d = d.replace(/^#{1,4}\s+/, '').replace(/\*\*/g, '').replace(/^\s*[-*]\s+/, '• ');
       doc.setFont('BVP', tieuDe ? 'bold' : 'normal'); doc.setFontSize(tieuDe ? 10.5 : 9.5);
-      doc.setTextColor.apply(doc, tieuDe ? [27, 122, 67] : [30, 40, 35]);
+      doc.setTextColor.apply(doc, tieuDe ? [31, 117, 67] : [30, 40, 35]);
       var cacDong = doc.splitTextToSize(d || ' ', W - 2 * LE);
       cacDong.forEach(function (x) { canTrang(6); doc.text(x, LE, y); y += tieuDe ? 5.6 : 4.8; });
       if (tieuDe) y += 0.6;

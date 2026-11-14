@@ -65,10 +65,10 @@
   };
 
   var CHU_DE = [
-    { id: 'phan_loai', ten: '♻️ Phân loại rác' },
-    { id: 'rung', ten: '🌳 Rừng ngập mặn' },
-    { id: 'sinh_vat', ten: '🐢 Biển & sinh vật' },
-    { id: 'tat_ca', ten: '🌍 Tất cả' },
+    { id: 'phan_loai', ten: 'Phân loại rác' },
+    { id: 'rung', ten: 'Rừng ngập mặn' },
+    { id: 'sinh_vat', ten: 'Biển & sinh vật' },
+    { id: 'tat_ca', ten: 'Tất cả' },
   ];
 
   function tron(a) {
@@ -233,11 +233,18 @@
     $('kt-xong').hidden = true;
     veCau();
   }
+  // Hàng hạt giống: câu đúng nảy mầm, câu sai héo, câu đang làm có viền
+  function veHat() {
+    $('kt-hat').innerHTML = de.map(function (c, i) {
+      var lop = i < so || (i === so && c.daDung !== undefined) ? (c.daDung ? 'dung' : 'sai') : (i === so ? 'dang' : '');
+      return '<li' + (lop ? ' class="' + lop + '"' : '') + '></li>';
+    }).join('');
+  }
   function veCau() {
     var c = de[so];
     $('kt-so').textContent = 'Câu ' + (so + 1) + '/' + de.length;
     $('kt-diem').textContent = 'Đúng ' + diem;
-    $('kt-thanh').style.width = (so / de.length * 100) + '%';
+    veHat();
     $('kt-cau').textContent = c.cau;
     $('kt-dap').innerHTML = c.cacDap.map(function (d, i) {
       return '<button type="button" data-i="' + i + '"><b>' + 'ABCD'[i] + '.</b> ' + esc(d) + '</button>';
@@ -258,12 +265,13 @@
       else if (x === b) x.classList.add('sai');
     });
     $('kt-diem').textContent = 'Đúng ' + diem;
+    veHat();
     var g = $('kt-giai');
     g.className = 'bao ' + (c.daDung ? 'ok' : 'loi');
     g.innerHTML = (c.daDung ? '✔ Chính xác! ' : '✘ Đáp án đúng: <b>' + esc(c.dung) + '</b>. ') + esc(c.giai);
     g.hidden = false;
     $('kt-tiep').hidden = false;
-    $('kt-tiep').textContent = so + 1 < de.length ? 'Câu tiếp →' : 'Xem kết quả';
+    $('kt-tiep').textContent = so + 1 < de.length ? 'Câu tiếp' : 'Xem kết quả';
     $('kt-tiep').focus();
   });
   $('kt-tiep').addEventListener('click', function () {
@@ -274,15 +282,16 @@
     $('kt-dang').hidden = true;
     var x = $('kt-xong');
     x.hidden = false;
-    x.innerHTML = '<div class="the" style="text-align:center">' +
+    x.innerHTML = '<div class="the ket-qua-kt">' +
+      '<ol class="hang-hat" aria-hidden="true" style="max-width:520px;margin:0 auto 18px">' + de.map(function (c) { return '<li class="' + (c.daDung ? 'dung' : 'sai') + '"></li>'; }).join('') + '</ol>' +
       '<div class="so-lon">' + dung + '/' + de.length + '</div>' +
-      '<p>' + (pt >= 90 ? '🌟 Xuất sắc! Mầm tự hào về em.' : pt >= 70 ? '👍 Tốt lắm! Ôn thêm vài thẻ là thuộc hết.' : pt >= 50 ? '🌱 Khá rồi, lật thẻ ôn lại các câu sai nhé.' : '💪 Đừng nản, ôn lại bằng thẻ rồi thử lần nữa.') + '</p>' +
-      (sai.length ? '<div style="text-align:left;margin-top:16px"><b>Các câu cần ôn:</b><ul>' + sai.map(function (c) {
-        return '<li>' + esc(c.cau) + ' → <b>' + esc(c.dung) + '</b></li>';
+      '<p class="loi-khen">' + (pt >= 90 ? 'Xuất sắc! Mầm tự hào về em.' : pt >= 70 ? 'Tốt lắm! Ôn thêm vài thẻ là thuộc hết.' : pt >= 50 ? 'Khá rồi, lật thẻ ôn lại các câu sai nhé.' : 'Đừng nản, ôn lại bằng thẻ rồi thử lần nữa.') + '</p>' +
+      (sai.length ? '<div class="can-on"><b>Các câu cần ôn</b><ul>' + sai.map(function (c) {
+        return '<li>' + esc(c.cau) + '<br><span>Đáp án: </span><b>' + esc(c.dung) + '</b></li>';
       }).join('') + '</ul></div>' : '') +
       '<div class="hang-nut" style="justify-content:center"><button class="nut chinh" type="button" id="kt-lai">Làm bài khác</button>' +
-      '<a class="nut" href="on-tap.html?on=sai&chu_de=' + cd + '">🔁 Ôn thẻ hay sai</a>' +
-      '<a class="nut" href="thong-ke.html">📈 Xem thống kê</a></div>' +
+      '<a class="nut" href="on-tap.html?on=sai&chu_de=' + cd + '">Ôn thẻ hay sai</a>' +
+      '<a class="nut" href="thong-ke.html">Xem thống kê</a></div>' +
       '<p class="trong" style="padding:14px 0 0">' + (window.HSXWeb && HSXWeb.tkNho() ? 'Kết quả đã lưu vào tài khoản của em.' : 'Kết quả lưu trên máy này. Đăng nhập bằng mã lớp để thầy cô xem được.') + '</p></div>';
     $('kt-lai').addEventListener('click', batDauKt);
     $('o-kt').scrollIntoView({ block: 'start' });

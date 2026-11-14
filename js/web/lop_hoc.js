@@ -54,20 +54,20 @@
     function veKhung() {
       var lopId = chonLopId();
       noiDung.innerHTML =
-        '<div class="dau-muc" style="margin-bottom:20px"><span class="nhan">Bảng điều khiển giáo viên</span>' +
-        '<h2>Xin chào, ' + esc(tk.ten) + '</h2></div>' +
+        '<div class="dau-tk"><div><h2>Xin chào, ' + esc(tk.ten) + '</h2>' +
+        '<p>Bảng điều khiển lớp: thêm học sinh, xem phân tích và xuất báo cáo.</p></div></div>' +
         '<div class="thanh-cong-cu">' +
         (cacLop.length ? '<div class="o-nhap" style="margin:0;min-width:240px"><label for="chon-lop">Lớp đang xem</label><select id="chon-lop">' +
           cacLop.map(function (l) { return '<option value="' + l.id + '"' + (l.id === lopId ? ' selected' : '') + '>' + esc(l.ten) + ' (' + l.ma_lop + ')</option>'; }).join('') +
           '</select></div>' : '') +
         '<span class="gian"></span>' +
         '<form id="f-tao-lop" class="thanh-cong-cu" style="margin:0"><div class="o-nhap" style="margin:0"><label for="ten-lop-moi">Tạo lớp mới</label>' +
-        '<input id="ten-lop-moi" maxlength="80" placeholder="VD: 8A1 – THCS Kim Đồng" required></div>' +
-        '<button class="nut chinh nho" type="submit" style="align-self:flex-end">+ Tạo lớp</button></form></div>' +
+        '<input id="ten-lop-moi" maxlength="80" placeholder="VD: 8A1 – THCS Kim Đồng" required style="min-width:min(300px,70vw)"></div>' +
+        '<button class="nut chinh" type="submit" style="align-self:flex-end;min-height:48px">+ Tạo lớp</button></form></div>' +
         '<div id="bao-gv" role="status"></div>' +
         (cacLop.length
-          ? '<div class="tab-trang" role="tablist"><button role="tab" data-tab="lop" aria-selected="' + (tab === 'lop') + '">👩‍🏫 Lớp học</button>' +
-            '<button role="tab" data-tab="phan_tich" aria-selected="' + (tab === 'phan_tich') + '">📊 Phân tích dữ liệu</button></div><div id="o-tab"><p class="trong">Đang tải lớp…</p></div>'
+          ? '<div class="tab-trang" role="tablist" aria-label="Phần của bảng điều khiển"><button role="tab" data-tab="lop" aria-selected="' + (tab === 'lop') + '">Lớp học</button>' +
+            '<button role="tab" data-tab="phan_tich" aria-selected="' + (tab === 'phan_tich') + '">Phân tích dữ liệu</button></div><div id="o-tab"><p class="trong">Đang tải lớp…</p></div>'
           : '<div class="the trong">Thầy cô chưa có lớp nào. Đặt tên lớp ở ô bên trên rồi bấm <b>+ Tạo lớp</b> để nhận mã lớp.</div>');
 
       var bao = document.getElementById('bao-gv');
@@ -111,20 +111,20 @@
       var lop = tt.lop, s = tt.soLieu;
       o.innerHTML =
         '<div class="hai-cot">' +
-        '<div class="the"><div class="ten" style="color:var(--mo)">Mã lớp để học sinh đăng nhập</div>' +
-        '<div style="font:800 44px var(--chu-tieu-de);letter-spacing:6px;color:var(--vang)">' + lop.ma_lop + '</div>' +
-        '<p style="color:var(--mo)">Lớp <b>' + esc(lop.ten) + '</b> · ' + s.soHocSinh + ' học sinh · ' + s.soHoatDong7Ngay + ' em chơi trong 7 ngày qua.</p>' +
-        '<div class="hang-nut"><button class="nut nho" type="button" id="doi-ten-lop">✏️ Đổi tên lớp</button><button class="nut nho do" type="button" id="xoa-lop">🗑 Xoá lớp</button></div></div>' +
-        '<form class="the" id="f-them-hs"><b>Thêm học sinh</b><p style="color:var(--mo);margin:6px 0 10px">Dán danh sách họ tên, mỗi dòng một em (tối đa 60 em mỗi lần). Hệ thống tự tạo tên đăng nhập và mật khẩu 6 số.</p>' +
+        '<div class="the"><b>Mã lớp để học sinh đăng nhập</b><br>' +
+        '<span class="ma-lop">' + lop.ma_lop + '</span>' +
+        '<p style="color:var(--muc-2);margin:0">Lớp <b style="color:var(--duoc)">' + esc(lop.ten) + '</b>, ' + s.soHocSinh + ' học sinh, ' + s.soHoatDong7Ngay + ' em chơi trong 7 ngày qua.</p>' +
+        '<div class="hang-nut" style="margin-top:16px"><button class="nut nho" type="button" id="doi-ten-lop">Đổi tên lớp</button><button class="nut nho do" type="button" id="xoa-lop">Xoá lớp</button></div></div>' +
+        '<form class="the" id="f-them-hs"><b>Thêm học sinh</b><p style="color:var(--muc-2);margin:6px 0 12px;font-size:15px">Dán danh sách họ tên, mỗi dòng một em (tối đa 60 em mỗi lần). Hệ thống tự tạo tên đăng nhập và mật khẩu 6 số.</p>' +
         '<div class="o-nhap"><label for="ds-ten" class="an">Danh sách họ tên</label><textarea id="ds-ten" rows="6" placeholder="Nguyễn Văn An&#10;Trần Thị Bình&#10;..."></textarea></div>' +
         '<button class="nut chinh" type="submit">Tạo tài khoản</button></form>' +
         '</div>' +
         '<div id="ket-qua-them"></div>' +
-        '<h3 style="margin-top:28px">Danh sách học sinh</h3>' +
+        '<h3 style="margin-top:32px">Danh sách học sinh</h3>' +
         (tt.hocSinh.length ? '<div class="bang-cuon"><table class="bang"><thead><tr><th>#</th><th>Họ tên</th><th>Tên đăng nhập</th><th>Hoạt động gần nhất</th><th>Kết quả đã gửi</th><th></th></tr></thead><tbody>' +
           s.hocSinh.map(function (h, i) {
             return '<tr><td>' + (i + 1) + '</td><td>' + esc(h.hoTen) + '</td><td><code>' + esc(h.tenDn) + '</code></td><td>' + SL.luc(h.cuoi) + '</td><td class="so">' + h.soSuKien + '</td>' +
-              '<td style="white-space:nowrap"><button class="nut nho" type="button" data-mk="' + h.id + '">🔑 Mật khẩu mới</button> <button class="nut nho do" type="button" data-xoa="' + h.id + '">Xoá</button></td></tr>';
+              '<td style="white-space:nowrap"><button class="nut nho" type="button" data-mk="' + h.id + '" aria-label="Tạo mật khẩu mới cho ' + esc(h.hoTen) + '">Mật khẩu mới</button> <button class="nut nho do" type="button" data-xoa="' + h.id + '" aria-label="Xoá tài khoản của ' + esc(h.hoTen) + '">Xoá</button></td></tr>';
           }).join('') + '</tbody></table></div>' : '<p class="trong">Lớp chưa có học sinh. Dán danh sách tên ở ô bên trên.</p>');
 
       var bao = document.getElementById('bao-gv');
@@ -140,10 +140,10 @@
           var kq = await TK.goiHam('quan-ly-hoc-sinh', { hanh_dong: 'them', lop_id: lop.id, ds_ten: ds });
           var tot = kq.hoc_sinh.filter(function (x) { return x.mat_khau; }), loi = kq.hoc_sinh.filter(function (x) { return x.loi; });
           var kqO = document.getElementById('ket-qua-them');
-          kqO.innerHTML = '<div class="the" style="margin-top:18px;border-color:var(--vang)"><b>Đã tạo ' + tot.length + ' tài khoản.</b> ' +
-            '<span style="color:var(--vang)">Mật khẩu chỉ hiện một lần: hãy in phiếu hoặc tải danh sách ngay.</span>' +
+          kqO.innerHTML = '<div class="the" style="margin-top:20px;border:2px solid var(--duoc);box-shadow:0 4px 0 var(--duoc)"><b>Đã tạo ' + tot.length + ' tài khoản.</b> ' +
+            '<span class="bao tin" style="display:block;margin:10px 0 0">Mật khẩu chỉ hiện một lần: hãy in phiếu hoặc tải danh sách ngay.</span>' +
             (loi.length ? '<div class="bao loi" style="margin-top:10px">' + loi.map(function (x) { return esc(x.ho_ten) + ': ' + esc(x.loi); }).join('<br>') + '</div>' : '') +
-            '<div class="hang-nut" style="margin:12px 0"><button class="nut vang nho" type="button" id="in-phieu">🖨 In phiếu đăng nhập</button><button class="nut nho" type="button" id="tai-ds">⬇ Tải danh sách (.xlsx)</button></div>' +
+            '<div class="hang-nut" style="margin:14px 0"><button class="nut chinh nho" type="button" id="in-phieu">In phiếu đăng nhập</button><button class="nut nho" type="button" id="tai-ds">Tải danh sách (.xlsx)</button></div>' +
             '<div class="bang-cuon"><table class="bang"><thead><tr><th>Họ tên</th><th>Mã lớp</th><th>Tên đăng nhập</th><th>Mật khẩu</th></tr></thead><tbody>' +
             tot.map(function (x) { return '<tr><td>' + esc(x.ho_ten) + '</td><td>' + lop.ma_lop + '</td><td><code>' + esc(x.ten_dang_nhap) + '</code></td><td><code>' + esc(x.mat_khau) + '</code></td></tr>'; }).join('') +
             '</tbody></table></div></div>';
