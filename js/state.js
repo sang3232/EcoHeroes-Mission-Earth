@@ -1,7 +1,11 @@
 /* Trạng thái game (save v2), lưu/nạp và các hàm tiện ích */
 window.HSX = window.HSX || {};
 
-HSX.SAVE_KEY = 'hoi-sinh-xanh-v2';
+// Mỗi tài khoản một save riêng (xem js/kho_tai_khoan.js): '<khoá gốc>@<id tài khoản>'.
+// Chơi khách dùng khoá gốc, nên tiến trình cũ trên máy không tự chuyển sang tài khoản nào.
+HSX.SAVE_KEY_GOC = 'hoi-sinh-xanh-v2';
+HSX.taiKhoan = (typeof window !== 'undefined' && window.HSXKho) ? window.HSXKho.tk() : null;
+HSX.SAVE_KEY = HSX.taiKhoan ? HSX.SAVE_KEY_GOC + '@' + HSX.taiKhoan.id : HSX.SAVE_KEY_GOC;
 HSX.OLD_SAVE_KEY = 'hoi-sinh-xanh-v1';
 
 HSX.newState = function () {
@@ -179,12 +183,85 @@ HSX.saveGame = function () {
   }
 };
 
-HSX.exportSave = () => btoa(unescape(encodeURIComponent(JSON.stringify(HSX.S))));
-HSX.importSave = function (str) {
-  const o = JSON.parse(decodeURIComponent(escape(atob(String(str || '').trim()))));
-  if (!laObj(o)) throw new Error('Mã save không phải object');
-  return HSX.migrate(o);
-};
+// ---------- Mã save gắn với tài khoản ----------
+// Mã do tài khoản nào xuất thì chỉ nhập lại được vào đúng tài khoản đó (để chuyển sang máy khác);
+// mã xuất khi chơi khách chỉ nhập được khi chơi khách. Nội dung được trộn bằng khoá suy ra từ id tài khoản
+// và có mã kiểm tra, nên tài khoản khác không mở được, sửa tay sẽ hỏng. Đây là cách chống chia save trong lớp,
+// không phải mã hoá an ninh cao: người đọc được mã nguồn và biết id tài khoản vẫn có thể giải.
+// Dạng mã: HSX2.<chủ>.<nội dung đã trộn, base64url>.<mã kiểm tra>
+(function () {
+  const MUOI = 'HoiSinhXanh/ma-save/2';
+  // băm cyrb53 (53 bit) ra chuỗi hex
+  function bam(s, hat) {
+    let h1 = 0xdeadbeef ^ hat, h2 = 0x41c6ce57 ^ hat;
+    for (let i = 0; i < s.length; i++) {
+      const c = s.charCodeAt(i);
+      h1 = Math.imul(h1 ^ c, 2654435761);
+      h2 = Math.imul(h2 ^ c, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(14, '0');
+  }
+  // dòng byte giả ngẫu nhiên (mulberry32) theo tài khoản
+  function tron(byte, id) {
+    let a = parseInt(bam(MUOI + '|khoa|' + id, 7).slice(-8), 16) | 0;
+    const ra = new Uint8Array(byte.length);
+    for (let i = 0; i < byte.length; i++) {
+      a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      ra[i] = byte[i] ^ (((t ^ (t >>> 14)) >>> 0) & 255);
+    }
+    return ra;
+  }
+  function sangB64(byte) {
+    let s = '';
+    for (let i = 0; i < byte.length; i += 0x8000) s += String.fromCharCode.apply(null, byte.subarray(i, i + 0x8000));
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function tuB64(s) {
+    s = s.replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    const b = atob(s), ra = new Uint8Array(b.length);
+    for (let i = 0; i < b.length; i++) ra[i] = b.charCodeAt(i);
+    return ra;
+  }
+  function idChu() { return HSX.taiKhoan ? HSX.taiKhoan.id : 'khach'; }
+  function nhanChu(id) { return id === 'khach' ? 'khach' : bam(MUOI + '|chu|' + id, 3).slice(-8); }
+  function kiem(id, json) { return bam(MUOI + '|' + id + '|' + json, 11).slice(-12); }
+  function loi(chu) { const e = new Error(chu); e.choNguoiChoi = true; return e; }
+
+  HSX.exportSave = function () {
+    const id = idChu(), json = JSON.stringify(HSX.S);
+    return 'HSX2.' + nhanChu(id) + '.' + sangB64(tron(new TextEncoder().encode(json), id)) + '.' + kiem(id, json);
+  };
+  HSX.importSave = function (str) {
+    str = String(str || '').replace(/\s+/g, '');
+    const id = idChu();
+    let o;
+    if (str.indexOf('HSX2.') === 0) {
+      const p = str.split('.');
+      if (p.length !== 4) throw loi('Mã save bị thiếu hoặc thừa ký tự. Hãy sao chép lại toàn bộ mã.');
+      if (p[1] !== nhanChu(id)) {
+        throw loi(p[1] === 'khach'
+          ? 'Đây là mã xuất khi chơi khách, không nhập được vào tài khoản. Mỗi tài khoản có tiến trình riêng.'
+          : HSX.taiKhoan ? 'Mã save này của tài khoản khác. Mỗi tài khoản chỉ nhập được mã do chính mình xuất.'
+            : 'Mã save này của một tài khoản lớp học. Hãy đăng nhập đúng tài khoản đó rồi nhập lại.');
+      }
+      let json;
+      try { json = new TextDecoder().decode(tron(tuB64(p[2]), id)); } catch (e) { throw loi('Mã save bị hỏng.'); }
+      if (kiem(id, json) !== p[3]) throw loi('Mã save bị hỏng hoặc đã bị sửa.');
+      o = JSON.parse(json);
+    } else {
+      // Mã kiểu cũ (chưa gắn tài khoản): chỉ nhận khi chơi khách
+      if (HSX.taiKhoan) throw loi('Mã save kiểu cũ không gắn với tài khoản nên chỉ nhập được khi chơi khách.');
+      o = JSON.parse(decodeURIComponent(escape(atob(str))));
+    }
+    if (!laObj(o)) throw loi('Mã save không hợp lệ.');
+    return HSX.migrate(o);
+  };
+})();
 
 HSX.fmt = function (n) {
   n = Math.floor(n);

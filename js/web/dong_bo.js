@@ -3,19 +3,20 @@
    (trường nguoi), để máy dùng chung không gửi nhầm kết quả của bạn khác. Gửi lại an toàn: trùng ma_su_kien thì bỏ qua. */
 (function () {
   'use strict';
-  var KHOA = 'hoi-sinh-xanh-hoc-tap';
   var TK = window.HSXTaiKhoan;
   if (!TK || !TK.coMay) { window.HSXDongBo = { gui: function () { return Promise.resolve(0); } }; return; }
   var dangGui = false;
 
-  function doc() { try { return JSON.parse(localStorage.getItem(KHOA) || 'null'); } catch (e) { return null; } }
+  // Kho học tập riêng của tài khoản (js/kho_tai_khoan.js)
+  function khoa(tk) { return window.HSXKho ? HSXKho.hocTap(tk) : 'hoi-sinh-xanh-hoc-tap'; }
+  function doc(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
 
   async function gui() {
     var tk = TK.nhoTam();
     if (dangGui || !tk || tk.vai_tro !== 'hoc_sinh' || !navigator.onLine) return 0;
     dangGui = true;
     try {
-      var d = doc(), da = 0;
+      var KHOA = khoa(tk), d = doc(KHOA), da = 0;
       var cho = d ? d.hangCho.filter(function (e) { return e.nguoi === tk.id; }) : [];
       while (cho.length) {
         var lo = cho.splice(0, 100);
@@ -25,7 +26,7 @@
         var r = await TK.sb.from('su_kien').upsert(hang, { onConflict: 'ma_su_kien', ignoreDuplicates: true });
         if (r.error) throw r.error;
         // đọc lại kho rồi mới bỏ: trong lúc gửi có thể đã có kết quả mới
-        var moi = doc(), boDi = {};
+        var moi = doc(KHOA), boDi = {};
         lo.forEach(function (e) { boDi[e.ma_su_kien] = true; });
         if (moi) {
           moi.hangCho = moi.hangCho.filter(function (e) { return !boDi[e.ma_su_kien]; });
@@ -33,8 +34,8 @@
         }
         da += lo.length;
       }
-      // Ảnh chụp tiến độ trong save (chỉ có khi đang ở trang game)
-      if (window.HSX && HSX.HocTap && HSX.S) {
+      // Ảnh chụp tiến độ trong save (chỉ có khi đang ở trang game, và save đó đúng là của tài khoản này)
+      if (window.HSX && HSX.HocTap && HSX.S && HSX.taiKhoan && HSX.taiKhoan.id === tk.id) {
         var t = HSX.HocTap.tienDo();
         var r2 = await TK.sb.from('tien_do').upsert(Object.assign({ hoc_sinh_id: tk.id, cap_nhat: new Date().toISOString() }, t), { onConflict: 'hoc_sinh_id' });
         if (r2.error) throw r2.error;

@@ -1,13 +1,16 @@
 /* Thống kê học tập: nghe sự kiện trong game, ghi vào máy (không đụng save).
    - hangCho: các sự kiện chưa gửi lên lớp học (js/web/dong_bo.js gửi khi đã đăng nhập)
    - tong: số liệu cộng dồn trên máy này, trang thong-ke.html dùng cho người chơi khách
-   Không ghi gì khi đang xem lại trận boss (HSX.PhatLai.dang). File này không gọi mạng. */
+   Không ghi gì khi đang xem lại trận boss (HSX.PhatLai.dang). File này không gọi mạng.
+   Kho này riêng cho tài khoản đã mở trang game (HSX.taiKhoan, cùng tài khoản với save), xem js/kho_tai_khoan.js. */
 (function () {
   'use strict';
-  var KHOA = 'hoi-sinh-xanh-hoc-tap';
+  var TK_GAME = HSX.taiKhoan || null;   // tài khoản lúc mở trang: save và kết quả đều thuộc người này
+  var KHOA = window.HSXKho ? HSXKho.hocTap(TK_GAME) : 'hoi-sinh-xanh-hoc-tap';
   var TOI_DA_HANG_CHO = 600;
 
   function moi() {
+    if (window.HSXKho) return HSXKho.khoMoi();
     return {
       hangCho: [],
       tong: {
@@ -22,7 +25,10 @@
   function doc() {
     try {
       var d = JSON.parse(localStorage.getItem(KHOA) || 'null');
-      if (d && d.tong && Array.isArray(d.hangCho)) return d;
+      if (d && Array.isArray(d.hangCho)) {
+        if (!d.tong) d.tong = moi().tong;
+        return d;
+      }
     } catch (e) { /* hỏng thì làm lại */ }
     return moi();
   }
@@ -42,12 +48,9 @@
   function dangXemLai() { return !!(HSX.PhatLai && HSX.PhatLai.dang); }
 
   // Thêm một sự kiện vào hàng chờ. loai: cong_phan_loai | leu_nem_rac | trong_cay | dao_cay | quiz
-  // nguoi: học sinh đang đăng nhập lúc ghi (null = khách). dong_bo.js chỉ gửi kết quả của đúng người đó.
+  // nguoi: học sinh đã mở trang game (null = khách / giáo viên). dong_bo.js chỉ gửi kết quả của đúng người đó.
   function nguoiHienTai() {
-    try {
-      var tk = JSON.parse(localStorage.getItem('hoi-sinh-xanh-tai-khoan') || 'null');
-      return tk && tk.vai_tro === 'hoc_sinh' ? tk.id : null;
-    } catch (e) { return null; }
+    return TK_GAME && TK_GAME.vai_tro === 'hoc_sinh' ? TK_GAME.id : null;
   }
   function them(d, loai, dung, tong, duLieu) {
     d.hangCho.push({ ma_su_kien: maMoi(), loai: loai, dung: dung, tong: tong, du_lieu: duLieu || {}, luc: new Date().toISOString(), nguoi: nguoiHienTai() });
@@ -151,19 +154,33 @@
 
   // ---------- Dòng tài khoản trong tab Cài đặt ----------
   function dongTaiKhoan() {
-    var tk = null;
-    try { tk = JSON.parse(localStorage.getItem('hoi-sinh-xanh-tai-khoan') || 'null'); } catch (e) { /* bỏ qua */ }
+    var tk = TK_GAME;
     var cho = doc().hangCho.length;
     if (tk && tk.vai_tro === 'hoc_sinh') {
-      return '<h3>Lớp học</h3><p class="small">Đang lưu tiến bộ cho <b>' + HSX.esc(tk.ten || '') + '</b>' +
+      return '<h3>Lớp học</h3><p class="small">Tiến trình game và kết quả đang lưu riêng cho <b>' + HSX.esc(tk.ten || '') + '</b>' +
         (tk.lop ? ' · lớp ' + HSX.esc(tk.lop) : '') + '. ' +
         (cho ? cho + ' kết quả đang chờ gửi.' : 'Đã gửi hết kết quả.') +
         ' <a href="thong-ke.html" target="_self">Xem thống kê</a></p>';
     }
-    return '<h3>Lớp học</h3><p class="small muted">Đang chơi khách: kết quả chỉ lưu trên máy này. ' +
-      '<a href="dang-nhap.html" target="_self">Đăng nhập bằng mã lớp</a> để thầy cô xem được tiến bộ. ' +
+    if (tk) {
+      return '<h3>Tài khoản</h3><p class="small">Tiến trình game đang lưu riêng cho tài khoản giáo viên <b>' + HSX.esc(tk.ten || '') + '</b>. ' +
+        '<a href="thong-ke.html" target="_self">Bảng điều khiển lớp</a></p>';
+    }
+    return '<h3>Lớp học</h3><p class="small muted">Đang chơi khách: tiến trình chỉ lưu trên máy này và không chuyển sang tài khoản nào. ' +
+      '<a href="dang-nhap.html" target="_self">Đăng nhập bằng mã lớp</a> để có tiến trình riêng và để thầy cô xem được tiến bộ. ' +
       '<a href="index.html" target="_self">Về trang Giới thiệu</a></p>';
   }
+
+  // Đổi tài khoản ở tab khác (đăng nhập / đăng xuất): lưu nốt cho tài khoản cũ rồi mở lại game
+  // để không ghi tiến trình của người này vào tài khoản người kia.
+  addEventListener('storage', function (e) {
+    if (e.key !== 'hoi-sinh-xanh-tai-khoan' && e.key !== null) return;
+    var moiTk = window.HSXKho ? HSXKho.tk() : null;
+    if ((moiTk && moiTk.id) === (TK_GAME && TK_GAME.id)) return;
+    if (HSX.S && !dangXemLai()) HSX.saveGame();
+    if (HSX.UI && HSX.UI.toast) HSX.UI.toast('Tài khoản vừa thay đổi ở tab khác. Đang mở tiến trình của tài khoản mới…', '', 3000);
+    setTimeout(function () { location.reload(); }, 1500);
+  });
 
   // Cây lớn dần theo thời gian: mỗi phút chụp lại tiến độ một lần
   setInterval(function () { if (!dangXemLai()) ghi(doc()); }, 60000);

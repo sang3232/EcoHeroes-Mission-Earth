@@ -43,7 +43,7 @@
     row.append(thu, xoa);
     const ghiChu = document.createElement('p');
     ghiChu.className = 'small muted';
-    ghiChu.textContent = 'Muốn giữ ván để xem lại? Đừng xoá: bản lỗi được sao lưu ở khoá "hoi-sinh-xanh-v2-hong" trong Local Storage.';
+    ghiChu.textContent = 'Muốn giữ ván để xem lại? Đừng xoá: bản lỗi được sao lưu ở khoá "' + HSX.SAVE_KEY + '-hong" trong Local Storage.';
     hop.append(row, ghiChu);
     box.appendChild(hop);
     document.body.appendChild(box);

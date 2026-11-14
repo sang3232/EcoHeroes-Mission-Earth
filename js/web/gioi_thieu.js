@@ -191,17 +191,17 @@
   if (thu) (function () {
     var MON = [
       { ten: 'Chai nước nhựa', emo: '🧴', nhom: 'taiche', goiY: 'Nhựa số 1 (PET): tái chế được.' },
-      { ten: 'Vỏ chuối', emo: '🍌', nhom: 'huuco', goiY: 'Thức ăn thừa: ủ thành phân bón.' },
+      { ten: 'Vỏ chuối', emo: '🍌', nhom: 'huuco', goiY: 'Vỏ trái cây là rác thực phẩm, ủ thành phân được.' },
       { ten: 'Hộp xốp dính dầu', emo: '🍱', nhom: 'khac', goiY: 'Xốp bẩn không tái chế được.' },
       { ten: 'Lon nước ngọt', emo: '🥫', nhom: 'taiche', goiY: 'Nhôm tái chế gần như vô hạn lần.' },
       { ten: 'Ống hút nhựa', emo: '🥤', nhom: 'khac', goiY: 'Nhựa nhỏ và bẩn thường không tái chế được.' },
-      { ten: 'Bã cà phê', emo: '☕', nhom: 'huuco', goiY: 'Rác hữu cơ, ủ phân rất tốt.' },
+      { ten: 'Bã cà phê', emo: '☕', nhom: 'khac', goiY: 'Theo Hướng dẫn phân loại rác của Bộ TN&MT (2023), bã cà phê, bã trà thuộc rác thải khác.' },
       { ten: 'Báo cũ', emo: '📰', nhom: 'taiche', goiY: 'Giấy khô, sạch thì tái chế được.' },
       { ten: 'Khẩu trang đã dùng', emo: '😷', nhom: 'khac', goiY: 'Đồ vệ sinh cá nhân bỏ vào rác thải khác.' },
       { ten: 'Thùng các-tông', emo: '📦', nhom: 'taiche', goiY: 'Giấy bìa khô tái chế được.' },
-      { ten: 'Lá khô', emo: '🍂', nhom: 'huuco', goiY: 'Rác hữu cơ, ủ thành phân.' },
+      { ten: 'Lá khô', emo: '🍂', nhom: 'khac', goiY: 'Theo Hướng dẫn phân loại rác của Bộ TN&MT (2023), lá, cành cây nhỏ từ làm vườn thuộc rác thải khác.' },
     ];
-    var TEN_NHOM = { taiche: 'Tái chế được', huuco: 'Rác hữu cơ', khac: 'Rác thải khác' };
+    var TEN_NHOM = { taiche: 'Tái chế được', huuco: 'Rác thực phẩm', khac: 'Rác thải khác' };
     var $ = function (id) { return document.getElementById(id); };
     var nut = thu.querySelectorAll('.thung button'), ph = $('thu-ph'), tiep = $('thu-tiep');
     var thuTu = MON.map(function (m, i) { return i; }), vi = 0, dung = 0, tong = 0, daChon = false;

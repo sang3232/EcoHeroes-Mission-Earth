@@ -5,10 +5,13 @@
   var D = window.HSX && HSX.DATA;
   if (!D) return;
   var esc = window.HSXWeb ? HSXWeb.esc : function (s) { return String(s); };
-  var KHOA = 'hoi-sinh-xanh-hoc-tap', KHOA_THUOC = 'hoi-sinh-xanh-the-da-thuoc';
+  // Kho học tập và thẻ đã thuộc riêng cho tài khoản đang đăng nhập (khách dùng khoá gốc), xem js/kho_tai_khoan.js
+  var TK_NAY = window.HSXKho ? HSXKho.tk() : null;
+  var KHOA = window.HSXKho ? HSXKho.hocTap(TK_NAY) : 'hoi-sinh-xanh-hoc-tap';
+  var KHOA_THUOC = window.HSXKho ? HSXKho.khoa('hoi-sinh-xanh-the-da-thuoc', TK_NAY) : 'hoi-sinh-xanh-the-da-thuoc';
 
   // ---------- Nhóm rác ----------
-  var NHOM_LUAT = { nhua: 'Tái chế được', kimloai: 'Tái chế được', giaytt: 'Tái chế được', huuco: 'Rác thực phẩm (hữu cơ)', khac: 'Rác thải khác' };
+  var NHOM_LUAT = { nhua: 'Tái chế được', kimloai: 'Tái chế được', giaytt: 'Tái chế được', huuco: 'Rác thực phẩm', khac: 'Rác thải khác' };
   var NHOM_CON = {};
   D.puzzle.binsR2.forEach(function (b) { NHOM_CON[b.id] = b; });
 
@@ -128,12 +131,13 @@
   function luuKetQua(cd, cau) {
     var d;
     try { d = JSON.parse(localStorage.getItem(KHOA) || 'null'); } catch (e) { d = null; }
-    if (!d || !d.tong) d = { hangCho: [], tong: { cong: { luot: 0, dung: 0, tong: 0, saoCao: 0, cacLuot: [] }, leu: { dung: 0, tong: 0 }, quiz: { luot: 0, dung: 0, tong: 0, cacLuot: [] }, monSai: {}, trong: 0, dao: 0 } };
+    if (!d || !Array.isArray(d.hangCho)) d = window.HSXKho ? HSXKho.khoMoi() : { hangCho: [], tong: null };
+    if (!d.tong) d.tong = { cong: { luot: 0, dung: 0, tong: 0, saoCao: 0, cacLuot: [] }, leu: { dung: 0, tong: 0 }, quiz: { luot: 0, dung: 0, tong: 0, cacLuot: [] }, monSai: {}, trong: 0, dao: 0 };
     d.tong.quiz = d.tong.quiz || { luot: 0, dung: 0, tong: 0, cacLuot: [] };
     var dung = cau.filter(function (c) { return c.daDung; }).length;
     var ma = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
       : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
-    var tk = window.HSXWeb ? HSXWeb.tkNho() : null;
+    var tk = TK_NAY;
     d.hangCho.push({ ma_su_kien: ma, loai: 'quiz', dung: dung, tong: cau.length, luc: new Date().toISOString(),
       nguoi: tk && tk.vai_tro === 'hoc_sinh' ? tk.id : null,
       du_lieu: { chu_de: cd, cac_cau: cau.map(function (c) { return { ma: c.ma, cd: c.cd, dung: !!c.daDung }; }) } });

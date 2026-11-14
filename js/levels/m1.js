@@ -8,7 +8,7 @@ Ký hiệu bản đồ (mỗi ký tự là một ô 48 px):
   1-9 cửa sang phòng khác (đặt ở mép phòng, nối theo "doors")
   @  chỗ bắt đầu    B  Trạm Tái Chế   S  lồng tinh linh   T  đống rác   P  ô trồng cây
   H  Mảnh Lá        J  Nhật ký        L  đèn lồng         R  chỗ dựng Rào Chắn
-  i  món rác cần phân loại             u o e  thùng rác (tái chế / hữu cơ / khác)
+  i  món rác cần phân loại             u o e  thùng rác (tái chế / thực phẩm / khác)
   c  Chai Lăn   s  Slime Nilon   k  Cua Lon   g  Lưới Ma   K  Cua Lon Khổng Lồ   V  Vua Túi Nilon
 
 tips: dòng hướng dẫn hiện khi Mầm tới gần ô (x, y). k = chữ cho bàn phím, t = chữ cho cảm ứng.

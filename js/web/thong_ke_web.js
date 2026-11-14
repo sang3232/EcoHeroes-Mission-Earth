@@ -196,13 +196,15 @@
     });
   }
 
-  function khoMay() {
-    try { return JSON.parse(localStorage.getItem(KHOA) || 'null') || { hangCho: [], tong: {} }; } catch (e) { return { hangCho: [], tong: {} }; }
+  // Kho học tập trên máy này của đúng tài khoản tk (null = khách), xem js/kho_tai_khoan.js
+  function khoMay(tk) {
+    var k = window.HSXKho ? HSXKho.hocTap(tk || null) : KHOA;
+    try { return JSON.parse(localStorage.getItem(k) || 'null') || { hangCho: [], tong: {} }; } catch (e) { return { hangCho: [], tong: {} }; }
   }
 
   // Khách: dùng các kết quả ghi lúc không đăng nhập
   function veKhach() {
-    var d = khoMay();
+    var d = khoMay(null);
     var s = SL.motHocSinh(d.hangCho.filter(function (e) { return !e.nguoi; }), d.tienDo);
     veHocSinh(s, null, null);
   }
@@ -217,7 +219,7 @@
     // cộng thêm kết quả còn trên máy chưa gửi được (mất mạng)
     var daCo = {};
     r1.data.forEach(function (e) { daCo[e.ma_su_kien] = true; });
-    var d = khoMay();
+    var d = khoMay(tk);
     var cho = d.hangCho.filter(function (e) { return e.nguoi === tk.id && !daCo[e.ma_su_kien]; });
     var td = r2.data || null;
     if (d.tienDo && (!td || (d.tienDo.so_cay || 0) > (td.so_cay || 0))) td = d.tienDo;
