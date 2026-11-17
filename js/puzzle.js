@@ -63,6 +63,8 @@
       const it = this.item(), ans = this.answer(it), ok = bin === ans;
       this.lock = true;
       if (!ok) this.mistakes++;
+      // thống kê học tập (js/thong_ke.js)
+      HSX.emit('phanloai', { ten: it.name, nhom: ans, chon: bin, dung: ok, vong: this.ri + 1, giay: Math.round((this.tMax - this.tLeft) * 10) / 10 });
       const right = this.bins().find(b => b.id === ans);
       this.feedback = ok
         ? '<div class="pz-ok">✔ Chính xác!</div>'
@@ -111,6 +113,7 @@
       this.done = true;
       clearInterval(this.iv);
       const st = this.stars(), res = HSX.Sys.onPuzzleResult(st);
+      HSX.emit('phanloai_xong', { sao: st, sai: this.mistakes, tong: this.rounds.reduce((a, r) => a + r.items.length, 0) });
       HSX.S.facts.luat3nhom = true;
       HSX.UI.openRaw(`<div class="modal puzzle">
         <div class="m-head"><b>🧩 Kết quả</b><button class="x" data-act="pz-close">✕</button></div>

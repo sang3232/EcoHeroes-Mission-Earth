@@ -1003,6 +1003,7 @@
         const bin = bins.find(b => Phys.overlap(o, { x: b.x + 2, y: b.y + 4, w: T - 4, h: T - 4 }));
         if (!bin) return;
         const it = D.sortItems[o.k % D.sortItems.length];
+        HSX.emit('nemrac', { ten: it.name, thung: bin.bin, dung_thung: it.bin, dung: it.bin === bin.bin });   // thống kê học tập
         if (it.bin === bin.bin) {
           r.objs.splice(r.objs.indexOf(o), 1);
           this.burst(bin.x + T / 2, bin.y + 10, D.bins[bin.bin].color, 16);

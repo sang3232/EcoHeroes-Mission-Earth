@@ -267,11 +267,11 @@
           return;
         case 'save': this.toast(HSX.saveGame() ? '💾 Đã lưu.' : 'Không lưu được: trình duyệt đang chặn bộ nhớ.'); return;
         case 'fullscreen': (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {}); return;
-        case 'export': this.closeModal(); this.modal('Mã save', `<p class="small">Sao chép đoạn mã này để chuyển save sang máy khác.</p><textarea class="code" readonly onclick="this.select()">${HSX.exportSave()}</textarea>`); return;
-        case 'import': this.closeModal(); this.modal('Nhập mã save', '<p class="small">Dán mã save vào đây. Tiến trình hiện tại sẽ bị thay thế.</p><textarea class="code" id="imp-code"></textarea>', [['Hủy', 'close'], ['Nhập', 'do-import', true]]); return;
+        case 'export': this.closeModal(); this.modal('Mã save', `<p class="small">Sao chép đoạn mã này để chuyển tiến trình sang máy khác. ${HSX.taiKhoan ? `Mã chỉ nhập được vào đúng tài khoản <b>${HSX.esc(HSX.taiKhoan.ten || '')}</b>, tài khoản khác không dùng được.` : 'Mã chỉ nhập được khi chơi khách (không đăng nhập).'}</p><textarea class="code" readonly onclick="this.select()">${HSX.exportSave()}</textarea>`); return;
+        case 'import': this.closeModal(); this.modal('Nhập mã save', `<p class="small">${HSX.taiKhoan ? `Dán mã save do chính tài khoản <b>${HSX.esc(HSX.taiKhoan.ten || '')}</b> xuất.` : 'Dán mã save xuất khi chơi khách.'} Tiến trình hiện tại sẽ bị thay thế.</p><textarea class="code" id="imp-code"></textarea>`, [['Hủy', 'close'], ['Nhập', 'do-import', true]]); return;
         case 'do-import':
           try { HSX.S = HSX.importSave($('imp-code').value); HSX.saveGame(); location.reload(); }
-          catch (err) { this.toast('Mã save không hợp lệ.'); }
+          catch (err) { this.toast(err && err.choNguoiChoi ? err.message : 'Mã save không hợp lệ.', '', 6000); }
           return;
         case 'reset': this.closeModal(); this.modal('Chơi lại từ đầu?', '<p>Xóa <b>toàn bộ</b> tiến trình. Không hoàn tác được.</p>', [['Hủy', 'close', true], ['Xóa và chơi lại', 'do-reset']]); return;
         case 'do-reset': HSX.S = HSX.newState(); HSX.saveGame(); location.reload(); return;
@@ -285,6 +285,9 @@
         case 'p2-finish': HSX.Puzzle2.finish(); return;
         case 'p2-close': HSX.Puzzle2.close(); return;
         case 'p2-retry': HSX.Puzzle2.close(); HSX.Puzzle2.open(); return;
+        case 'dokho': HSX.DoKho.chon(arg); break;
+        case 'tudanh': HSX.DoKho.doiTuDanh(); break;
+        case 'dokho-dau': HSX.DoKho.chonDau(arg); return;
         default: return;
       }
       void S;
@@ -519,12 +522,14 @@
     tab_caidat() {
       const S = HSX.S;
       return `<div class="cols"><div>${this.dieuKhien()}</div>
-        <div><h3>Camera theo chuột</h3><p class="small muted">Rê chuột ra phía mép màn hình thì khung nhìn lia theo một phần.</p>
+        <div>${HSX.DoKho ? HSX.DoKho.oCaiDat() : ''}
+        <h3>Camera theo chuột</h3><p class="small muted">Rê chuột ra phía mép màn hình thì khung nhìn lia theo một phần.</p>
         <div class="row">${[[0, 'Tắt'], [0.18, 'Nhẹ'], [0.3, 'Vừa'], [0.45, 'Mạnh']].map(([v, n]) => `<button class="btn small ${HSX.opt.camChuot === v ? 'on' : ''}" data-act="cam" data-arg="${v}">${n}</button>`).join('')}</div>
         <h3>Hướng dẫn</h3><p class="small muted">Bảng nhỏ phía trên màn hình dạy từng thao tác, mẹo mới hiện khi gặp tình huống lần đầu.</p>
         <div class="row"><button class="btn small ${HSX.opt.huongDan ? 'on' : ''}" data-act="hd-bat">${HSX.opt.huongDan ? 'Đang bật' : 'Đang tắt'}</button><button class="btn small" data-act="hd-lai">Xem lại từ đầu</button></div>
         ${this.nhatKyTran()}
         <h3>Thống kê</h3><p class="small">Thời gian chơi ${HSX.fmtTime(S.stats.time)} · Quái đã hạ ${fmt(S.stats.kills)} · Số lần ngã ${S.stats.deaths}</p>
+        ${HSX.HocTap ? HSX.HocTap.dongTaiKhoan() : ''}
         <h3>Lưu game</h3><p class="small muted">Game tự lưu khi ngồi Trạm, khi sang phòng mới và khi nhặt đồ quan trọng.</p>
         <div class="row"><button class="btn" data-act="save">Lưu ngay</button><button class="btn" data-act="fullscreen">Toàn màn hình</button></div>
         <div class="row"><button class="btn" data-act="export">Xuất mã save</button><button class="btn" data-act="import">Nhập mã save</button><button class="btn danger" data-act="reset">Chơi lại từ đầu</button></div>

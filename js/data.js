@@ -25,7 +25,7 @@ HSX.DATA = {
     lon_nhom:       { kind: 'material', name: 'Lon nhôm', emoji: '🥫', desc: 'Kim loại nhẹ, bền, tái chế được nhiều lần.' },
     luoi_cu:        { kind: 'material', name: 'Lưới cũ', emoji: '🕸️', desc: 'Lưới đánh cá bị bỏ lại trên biển.' },
     vo_so:          { kind: 'material', name: 'Vỏ sò', emoji: '🐚', desc: 'Nhặt trên bãi cát. Nghe nói gió biển rất thích chúng.' },
-    rong_bien:      { kind: 'material', name: 'Rong biển', emoji: '🌿', desc: 'Rác hữu cơ, ủ thành phân compost.' },
+    rong_bien:      { kind: 'material', name: 'Rong biển', emoji: '🌿', desc: 'Rong biển dạt bờ, ủ thành phân compost được.' },
     manh_thuy_tinh: { kind: 'material', name: 'Thủy tinh biển', emoji: '💎', desc: 'Mảnh chai vỡ bị sóng và cát mài nhẵn.' },
     // Sơ chế
     hat_nhua:       { kind: 'material', name: 'Hạt nhựa', emoji: '🔘', desc: 'Nhựa nghiền nhỏ, dùng để ép ống.' },
@@ -153,15 +153,15 @@ HSX.DATA = {
   // Phòng phân loại ở Lều bỏ hoang: món rác và thùng đúng của nó
   sortItems: [
     { name: 'Chai nước nhựa', emoji: '🧴', bin: 'u', hint: 'Nhựa PET: tái chế được' },
-    { name: 'Vỏ chuối', emoji: '🍌', bin: 'o', hint: 'Thức ăn thừa: ủ thành phân' },
+    { name: 'Vỏ chuối', emoji: '🍌', bin: 'o', hint: 'Vỏ trái cây: rác thực phẩm, ủ thành phân được' },
     { name: 'Lon nước ngọt', emoji: '🥫', bin: 'u', hint: 'Nhôm: tái chế gần như vô hạn lần' },
     { name: 'Túi nilon bẩn', emoji: '🛍️', bin: 'e', hint: 'Nilon mỏng, dính bẩn: khó tái chế' },
     { name: 'Báo cũ', emoji: '📰', bin: 'u', hint: 'Giấy khô, sạch: tái chế được' },
-    { name: 'Xương cá', emoji: '🐟', bin: 'o', hint: 'Thức ăn thừa: ủ thành phân' },
+    { name: 'Xương cá', emoji: '🐟', bin: 'o', hint: 'Phần bỏ đi từ cá, thịt: rác thực phẩm' },
   ],
   bins: {
     u: { name: 'Tái chế được', emoji: '♻️', color: '#2f80ed' },
-    o: { name: 'Rác hữu cơ', emoji: '🍌', color: '#27ae60' },
+    o: { name: 'Rác thực phẩm', emoji: '🍌', color: '#27ae60' },
     e: { name: 'Rác thải khác', emoji: '🚮', color: '#6b7280' },
   },
 
@@ -275,14 +275,14 @@ HSX.DATA = {
   puzzle: {
     binsR1: [
       { id: 'taiche', name: 'Tái chế được', emoji: '♻️', color: '#2f80ed' },
-      { id: 'huuco', name: 'Rác hữu cơ', emoji: '🍌', color: '#27ae60' },
+      { id: 'huuco', name: 'Rác thực phẩm', emoji: '🍌', color: '#27ae60' },
       { id: 'khac', name: 'Rác thải khác', emoji: '🚮', color: '#6b7280' },
     ],
     binsR2: [
       { id: 'nhua', name: 'Nhựa', emoji: '🧴', color: '#2f80ed' },
       { id: 'kimloai', name: 'Kim loại', emoji: '🥫', color: '#8e44ad' },
       { id: 'giaytt', name: 'Giấy & thủy tinh', emoji: '📦', color: '#e67e22' },
-      { id: 'huuco', name: 'Rác hữu cơ', emoji: '🍌', color: '#27ae60' },
+      { id: 'huuco', name: 'Rác thực phẩm', emoji: '🍌', color: '#27ae60' },
       { id: 'khac', name: 'Rác thải khác', emoji: '🚮', color: '#6b7280' },
     ],
     items: [
@@ -293,15 +293,18 @@ HSX.DATA = {
       { name: 'Chai thủy tinh', emoji: '🍾', cat: 'giaytt', hint: 'Thủy tinh: nấu chảy làm chai mới' },
       { name: 'Thùng các-tông', emoji: '📦', cat: 'giaytt', hint: 'Giấy bìa khô: tái chế được' },
       { name: 'Báo cũ', emoji: '📰', cat: 'giaytt', hint: 'Giấy khô, sạch: tái chế được' },
-      { name: 'Vỏ chuối', emoji: '🍌', cat: 'huuco', hint: 'Thức ăn thừa: ủ thành phân' },
-      { name: 'Xương cá', emoji: '🐟', cat: 'huuco', hint: 'Thức ăn thừa: ủ thành phân' },
-      { name: 'Bã cà phê', emoji: '☕', cat: 'huuco', hint: 'Hữu cơ: ủ phân rất tốt' },
-      { name: 'Rong biển dạt bờ', emoji: '🌿', cat: 'huuco', hint: 'Hữu cơ: ủ thành phân' },
-      { name: 'Lá khô', emoji: '🍂', cat: 'huuco', hint: 'Hữu cơ: ủ thành phân' },
+      // Nhóm thực phẩm theo luật chỉ gồm thức ăn thừa, rau củ quả và phần bỏ đi khi sơ chế, phần bỏ đi từ thịt, cá.
+      // Bã cà phê, bã trà và lá, cành cây nhỏ từ làm vườn: Hướng dẫn 9368/BTNMT-KSONMT (2023) xếp vào rác thải khác.
+      { name: 'Vỏ chuối', emoji: '🍌', cat: 'huuco', hint: 'Vỏ trái cây: rác thực phẩm, ủ thành phân được' },
+      { name: 'Xương cá', emoji: '🐟', cat: 'huuco', hint: 'Phần bỏ đi từ cá, thịt: rác thực phẩm' },
+      { name: 'Cơm thừa', emoji: '🍚', cat: 'huuco', hint: 'Thức ăn thừa: rác thực phẩm' },
+      { name: 'Rau héo, vỏ rau củ', emoji: '🥬', cat: 'huuco', hint: 'Rau củ quả và phần bỏ đi khi nấu ăn: rác thực phẩm' },
+      { name: 'Bã cà phê', emoji: '☕', cat: 'khac', hint: 'Theo Hướng dẫn phân loại rác của Bộ TN&MT (2023), bã cà phê, bã trà thuộc rác thải khác (ở nhà vẫn ủ phân được)' },
+      { name: 'Lá khô', emoji: '🍂', cat: 'khac', hint: 'Theo Hướng dẫn phân loại rác của Bộ TN&MT (2023), lá, cành cây nhỏ từ làm vườn thuộc rác thải khác' },
       { name: 'Túi nilon bẩn', emoji: '🛍️', cat: 'khac', hint: 'Nilon mỏng, dính bẩn: khó tái chế' },
       { name: 'Ống hút nhựa', emoji: '🥤', cat: 'khac', hint: 'Nhựa nhỏ và bẩn: thường không tái chế được' },
       { name: 'Hộp xốp dính dầu', emoji: '🍱', cat: 'khac', hint: 'Xốp bẩn: không tái chế được' },
-      { name: 'Khẩu trang đã dùng', emoji: '😷', cat: 'khac', hint: 'Đồ vệ sinh cá nhân: bỏ rác khác' },
+      { name: 'Khẩu trang đã dùng', emoji: '😷', cat: 'khac', hint: 'Đồ vệ sinh cá nhân đã dùng: rác thải khác' },
       { name: 'Giấy vệ sinh đã dùng', emoji: '🧻', cat: 'khac', hint: 'Giấy bẩn: không tái chế được' },
     ],
   },

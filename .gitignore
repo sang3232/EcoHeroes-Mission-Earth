@@ -11,3 +11,7 @@ __pycache__/
 .vscode/
 Thumbs.db
 desktop.ini
+
+# tài khoản thử Supabase (có mật khẩu)
+supabase/tai_khoan_thu.md
+supabase/.temp/

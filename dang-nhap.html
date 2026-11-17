@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#EEF5F1">
+<title>Đăng nhập — Hồi Sinh Xanh</title>
+<link rel="icon" href="assets/web/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&family=Shantell+Sans:wght,BNCE,INFM@500..800,-100..100,0..100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/web.css">
+</head>
+<body>
+<header id="dau-trang" data-trang="dang-nhap"></header>
+
+<main class="trang-dn">
+  <div class="khung luoi-dn">
+    <figure class="minh-hoa-dn">
+      <img src="assets/web/dang_nhap.webp" alt="Mầm cùng Hoa Sen, Gió và Tái Chế đứng trên đồi cỏ; một bên là nhà máy khói đen và bãi rác, bên kia là thành phố xanh đã hồi sinh" width="1200" height="800">
+      <figcaption>Mỗi lần em phân loại đúng, Xanh Lam hồi sinh thêm một chút. Đăng nhập để lưu lại từng bước đó.</figcaption>
+    </figure>
+
+    <div class="the the-dn">
+      <h1>Vào lớp học</h1>
+      <p class="loi-dn">Đăng nhập để lưu tiến bộ và xem thống kê.</p>
+
+      <div id="bao" role="alert" hidden></div>
+
+      <div class="tab-chon" role="tablist" aria-label="Loại tài khoản">
+        <button role="tab" id="tab-hs" aria-selected="true" aria-controls="o-hs">Học sinh</button>
+        <button role="tab" id="tab-gv" aria-selected="false" aria-controls="o-gv">Giáo viên</button>
+      </div>
+
+      <!-- Học sinh -->
+      <form id="o-hs" role="tabpanel" aria-labelledby="tab-hs" novalidate>
+        <div class="o-nhap"><label for="hs-lop">Mã lớp</label>
+          <input id="hs-lop" name="ma_lop" autocomplete="off" autocapitalize="characters" maxlength="6" placeholder="VD: K7P2QA" required></div>
+        <div class="o-nhap"><label for="hs-ten">Tên đăng nhập</label>
+          <input id="hs-ten" name="ten" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="VD: an.nguyen" required></div>
+        <div class="o-nhap"><label for="hs-mk">Mật khẩu</label>
+          <input id="hs-mk" name="mat_khau" type="password" autocomplete="current-password" inputmode="numeric" required>
+          <small>Ba thông tin này có trên phiếu thầy cô phát cho em.</small></div>
+        <button class="nut chinh lon" type="submit" style="width:100%">Đăng nhập</button>
+      </form>
+
+      <!-- Giáo viên -->
+      <div id="o-gv" role="tabpanel" aria-labelledby="tab-gv" hidden>
+        <form id="gv-dn" novalidate>
+          <div class="o-nhap"><label for="gv-email">Email</label><input id="gv-email" type="email" autocomplete="email" required></div>
+          <div class="o-nhap"><label for="gv-mk">Mật khẩu</label><input id="gv-mk" type="password" autocomplete="current-password" required></div>
+          <button class="nut chinh lon" type="submit" style="width:100%">Đăng nhập</button>
+          <p class="lien-ket-gv"><a href="#" data-gv="dk">Tạo tài khoản giáo viên</a><a href="#" data-gv="quen">Quên mật khẩu?</a></p>
+        </form>
+        <form id="gv-dk" novalidate hidden>
+          <div class="o-nhap"><label for="dk-ten">Họ tên</label><input id="dk-ten" autocomplete="name" maxlength="80" required></div>
+          <div class="o-nhap"><label for="dk-email">Email</label><input id="dk-email" type="email" autocomplete="email" required></div>
+          <div class="o-nhap"><label for="dk-mk">Mật khẩu</label><input id="dk-mk" type="password" autocomplete="new-password" minlength="8" required>
+            <small>Ít nhất 8 ký tự.</small></div>
+          <button class="nut chinh lon" type="submit" style="width:100%">Tạo tài khoản</button>
+          <p class="lien-ket-gv"><a href="#" data-gv="dn">Đã có tài khoản? Đăng nhập</a></p>
+        </form>
+        <form id="gv-quen" novalidate hidden>
+          <p style="color:var(--muc-2)">Nhập email đã đăng ký, hệ thống gửi liên kết đặt lại mật khẩu.</p>
+          <div class="o-nhap"><label for="quen-email">Email</label><input id="quen-email" type="email" autocomplete="email" required></div>
+          <button class="nut chinh lon" type="submit" style="width:100%">Gửi liên kết</button>
+          <p class="lien-ket-gv"><a href="#" data-gv="dn">Quay lại đăng nhập</a></p>
+        </form>
+        <form id="gv-moi" novalidate hidden>
+          <p>Đặt mật khẩu mới cho tài khoản giáo viên.</p>
+          <div class="o-nhap"><label for="moi-mk">Mật khẩu mới</label><input id="moi-mk" type="password" autocomplete="new-password" minlength="8" required></div>
+          <button class="nut chinh lon" type="submit" style="width:100%">Lưu mật khẩu</button>
+        </form>
+      </div>
+      <p class="ngoai-dn">Không cần tài khoản vẫn chơi được: <a href="hoi-sinh-xanh.html">chơi ngay ở chế độ khách</a></p>
+    </div>
+  </div>
+</main>
+
+<footer id="chan-trang"></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0/dist/umd/supabase.min.js"></script>
+<script src="js/web/cau_hinh.js"></script>
+<script src="js/web/tai_khoan.js"></script>
+<script src="js/web/chung.js"></script>
+<script src="js/web/dang_nhap.js"></script>
+</body>
+</html>

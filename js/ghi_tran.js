@@ -9,7 +9,8 @@
    anh.dong các dòng (vị trí, máu, dáng của Mầm và boss), anh.vat đạn và quái con cùng lúc với từng dòng. tongKet là thống kê
    và gợi ý tính sẵn. Bản 1 (file cũ) chụp mỗi 0,2 giây, ít cột hơn, không có anh.vat. */
 (function () {
-  const KEY = 'hoi-sinh-xanh-nhat-ky-tran', GIU = 10, NHIP = 0.1;
+  // nhật ký trận riêng cho từng tài khoản (khách dùng khoá gốc), cùng cách với save
+  const KEY = 'hoi-sinh-xanh-nhat-ky-tran' + (HSX.taiKhoan ? '@' + HSX.taiKhoan.id : ''), GIU = 10, NHIP = 0.1;
   const D = HSX.DATA, Calc = HSX.Calc, W = () => HSX.World, P = () => HSX.Player, S = () => HSX.S;
   const r1 = v => Math.round(v * 10) / 10, r2 = v => Math.round(v * 100) / 100;
   // Cột của mỗi dòng chụp. mamTT, bossTT là cờ bit (xem chup), ngamGoc: góc ngắm ná (độ) hoặc null khi không ngắm
