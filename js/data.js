@@ -226,7 +226,8 @@ HSX.DATA = {
         { text: 'Đợi bần lớn, đom đóm tụ về — đừng để cây nào lớn ở chỗ quá sáng' },
       ],
       xong: () => HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok,
-      xongText: 'Đom đóm tụ về kín rặng bần. Cổng Rừng đã mở! (+6 🌱)',
+      xongText: 'Đom đóm tụ về kín rặng bần. Hãy tới Cổng Rừng! (+6 🌱)',
+      // Cổng chỉ mở sau cảnh đom đóm ở Cửa Rừng (World.moCongRung), không mở ngay tại đây.
       khiXong: () => { const s = HSX.S; s.flags.congRung = true; s.seeds += 6; },
     },
   },

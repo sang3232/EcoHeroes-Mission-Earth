@@ -23,7 +23,7 @@ HSX.newState = function () {
     known, hints: {},
     spirits: {},                 // tinh linh đã giải cứu
     heaps: {}, dead: {}, picked: {}, broken: {},   // theo phòng: chỉ số vật đã phá / quái đã hạ / đồ đã nhặt / ô X đã vỡ
-    bosses: {}, flags: { congRung: false, m2Best: 0 },
+    bosses: {}, flags: { congRung: false, congRungDaXem: false, m2Best: 0 },
     quests: {},                   // { id: { state: 'moi' | 'dang' | 'xong', buoc } }
     puzzle: { solved: false, best: 0 },
     trees: {},                   // theo phòng: { chỉ số ô: { type, g } }
@@ -108,6 +108,9 @@ HSX.migrate = function (s) {
     'quests', 'trees', 'species', 'seen', 'journals', 'facts', 'visited', 'tut', 'quai', 'story', 'mo',
     'xong', 'benches'].forEach(k => { s[k] = laObj(s[k]) || {}; });
   s.flags.congRung = !!s.flags.congRung;
+  // Save cũ đã mở cổng (congRung = true) thì coi như đã xem cảnh; save mới phải xem cảnh mới mở.
+  if (s.flags.congRung && s.flags.congRungDaXem === undefined) s.flags.congRungDaXem = true;
+  s.flags.congRungDaXem = !!s.flags.congRungDaXem;
   s.flags.m2Best = laSo(s.flags.m2Best, 0, 0);
   // Nhiệm vụ: trạng thái phải hợp lệ, bước phải là số không âm
   for (const id in s.quests) {

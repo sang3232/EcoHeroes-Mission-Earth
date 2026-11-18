@@ -174,6 +174,8 @@
       s.trees.nha_me_duoc = {};   // xóa cả cây cầu rễ (để lại Mẹ Đước không còn đủ điều kiện)
       s.trees.ran_ban = {};       // xóa hết cây bần đã trồng
       s.flags.congRung = false;  // cổng về lại khóa
+      s.flags.congRungDaXem = false;
+      if (HSX.World) { HSX.World.gateMo = 0; HSX.World.gateMoDang = false; }
       Object.assign(s.quests, { bac_cau: { state: 'moi', buoc: 0 }, dom_dom: { state: 'moi', buoc: 0 } });
       return 'đã xóa cây, quest reset, cổng Rừng khóa lại';
     }],

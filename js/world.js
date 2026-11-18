@@ -9,8 +9,11 @@
   // Năng lượng mỗi lần hạt ná trúng: quái, giáp boss, đống rác, túi / lưới đang bay, lưới ma giăng
   // (chém trúng được 11, 3, 4, 6, 3: ná được chừng một nửa)
   const NL_BAN = { quai: 5, giap: 1, rac: 2, dan: 3, luoi: 1 };
-  // Cổng đã mở chưa? Màn 1 dùng puzzle phân loại, Màn 2 dùng cờ "cổng rừng"
-  const gateSolved = () => (HSX.S.level === 'm2' ? !!HSX.S.flags.congRung : !!HSX.S.puzzle.solved);
+  // Cổng đã mở chưa? Màn 1 dùng puzzle phân loại; Màn 2 chỉ mở sau cảnh đom đóm tụ về
+  // (congRung = đã đủ điều kiện, congRungDaXem = đã xem cảnh cổng sáng và biến mất).
+  const gateSolved = () => (HSX.S.level === 'm2'
+    ? !!(HSX.S.flags.congRung && HSX.S.flags.congRungDaXem)
+    : !!HSX.S.puzzle.solved);
 
   // ---------- Phòng ----------
   function Room(id) {
@@ -146,6 +149,7 @@
   const W = HSX.World = {
     room: null, enemies: [], boss: null, pickups: [], shots: [], fx: [], texts: [],
     cam: { x: 0, y: 0 }, lookX: 0, aimX: 0, aimY: 0, hitstop: 0, shake: 0, fade: 0, fadeTo: null,
+    gateMo: 0, gateMoMax: 2.2, gateMoDang: false,
     ui: [], flashes: [], corpses: [], kick: { x: 0, y: 0 }, hurtT: 0, orbPulse: 0, loi: [], xa: null,
     bannerData: null, mode: 'play', deadT: 0, dawnT: 0, victoryT: 0, hints: {}, prompt: null, tip: null, gains: {}, gainT: 0,
     chamT: 0, neLuc: -1e9,   // lướt né: thời gian chậm lại còn bao lâu, lần né gần nhất được thưởng (giờ chơi S.stats.time)
@@ -246,6 +250,7 @@
       const S = HSX.S, P = HSX.Player, r = this.room;
       if (this.chamT > 0) { this.chamT -= dt; dt *= 0.35; }   // vừa lướt né: thời gian chậm lại một nhịp
       this.shake = Math.max(0, this.shake - dt * 30);
+      if (this.gateMo > 0) this.gateMo = Math.max(0, this.gateMo - dt);
       const bd = this.bannerData;
       if (bd) { bd.t += dt; if (bd.t > bd.dur) this.bannerData = null; }
       if (this.fadeTo) {
@@ -1133,14 +1138,8 @@
               : `Cổng chỉ mở khi bãi biển sạch ít nhất ${HSX.pct(need)}. Hiện tại: ${HSX.pct(Calc.cleanPct())}. Hãy phá thêm đống rác.`;
             HSX.UI.toast(noi);
           } else if (m2) {
-            if (gateSolved()) {
-              // Cổng Rừng đã mở, không cần cảnh
-            } else {
-              if (HSX.Truyen && HSX.Truyen.play) {
-                const dat = HSX.Quests ? HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, S.trees.ran_ban || {}) : null;
-                HSX.Truyen.play('c_ung_rung_m2', { khongLuu: true });
-              }
-            }
+            // Cảnh tinh linh ở Cổng Rừng: tối quá thì nhắc điều kiện; đủ thì đom đóm tụ về, cổng sáng rồi biến mất.
+            if (HSX.Truyen && HSX.Truyen.play) HSX.Truyen.play('c_ung_rung_m2', { khongLuu: true });
           } else HSX.Puzzle.open();
           break;
         }
@@ -1259,6 +1258,31 @@
     },
 
     // ---------- Hiệu ứng ----------
+    // Cổng Rừng mở: đom đóm từ bốn phía tụ về, cổng sáng lên rồi mờ dần (render dùng gateMo/gateMoDang).
+    moCongRung() {
+      const r = this.room;
+      if (!r || !r.gates || !r.gates.length) return;
+      const xs = r.gates.map(g => g.x), ys = r.gates.map(g => g.y);
+      const cx = (Math.min(...xs) + Math.max(...xs) + T) / 2;
+      const cy = (Math.min(...ys) + Math.max(...ys) + T) / 2;
+      this.gateMo = this.gateMoMax = 2.2;
+      this.gateMoDang = true;
+      // Đom đóm bay từ bốn phía, hội tụ dần vào cổng
+      for (let k = 0; k < 60; k++) {
+        const a = Math.random() * Math.PI * 2, d = 80 + Math.random() * 300;
+        const life = 1.0 + Math.random() * 1.1;
+        const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d * 0.55;
+        this.fxp({
+          k: 'dot', x, y, vx: (cx - x) / life, vy: (cy - y) / life,
+          life, r: 1.4 + Math.random() * 2.4,
+          color: k % 4 === 0 ? '#fff6a8' : '#d7ff9a', add: true,
+        });
+      }
+      this.fxp({ k: 'glow', x: cx, y: cy, life: 2.2, r: 130, color: 'rgba(215,255,170,0.75)', add: true });
+      this.ring(cx, cy, '#d7ff9a', 170, 1.5, 6);
+      this.flash(cx, cy, 320, '215,255,170', 1.8);
+      this.shake = Math.max(this.shake, 3);
+    },
     banner(text, sub, dur) { this.bannerData = { text, sub, t: 0, dur: dur || 2.4 }; },
     text(x, y, s, color, size) {
       this.texts.push({ x, y, s: String(s), color: color || '#fff', size: size || 16, life: 1.2, max: 1.2 });

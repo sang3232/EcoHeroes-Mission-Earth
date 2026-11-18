@@ -139,22 +139,36 @@
       { nhin: null, cho: 0.4 },
     ],
 
-    // Cổng Rừng M2: cảnh thoại khi chưa mở / đã mở
-    c_ung_rung_m2: () => [
-      { neu: () => HSX.S.level === 'm2', buoc: [], cho: 0.9 },
-      { den: true, cho: 0.4 },
-      { noi: 'mam', chu: 'Rừng quá tối, tinh linh không thể soi đường. Đom đóm chỉ tụ về khi có đủ bần mọc ở chỗ tối.' },
-      { neu: () => HSX.Quests && HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok, buoc: [
-        { lam: () => { /* animation: đom đóm tụ về */ }, cho: 0.5 },
-        { noi: 'mam', chu: 'Nghe thấy tiếng động! Đom đóm đang về kín rặng bần...' },
-        { neu: () => HSX.S.flags.congRung, buoc: [], cho: 0.3 },
-        { noi: 'sen', chu: 'Cổng mở rồi! Chúng ta có thể đi qua.' },
-        { neu: () => !HSX.S.flags.congRung, buoc: [], cho: 0.3 },
-        { noi: 'sen', chu: 'Chờ một tí, cổng vẫn khóa. Hãy trồng đủ 4 cây bần ở các ô tối, tránh các ô quá sáng.' },
-      ] },
-      { neu: () => !HSX.Quests || !HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}).ok, buoc: [], cho: 0.5 },
-      { noi: 'mam', chu: 'Cổng vẫn khóa. Trong sổ tay Mẹ Đước ghi: trồng đủ 4 cây bần ở ô tối, đừng để cây nào lớn ở ô sáng.' },
-    ],
+    // Cổng Rừng M2: tinh linh nói chuyện khi rừng còn tối;
+    // đủ điều kiện thì đom đóm tụ về, cổng sáng lên rồi biến mất.
+    c_ung_rung_m2: () => {
+      const gate = () => {
+        const g = HSX.World.room && HSX.World.room.gates[0];
+        return g ? { x: g.x + T / 2, y: g.y } : null;
+      };
+      const dat = HSX.Quests ? HSX.Quests.domDomDat(HSX.LEVELS.m2.rooms.ran_ban, HSX.S.trees.ran_ban || {}) : null;
+      if (!dat || !dat.ok) {
+        const thieu = dat ? `Hiện có ${dat.dat}/${dat.can} cây bần đã lớn ở chỗ tối.` : '';
+        const sai = dat && dat.sai ? ` Có ${dat.sai} cây đang lớn ở chỗ quá sáng.` : '';
+        return [
+          { nhin: gate, cho: 0.5 },
+          { noi: 'mam', chu: 'Rừng quá tối, tinh linh không thể soi đường. Đom đóm chỉ tụ về khi có đủ bần mọc ở chỗ tối.' },
+          { noi: 'sen', chu: 'Đom đóm sợ ánh đèn. Cây bần lớn ở chỗ quá sáng thì chúng không dám về.' },
+          { noi: 'mam', chu: (thieu + sai).trim() },
+          { noi: 'mam', chu: 'Sổ tay Mẹ Đước ghi: trồng đủ 4 cây bần ở ô tối, đừng để cây nào lớn ở ô sáng.' },
+          { nhin: null, cho: 0.2 },
+        ];
+      }
+      return [
+        { nhin: gate, cho: 0.5 },
+        { noi: 'mam', chu: 'Đom đóm đang tụ về kín rặng bần...' },
+        { lam: () => HSX.World.moCongRung(), dien: true, cho: 2.2 },
+        { noi: 'sen', chu: 'Cổng sáng lên... rồi biến mất!' },
+        { lam: () => { HSX.S.flags.congRungDaXem = true; HSX.saveGame(); } },
+        { noi: 'mam', chu: 'Đường mở rồi. Đi thôi!' },
+        { nhin: null, cho: 0.2 },
+      ];
+    },
     // Vua Túi Nilon
     gap_vua_nilon: () => [
       { nhin: boss, cho: 0.9 },

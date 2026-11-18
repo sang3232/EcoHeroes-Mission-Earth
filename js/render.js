@@ -742,13 +742,29 @@
             c.stroke();
             if (hash(x, Math.floor(t)) > 0.8) { c.fillStyle = '#d6a8ff'; c.beginPath(); c.arc(px + hash(x, y) * T, py + 12 + (t % 1) * 10, 3, 0, 6.283); c.fill(); }
           }
-        } else if (ch === 'G' && !(S.level === 'm2' ? S.flags.congRung : S.puzzle.solved)) {
+        } else if (ch === 'G' && !(S.level === 'm2' ? (S.flags.congRungDaXem || (HSX.World && HSX.World.gateMoDang && HSX.World.gateMo <= 0)) : S.puzzle.solved)) {
           const m2 = S.level === 'm2';
+          const w = HSX.World || {};
+          const dangMo = m2 && w.gateMoDang;
+          const a = dangMo ? Math.max(0, Math.min(1, w.gateMo / (w.gateMoMax || 2.2))) : 1;
+          c.save();
+          c.globalAlpha = a;
           c.fillStyle = m2 ? '#1d3a2b' : '#2b3a4a';
           c.fillRect(px + 8, py, T - 16, T);
           c.fillStyle = m2 ? '#63d69a' : '#7cc8ff';
           for (let i = 0; i < 3; i++) c.fillRect(px + 12 + i * 9, py, 4, T);
           if (r.tile(x, y - 1) !== 'G') { c.font = `22px ${EMOJI}`; c.textAlign = 'center'; c.fillText(m2 ? '🌿' : '♻️', px + T / 2, py + 30); }
+          // Đủ điều kiện, chờ cảnh mở: viền sáng nhấp nháy; đang mở: lóa sáng rồi mờ dần.
+          if (m2 && S.flags.congRung) {
+            const glow = dangMo ? a : 0.25 + 0.2 * Math.sin(t * 4 + x);
+            c.globalAlpha = 1;
+            c.fillStyle = `rgba(215,255,170,${Math.max(0, glow) * 0.45})`;
+            c.fillRect(px, py, T, T);
+            c.strokeStyle = `rgba(215,255,170,${Math.max(0, glow)})`;
+            c.lineWidth = 2;
+            c.strokeRect(px + 1, py + 1, T - 2, T - 2);
+          }
+          c.restore();
         } else if (ch === 'D' && !S.flags.sorted) {
           c.fillStyle = '#5b3a1e';
           c.fillRect(px + 10, py, T - 20, T);
