@@ -107,7 +107,7 @@
     function chu(c, co, dam, mau) { doc.setFont('BVP', dam ? 'bold' : 'normal'); doc.setFontSize(co); doc.setTextColor.apply(doc, mau || [20, 32, 26]); doc.text(c, LE, y); }
     function canTrang(cao) { if (y + cao > 285) { doc.addPage(); y = 16; } }
 
-    chu('Hồi Sinh Xanh · Báo cáo lớp ' + tt.lop.ten, 17, true, [17, 49, 42]); y += 7;
+    chu('Hồi Sinh Xanh · Báo cáo ' + HSXKho.tenLop(tt.lop.ten, 'lớp'), 17, true, [17, 49, 42]); y += 7;
     chu('Mã lớp ' + tt.lop.ma_lop + ' · xuất ngày ' + new Date().toLocaleString('vi-VN'), 10, false, [90, 100, 95]); y += 8;
 
     // ô số liệu

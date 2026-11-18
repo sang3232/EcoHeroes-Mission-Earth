@@ -127,7 +127,7 @@
       '<h2>' + (laKhach ? 'Tiến bộ trên máy này' : 'Tiến bộ của ' + esc(tk.ten)) + '</h2>' +
       '<p>' + (laKhach
         ? 'Em đang dùng chế độ khách: số liệu chỉ lưu trong trình duyệt này. <a href="dang-nhap.html">Đăng nhập bằng mã lớp</a> để lưu lâu dài và để thầy cô xem được.'
-        : (tk.lop ? 'Lớp ' + esc(tk.lop) + '. ' : '') + 'Số liệu cập nhật mỗi khi em chơi hoặc làm bài ôn tập.') + '</p></div>' +
+        : (tk.lop ? esc(HSXKho.tenLop(tk.lop)) + '. ' : '') + 'Số liệu cập nhật mỗi khi em chơi hoặc làm bài ôn tập.') + '</p></div>' +
       '<div class="hang-nut" style="margin:0"><a class="nut chinh" href="hoi-sinh-xanh.html">Chơi tiếp</a><a class="nut" href="on-tap.html">Ôn tập</a></div></div>' +
       (chuaChoi ? '<div class="bao tin">Chưa có kết quả nào. Hãy <a href="hoi-sinh-xanh.html">chơi Hồi Sinh Xanh</a> tới Cổng Phân Loại, hoặc <a href="on-tap.html">làm bài ôn tập</a>.</div>' : '') +
 

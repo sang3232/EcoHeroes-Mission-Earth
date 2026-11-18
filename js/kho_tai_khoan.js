@@ -60,11 +60,21 @@
   }
   tachHangChoCu();
 
+  // Tên lớp có chữ "Lớp" đứng trước: "10A" → "Lớp 10A". Giáo viên hay đặt sẵn "Lớp 10A" thì giữ nguyên,
+  // (gõ không dấu "Lop 10A" cũng tính) để không hiện thành "Lớp Lớp 10A". chu: chữ ghép thêm khi cần, mặc định 'Lớp' (giữa câu dùng 'lớp').
+  function daCoChuLop(ten) { return /^l(ớ|o)p(\s|$)/i.test(String(ten == null ? '' : ten).normalize('NFC').trim()); }
+  function tenLop(ten, chu) {
+    ten = String(ten == null ? '' : ten).trim();
+    return daCoChuLop(ten) ? ten : (chu || 'Lớp') + ' ' + ten;
+  }
+
   window.HSXKho = {
     KHOA_TK: KHOA_TK,
     tk: tk,
     khoa: khoa,
     khoMoi: khoMoi,
     hocTap: function (t) { return khoa(KHOA_HOC_TAP, t); },
+    daCoChuLop: daCoChuLop,
+    tenLop: tenLop,
   };
 })();

@@ -11,11 +11,12 @@
 | 5 bước quy trình Màn 2 | **ĐẠT 5/5** | `Test/images/01..05`, `Test/video/quy-trinh-kiem-thu-man-2.webm` |
 | Tính năng đặc biệt (đom đóm + cổng) | **ĐẠT** | `Test/video/tinh-nang-dac-biet-dom-dom-cong-rung.webm` |
 | Hồi quy quests / đường đi / puzzle / đăng nhập–đăng ký | **ĐẠT 4/4** | `Result/thong-ke-kiem-thu.xlsx` sheet “Test cases” |
-| Tính đúng đắn số liệu web — **20 bot do AI tạo, không phải HS thật** | **ĐẠT** (633 phép so khớp, 53 kiểm tra trên web thật, 0 lỗi) | `Bot_AI_20_HS_ao/`, sheet “Kiem thu 20 bot AI” |
+| Tính đúng đắn số liệu web — **20 bot do AI tạo, không phải HS thật** | **ĐẠT** (633 phép so khớp, 55 kiểm tra trên web thật, 0 lỗi) | `Bot_AI_20_HS_ao/`, sheet “Kiem thu 20 bot AI” |
 | UX/UI 11 màn | **ĐẠT** (7 quan sát, 4 đề xuất cải thiện) | `UX-UI/`, `Bao_cao/Bao_cao_kiem_thu.md` mục 8 |
 | Số liệu lớp học + biên bản GV | **CHƯA CÓ** | Chờ giáo viên (không bịa số liệu) |
 
-**Lỗi phát hiện trong đợt:** không có lỗi chặn chơi. Có 1 lỗi có sẵn từ trước, không liên quan
+**Lỗi phát hiện trong đợt:** không có lỗi chặn chơi. Bài thử 20 bot AI tìm ra 1 lỗi hiển thị nhỏ (UX-7: tên lớp bị lặp
+“Lớp Lớp…”), **đã sửa** và có kiểm tra tự động. Có 1 lỗi có sẵn từ trước, không liên quan
 (`kiem_tra/thu_trong_trang.js` cần `window` trình duyệt nên không chạy được bằng Node).
 
 ## 2. Danh mục tệp bàn giao

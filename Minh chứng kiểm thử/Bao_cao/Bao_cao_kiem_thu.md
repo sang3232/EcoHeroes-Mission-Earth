@@ -15,7 +15,7 @@
 |---|---|
 | Quy trình 5 bước Màn 2 (B1–B5) | **ĐẠT 5/5** |
 | Kiểm thử hồi quy tự động (quests, đường đi, puzzle M2, đăng nhập/đăng ký) | **ĐẠT 4/4** |
-| Tính đúng đắn số liệu trên web — **20 bot do AI tạo, không phải học sinh thật** | **ĐẠT** (633 phép so khớp + 53 kiểm tra trên web thật, 0 lỗi — mục 7) |
+| Tính đúng đắn số liệu trên web — **20 bot do AI tạo, không phải học sinh thật** | **ĐẠT** (633 phép so khớp + 55 kiểm tra trên web thật, 0 lỗi — mục 7) |
 | Video tính năng đặc biệt (đom đóm + cổng rừng) | **ĐẠT** (1:13, đúng 1–3 phút) |
 | Video quy trình kiểm thử | **ĐẠT** (26s, đúng 10–30 giây) |
 | Ảnh minh chứng UX/UI | **ĐẠT** (11 màn desktop + mobile) |
@@ -120,7 +120,7 @@ Cổng chỉ mở sau khi cảnh đom đóm ở Cửa Rừng chạy xong. Ngư�
 | `node kiem_tra/thu_trong_trang.js` | Bảng trồng cây | `ReferenceError: window is not defined` | KHÔNG CHẠY ĐƯỢC (lỗi có sẵn từ trước — tệp này cần môi trường trình duyệt, không liên quan thay đổi cổng rừng) |
 | `node kiem_tra/tai_khoan.js` | Đăng nhập HS, đăng ký GV, quên / đổi mật khẩu, đăng xuất | 25/25 ✓ — “Đăng nhập / đăng ký chạy đúng. Không có lỗi.” | ĐẠT |
 | `node kiem_tra/bot_lop_hoc.js` | Số liệu web với **20 bot AI** | “Tổng: 633 phép so khớp, 0 sai lệch.” | ĐẠT |
-| `node kiem_tra/bot_lop_hoc_web.mjs` | Trang web thật với **20 bot AI** | “Tổng: 53 kiểm tra đạt, 0 không đạt.” | ĐẠT |
+| `node kiem_tra/bot_lop_hoc_web.mjs` | Trang web thật với **20 bot AI** | “Tổng: 55 kiểm tra đạt, 0 không đạt.” | ĐẠT |
 
 Ngoài ra `node --check` đã chạy sạch trên cả 6 tệp thay đổi của commit `d69fa01`.
 
@@ -152,11 +152,12 @@ Ngoài ra `node --check` đã chạy sạch trên cả 6 tệp thay đổi của
 | Số liệu web so với số bot tự đếm (20 em, cả lớp, xu hướng tuần, món hay nhầm) | 633 phép so khớp, **0 sai lệch** |
 | Bot gửi kết quả bằng `js/web/dong_bo.js` | 18 bot gửi đủ 468/468 kết quả; gửi lại **không bị trùng**; kết quả của bạn khác trên cùng máy **không bị gửi nhầm** |
 | Trang Thống kê của từng học sinh | 18 trang × 7 ô số khớp |
+| Tên lớp không bị lặp “Lớp Lớp” (trang học sinh, tab Lớp học) — sau khi sửa UX-7 | Đạt |
 | Bảng điều khiển giáo viên: tab Lớp học, ô số, bảng từng em, 2 biểu đồ | Khớp |
 | File Excel xuất từ web (Tổng hợp, Từng học sinh 280 ô, Lượt chơi 468 dòng, Món hay nhầm) | Khớp từng ô |
 | File PDF xuất từ web | Tạo được, 2 trang |
 | Lỗi JavaScript trên trang | 0 |
-| **Tổng trên web thật** | **53 đạt, 0 không đạt** |
+| **Tổng trên web thật** | **55 đạt, 0 không đạt** |
 
 Số liệu cả lớp của 20 bot (chỉ để đối chiếu, **không phải số liệu học sinh thật**): 18/20 em đã chơi,
 độ chính xác minigame 64%, Flashcard 73%, tỉ lệ trồng cây 52%.
@@ -185,7 +186,7 @@ kết quả `ket_qua_node.txt`, `ket_qua_web.txt`) và sheet “Kiem thu 20 bot 
 | UX-4 | Sau cảnh mở đầu | Hộp “Chọn độ khó” hiện đúng một lần, bấm ✕ giữ mức Thường | Hành vi thiết kế | Đã kiểm tra: OK |
 | UX-5 | Mở khoá loài | Modal “Cô Trăng/Đom đóm đã quay về!” chặn mọi thao tác cho tới khi đóng | Hành vi thiết kế | Đúng ý đồ; nên nhắc trong hướng dẫn |
 | UX-6 | Mobile 390 × 844 | Trang chủ và đăng nhập hiển thị đủ, không vỡ bố cục | Quan sát thật | OK |
-| UX-7 | Trang Thống kê (học sinh) | Web ghép sẵn chữ “Lớp” trước tên lớp: lớp tên “Lớp ảo…” hiện thành “Lớp Lớp ảo…” (thấy khi chạy 20 bot AI) | Quan sát thật | Chỉ ghép “Lớp” khi tên lớp chưa có chữ này |
+| UX-7 | Trang Thống kê, tab Lớp học, menu game, PDF, hộp xoá lớp | Web ghép sẵn chữ “Lớp” trước tên lớp: lớp tên “Lớp ảo…” hiện thành “Lớp Lớp ảo…” (thấy khi chạy 20 bot AI) | Quan sát thật — **ĐÃ SỬA** 18/11/2026 | Chỉ ghép “Lớp” khi tên lớp chưa có chữ này (`HSXKho.tenLop` trong `js/kho_tai_khoan.js`); bài thử 20 bot có thêm 2 kiểm tra, chạy với mã cũ thì báo lỗi, mã mới thì đạt |
 
 Ảnh tương ứng nằm trong `UX-UI/` (đánh số 01–11).
 

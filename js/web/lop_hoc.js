@@ -113,7 +113,7 @@
         '<div class="hai-cot">' +
         '<div class="the"><b>Mã lớp để học sinh đăng nhập</b><br>' +
         '<span class="ma-lop">' + lop.ma_lop + '</span>' +
-        '<p style="color:var(--muc-2);margin:0">Lớp <b style="color:var(--duoc)">' + esc(lop.ten) + '</b>, ' + s.soHocSinh + ' học sinh, ' + s.soHoatDong7Ngay + ' em chơi trong 7 ngày qua.</p>' +
+        '<p style="color:var(--muc-2);margin:0">' + (HSXKho.daCoChuLop(lop.ten) ? '' : 'Lớp ') + '<b style="color:var(--duoc)">' + esc(lop.ten) + '</b>, ' + s.soHocSinh + ' học sinh, ' + s.soHoatDong7Ngay + ' em chơi trong 7 ngày qua.</p>' +
         '<div class="hang-nut" style="margin-top:16px"><button class="nut nho" type="button" id="doi-ten-lop">Đổi tên lớp</button><button class="nut nho do" type="button" id="xoa-lop">Xoá lớp</button></div></div>' +
         '<form class="the" id="f-them-hs"><b>Thêm học sinh</b><p style="color:var(--muc-2);margin:6px 0 12px;font-size:15px">Dán danh sách họ tên, mỗi dòng một em (tối đa 60 em mỗi lần). Hệ thống tự tạo tên đăng nhập và mật khẩu 6 số.</p>' +
         '<div class="o-nhap"><label for="ds-ten" class="an">Danh sách họ tên</label><textarea id="ds-ten" rows="6" placeholder="Nguyễn Văn An&#10;Trần Thị Bình&#10;..."></textarea></div>' +
@@ -193,7 +193,7 @@
         veKhung();
       });
       document.getElementById('xoa-lop').addEventListener('click', async function () {
-        if (!confirm('Xoá lớp ' + lop.ten + '?\nTất cả ' + tt.hocSinh.length + ' tài khoản học sinh và kết quả của lớp sẽ bị xoá vĩnh viễn, KHÔNG khôi phục được.')) return;
+        if (!confirm('Xoá ' + HSXKho.tenLop(lop.ten, 'lớp') + '?\nTất cả ' + tt.hocSinh.length + ' tài khoản học sinh và kết quả của lớp sẽ bị xoá vĩnh viễn, KHÔNG khôi phục được.')) return;
         if (prompt('Gõ mã lớp ' + lop.ma_lop + ' để xác nhận xoá:') !== lop.ma_lop) return;
         try {
           for (var i = 0; i < tt.hocSinh.length; i++) {

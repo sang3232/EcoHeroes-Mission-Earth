@@ -255,6 +255,7 @@ async function oSo(p) {
   return p.$$eval('.o-so .the', (ds) => ds.map((d) => ({ ten: (d.querySelector('.ten') || {}).textContent, gia: (d.querySelector('.gia-tri') || {}).textContent, ghi: (d.querySelector('.ghi') || {}).textContent || '' })));
 }
 let soTrangHs = 0;
+const lapChuLop = [];   // tên lớp bị ghép trùng chữ: "Lớp Lớp ..."
 for (const [i, b] of du.bots.entries()) {
   const ctx = await nguCanh({ 'hoi-sinh-xanh-tai-khoan': hoSoHs(b), 'hoi-sinh-xanh-phien': phien(b.hs.id, b.hs.email) });
   const p = await trang(ctx);
@@ -268,6 +269,7 @@ for (const [i, b] of du.bots.entries()) {
   }
   await p.waitForSelector('.o-so .the', { timeout: 15000 });
   const o = Object.fromEntries((await oSo(p)).map((x) => [x.ten, x]));
+  if (/l(ớ|o)p\s+l(ớ|o)p/i.test(await p.textContent('body'))) lapChuLop.push(b.hs.ho_ten);
   const a = b.dapAn;
   const can = [
     ['Cổng Phân Loại', pt(d.chinhXacCong), a.cong.luot + ' lượt, ' + a.cong.dung + '/' + a.cong.tong + ' món đúng'],
@@ -286,6 +288,7 @@ for (const [i, b] of du.bots.entries()) {
   if (b.hs.ten_dang_nhap === 'bot10') { await cho(600); await danNhan(p); await p.screenshot({ path: path.join(RA, 'hs_ao_10_trang_thong_ke.png'), fullPage: true }); }
   await ctx.close();
 }
+dong(kq(!lapChuLop.length, 'Lặp chữ "Lớp Lớp" ở trang: ' + lapChuLop.join(', ')), 'Tên lớp “' + du.lop.ten + '” không bị ghép thành “Lớp Lớp…” trên ' + soTrangHs + ' trang học sinh');
 dong(!loi.some((x) => x.startsWith('HS ảo')), soTrangHs + ' trang học sinh × 7 ô số (Cổng, Lều, Tính chung, Ô đã trồng, Cây trưởng thành, Số lần trồng, Flashcard) và dòng chi tiết khớp số bot tự đếm');
 
 // ---------------- Bước 3: bảng điều khiển giáo viên ----------------
@@ -298,6 +301,7 @@ await p.waitForSelector('table.bang tbody tr', { timeout: 20000 });
 const hang = await p.$$eval('table.bang tbody tr', (tr) => tr.map((r) => [...r.querySelectorAll('td')].map((td) => td.textContent.trim())));
 const theoTen = Object.fromEntries(hang.map((r) => [r[1], r]));
 const saiLop = du.bots.filter((b) => !theoTen[b.hs.ho_ten] || theoTen[b.hs.ho_ten][2] !== b.hs.ten_dang_nhap || +theoTen[b.hs.ho_ten][4] !== b.suKien.length);
+dong(kq(!/l(ớ|o)p\s+l(ớ|o)p/i.test(await p.textContent('#o-tab')), 'Tab Lớp học có "Lớp Lớp"'), 'Tab Lớp học: tên lớp hiện một chữ “Lớp”, không bị lặp');
 dong(kq(hang.length === 20 && !saiLop.length, 'Tab Lớp học: ' + saiLop.map((b) => b.hs.ho_ten).join(', ')),
   'Tab Lớp học: đủ ' + hang.length + ' em, đúng tên đăng nhập và số "Kết quả đã gửi" của từng em');
 await danNhan(p);

@@ -158,7 +158,7 @@
     var cho = doc().hangCho.length;
     if (tk && tk.vai_tro === 'hoc_sinh') {
       return '<h3>Lớp học</h3><p class="small">Tiến trình game và kết quả đang lưu riêng cho <b>' + HSX.esc(tk.ten || '') + '</b>' +
-        (tk.lop ? ' · lớp ' + HSX.esc(tk.lop) : '') + '. ' +
+        (tk.lop ? ' · ' + HSX.esc(HSXKho.tenLop(tk.lop, 'lớp')) : '') + '. ' +
         (cho ? cho + ' kết quả đang chờ gửi.' : 'Đã gửi hết kết quả.') +
         ' <a href="thong-ke.html" target="_self">Xem thống kê</a></p>';
     }

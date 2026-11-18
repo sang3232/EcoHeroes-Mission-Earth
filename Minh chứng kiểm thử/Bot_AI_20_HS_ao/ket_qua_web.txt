@@ -1,5 +1,5 @@
 Kiểm thử trên trang web thật — 20 HỌC SINH ẢO (bot do AI tạo, KHÔNG phải học sinh thật)
-Edge 157.0.4341.60 · máy chủ thử http://127.0.0.1:58919 · hạt giống 2027
+Edge 157.0.4341.60 · máy chủ thử http://127.0.0.1:58357 · hạt giống 2027
 
 1) Bot gửi kết quả lên lớp bằng js/web/dong_bo.js
   ✓ Gửi lại 36 kết quả cũ của HS ảo 01: máy chủ không nhân đôi (vẫn 36 dòng), hàng chờ được dọn
@@ -7,9 +7,11 @@ Edge 157.0.4341.60 · máy chủ thử http://127.0.0.1:58919 · hạt giống 2
   ✓ 18 bot đã gửi đủ 468/468 kết quả; 2 bot không chơi không gửi gì
 
 2) Trang Thống kê của từng học sinh (đọc số trên màn hình)
+  ✓ Tên lớp “Lớp ảo: 20 bot AI kiểm thử” không bị ghép thành “Lớp Lớp…” trên 18 trang học sinh
   ✓ 18 trang học sinh × 7 ô số (Cổng, Lều, Tính chung, Ô đã trồng, Cây trưởng thành, Số lần trồng, Flashcard) và dòng chi tiết khớp số bot tự đếm
 
 3) Bảng điều khiển giáo viên
+  ✓ Tab Lớp học: tên lớp hiện một chữ “Lớp”, không bị lặp
   ✓ Tab Lớp học: đủ 20 em, đúng tên đăng nhập và số "Kết quả đã gửi" của từng em
   ✓ Ô "Học sinh đã chơi": 18/20 (16 em hoạt động) — bot đếm 18/20
   ✓ Ô "Độ chính xác minigame": 64% (Cổng Phân Loại 63%, Lều ném rác 66%) — bot đếm 64%
@@ -28,6 +30,6 @@ Edge 157.0.4341.60 · máy chủ thử http://127.0.0.1:58919 · hạt giống 2
   ✓ Không có yêu cầu nào tới máy chủ Supabase thật (0)
   ✓ Không có lỗi JavaScript trên trang (0)
 
-Tổng: 53 kiểm tra đạt, 0 không đạt.
+Tổng: 55 kiểm tra đạt, 0 không đạt.
 Trang web hiển thị và xuất file đúng với dữ liệu của 20 bot. Không có lỗi.
 Ảnh và file xuất: C:\game bao ve moi truong\Minh chứng kiểm thử\Bot_AI_20_HS_ao
