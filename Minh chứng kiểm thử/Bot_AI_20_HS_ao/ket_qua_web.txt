@@ -1,0 +1,33 @@
+Kiểm thử trên trang web thật — 20 HỌC SINH ẢO (bot do AI tạo, KHÔNG phải học sinh thật)
+Edge 157.0.4341.60 · máy chủ thử http://127.0.0.1:58919 · hạt giống 2027
+
+1) Bot gửi kết quả lên lớp bằng js/web/dong_bo.js
+  ✓ Gửi lại 36 kết quả cũ của HS ảo 01: máy chủ không nhân đôi (vẫn 36 dòng), hàng chờ được dọn
+  ✓ Kết quả của HS ảo 03 nằm trên máy của HS ảo 02: KHÔNG bị gửi lên, vẫn chờ đúng chủ
+  ✓ 18 bot đã gửi đủ 468/468 kết quả; 2 bot không chơi không gửi gì
+
+2) Trang Thống kê của từng học sinh (đọc số trên màn hình)
+  ✓ 18 trang học sinh × 7 ô số (Cổng, Lều, Tính chung, Ô đã trồng, Cây trưởng thành, Số lần trồng, Flashcard) và dòng chi tiết khớp số bot tự đếm
+
+3) Bảng điều khiển giáo viên
+  ✓ Tab Lớp học: đủ 20 em, đúng tên đăng nhập và số "Kết quả đã gửi" của từng em
+  ✓ Ô "Học sinh đã chơi": 18/20 (16 em hoạt động) — bot đếm 18/20
+  ✓ Ô "Độ chính xác minigame": 64% (Cổng Phân Loại 63%, Lều ném rác 66%) — bot đếm 64%
+  ✓ Ô "Tỉ lệ trồng cây trung bình": 52% — bot đếm 52%
+  ✓ Ô "Điểm Flashcard trung bình": 73% — bot đếm 73%
+  ✓ Bảng "Từng học sinh": 20 em × 4 cột (Cổng + số lượt, Lều, Flashcard + số bài, Trồng cây + số ô) khớp
+  ✓ Biểu đồ "Xu hướng theo tuần": 5 tuần, từng điểm minigame/Flashcard khớp
+  ✓ Biểu đồ "Món rác cả lớp hay nhầm": 8 món nhầm nhiều nhất, đúng số lần, xếp giảm dần
+  ✓ Excel sheet "Tổng hợp": 8 chỉ số khớp
+  ✓ Excel sheet "Từng học sinh": 20 em × 14 cột = 280 ô khớp
+  ✓ Excel sheet "Lượt chơi": 468 dòng = 468 kết quả bot đã gửi
+  ✓ Excel sheet "Món hay nhầm": đủ 18 món, đúng số lần, xếp giảm dần
+  ✓ Tải PDF: tạo được báo cáo 2 trang, 70 KB
+
+4) Phạm vi của bài thử
+  ✓ Không có yêu cầu nào tới máy chủ Supabase thật (0)
+  ✓ Không có lỗi JavaScript trên trang (0)
+
+Tổng: 53 kiểm tra đạt, 0 không đạt.
+Trang web hiển thị và xuất file đúng với dữ liệu của 20 bot. Không có lỗi.
+Ảnh và file xuất: C:\game bao ve moi truong\Minh chứng kiểm thử\Bot_AI_20_HS_ao

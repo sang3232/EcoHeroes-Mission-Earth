@@ -12,7 +12,8 @@ Gói minh chứng cho đợt kiểm thử **Màn 2 · Rừng Ngập Mặn**, tr�
 | `Test/images/` | 5 ảnh minh chứng từng bước B1–B5 |
 | `User/Học sinh`, `User/Giáo viên` | Ảnh màn đăng nhập (**chưa có tài khoản thật** — xem mục “Chưa làm được”) |
 | `UX-UI/` | 11 ảnh giao diện desktop + mobile |
-| `Result/` | `thong-ke-kiem-thu.xlsx` (5 sheet), báo cáo kết quả, biên bản nghiệm thu (mẫu chờ ký) |
+| `Result/` | `thong-ke-kiem-thu.xlsx` (6 sheet), báo cáo kết quả, biên bản nghiệm thu (mẫu chờ ký) |
+| `Bot_AI_20_HS_ao/` | Kiểm thử tính đúng đắn số liệu trên web bằng **20 học sinh ảo (bot) do AI tạo** — ảnh, file Excel/PDF web xuất ra, kết quả chạy |
 
 ## Tính xác thực
 
@@ -21,11 +22,13 @@ Gói minh chứng cho đợt kiểm thử **Màn 2 · Rừng Ngập Mặn**, tr�
 - Trồng cây, chờ cây lớn, đom đóm hội tụ, mở cổng trong video là **hành vi thật theo thời gian thật**;
   phần dẫn nhập có dùng lệnh gõ tắt có sẵn trong game (`GL(...)`) để tiết kiệm thời gian.
 - **Không bịa dữ liệu:** số liệu lớp học, tài khoản, chữ ký giáo viên đều để trống chờ người thật làm.
+- **Kiểm thử số liệu web dùng AI:** quy mô chỉ gồm **20 bot** (“HS ảo 01–20”). Bot và kịch bản do AI (Claude)
+  viết và chạy, trên trang web thật với máy chủ Supabase giả. Kết quả: 0 sai lệch. Đây không phải học sinh thật.
 
 ## Chưa làm được (vì thiếu người/thiếu tài khoản)
 
 1. Ảnh đăng nhập HS/GV bằng tài khoản Supabase thật — cần GV tạo tài khoản lớp.
-2. Xuất `.xlsx` số liệu lớp học thật — cần học sinh chơi thật rồi GV xuất từ trang Thống kê.
+2. Xuất `.xlsx` số liệu lớp học thật — cần học sinh chơi thật rồi GV xuất từ trang Thống kê (bản xuất từ 20 bot AI chỉ để kiểm tra web).
 3. Khảo sát UX/UI với người dùng thật.
 4. Biên bản nghiệm thu có chữ ký Thầy Phi / Cô Hợp / Cô Sương.
 5. GV duyệt “Tổng quan nội dung theo chương”.
@@ -42,4 +45,7 @@ Gói minh chứng cho đợt kiểm thử **Màn 2 · Rừng Ngập Mặn**, tr�
 node kiem_tra/quests.js
 node kiem_tra/duong_di.js
 node kiem_tra/m2_puzzle.js
+node kiem_tra/tai_khoan.js
+node kiem_tra/bot_lop_hoc.js          # 20 bot AI, số liệu web
+node kiem_tra/bot_lop_hoc_web.mjs      # 20 bot AI, trang web thật (cần Edge + playwright-core)
 ```

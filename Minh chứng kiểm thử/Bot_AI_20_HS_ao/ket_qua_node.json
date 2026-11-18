@@ -1,0 +1,175 @@
+{
+ "hat_giong": 2027,
+ "luc_chay": "2026-11-18T11:59:39.867Z",
+ "so_khop": 633,
+ "sai_lech": 0,
+ "loi": [],
+ "web": {
+  "soHocSinh": 20,
+  "soHoatDong7Ngay": 16,
+  "soDaChoi": 18,
+  "tbMinigame": 0.6355995543348085,
+  "tbCong": 0.627069112830544,
+  "tbLeu": 0.6584973804336549,
+  "tbQuiz": 0.7336617546584867,
+  "tbTrongCay": 0.5246913580246914,
+  "cacTuan": [
+   {
+    "tuan": "2026-10-19",
+    "minigame": 0.7837837837837838,
+    "quiz": 0.6666666666666666
+   },
+   {
+    "tuan": "2026-10-26",
+    "minigame": 0.656,
+    "quiz": 0.711864406779661
+   },
+   {
+    "tuan": "2026-11-02",
+    "minigame": 0.517948717948718,
+    "quiz": 0.6567164179104478
+   },
+   {
+    "tuan": "2026-11-09",
+    "minigame": 0.5979381443298969,
+    "quiz": 0.7241379310344828
+   },
+   {
+    "tuan": "2026-11-16",
+    "minigame": 0.6404494382022472,
+    "quiz": 0.7818181818181819
+   }
+  ],
+  "monSai": [
+   {
+    "ten": "Túi nilon bẩn",
+    "lan": 40
+   },
+   {
+    "ten": "Lá khô",
+    "lan": 36
+   },
+   {
+    "ten": "Vỏ chuối",
+    "lan": 31
+   },
+   {
+    "ten": "Báo cũ",
+    "lan": 29
+   },
+   {
+    "ten": "Xương cá",
+    "lan": 29
+   },
+   {
+    "ten": "Bã cà phê",
+    "lan": 29
+   },
+   {
+    "ten": "Lon nước ngọt",
+    "lan": 28
+   },
+   {
+    "ten": "Hộp xốp dính dầu",
+    "lan": 24
+   },
+   {
+    "ten": "Rau héo, vỏ rau củ",
+    "lan": 24
+   },
+   {
+    "ten": "Chai thủy tinh",
+    "lan": 24
+   },
+   {
+    "ten": "Khẩu trang đã dùng",
+    "lan": 23
+   },
+   {
+    "ten": "Chai nước nhựa",
+    "lan": 22
+   },
+   {
+    "ten": "Thùng các-tông",
+    "lan": 20
+   },
+   {
+    "ten": "Xô nhựa vỡ",
+    "lan": 18
+   },
+   {
+    "ten": "Giấy vệ sinh đã dùng",
+    "lan": 17
+   },
+   {
+    "ten": "Bu lông gỉ",
+    "lan": 17
+   },
+   {
+    "ten": "Ống hút nhựa",
+    "lan": 16
+   },
+   {
+    "ten": "Cơm thừa",
+    "lan": 16
+   }
+  ]
+ },
+ "dap_an": {
+  "soHocSinh": 20,
+  "soDaChoi": 18,
+  "soHoatDong7Ngay": 16,
+  "tbMinigame": 0.6355995543348085,
+  "tbCong": 0.627069112830544,
+  "tbLeu": 0.6584973804336549,
+  "tbQuiz": 0.7336617546584867,
+  "tbTrongCay": 0.5246913580246914,
+  "monSai": {
+   "Báo cũ": 29,
+   "Túi nilon bẩn": 40,
+   "Lá khô": 36,
+   "Xương cá": 29,
+   "Ống hút nhựa": 16,
+   "Hộp xốp dính dầu": 24,
+   "Thùng các-tông": 20,
+   "Cơm thừa": 16,
+   "Khẩu trang đã dùng": 23,
+   "Xô nhựa vỡ": 18,
+   "Lon nước ngọt": 28,
+   "Vỏ chuối": 31,
+   "Chai thủy tinh": 24,
+   "Bã cà phê": 29,
+   "Rau héo, vỏ rau củ": 24,
+   "Giấy vệ sinh đã dùng": 17,
+   "Chai nước nhựa": 22,
+   "Bu lông gỉ": 17
+  },
+  "cacTuan": [
+   {
+    "tuan": "2026-10-19",
+    "minigame": 0.7837837837837838,
+    "quiz": 0.6666666666666666
+   },
+   {
+    "tuan": "2026-10-26",
+    "minigame": 0.656,
+    "quiz": 0.711864406779661
+   },
+   {
+    "tuan": "2026-11-02",
+    "minigame": 0.517948717948718,
+    "quiz": 0.6567164179104478
+   },
+   {
+    "tuan": "2026-11-09",
+    "minigame": 0.5979381443298969,
+    "quiz": 0.7241379310344828
+   },
+   {
+    "tuan": "2026-11-16",
+    "minigame": 0.6404494382022472,
+    "quiz": 0.7818181818181819
+   }
+  ]
+ }
+}

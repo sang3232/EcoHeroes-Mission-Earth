@@ -15,3 +15,7 @@ desktop.ini
 # tài khoản thử Supabase (có mật khẩu)
 supabase/tai_khoan_thu.md
 supabase/.temp/
+
+# Thư viện cài để chạy bài thử (playwright-core)
+node_modules/
+package-lock.json

@@ -1,0 +1,44 @@
+Kiểm thử số liệu lớp học — 20 HỌC SINH ẢO (bot do AI tạo, KHÔNG phải học sinh thật)
+Hạt giống 2027 · 468 sự kiện · 18 ảnh chụp tiến độ · 18 ô trồng trong game
+
+1) Từng học sinh (20 em × 2 trang)
+  ✓ HS ảo 01 (năng lực 0.41)  minigame 45% · Flashcard 50% · trồng 61%
+  ✓ HS ảo 02 (năng lực 0.45)  minigame 43% · Flashcard 57% · trồng 39%
+  ✓ HS ảo 03 (năng lực 0.47)  minigame 43% · Flashcard 57% · trồng 44%
+  ✓ HS ảo 04 (năng lực 0.49)  minigame 37% · Flashcard 50% · trồng 56%
+  ✓ HS ảo 05 (năng lực 0.54)  minigame 49% · Flashcard 44% · trồng 72%
+  ✓ HS ảo 06 (năng lực 0.56)  minigame 45% · Flashcard 60% · trồng 39%
+  ✓ HS ảo 07 (năng lực 0.58)  minigame 63% · Flashcard 58% · trồng 67%
+  ✓ HS ảo 08 (năng lực 0.62)  minigame 63% · Flashcard 65% · trồng 72%
+  ✓ HS ảo 09 (năng lực 0.65)  minigame 66% · Flashcard 78% · trồng 61%
+  ✓ HS ảo 10 (năng lực 0.68)  minigame 72% · Flashcard 74% · trồng 61%
+  ✓ HS ảo 11 (năng lực 0.7)  minigame 75% · Flashcard 73% · trồng 44%
+  ✓ HS ảo 12 (năng lực 0.73)  minigame 78% · Flashcard 93% · trồng 56%
+  ✓ HS ảo 13 (năng lực 0.76)  minigame 66% · Flashcard 71% · trồng 33%
+  ✓ HS ảo 14 (năng lực 0.78)  minigame 74% · Flashcard 94% · trồng 22%
+  ✓ HS ảo 15 (năng lực 0.81)  minigame 81% · Flashcard 96% · trồng 78%
+  ✓ HS ảo 16 (năng lực 0.84)  minigame 83% · Flashcard 100% · trồng 17%
+  ✓ HS ảo 17 (năng lực 0.88)  minigame 76% · Flashcard 100% · trồng 44%
+  ✓ HS ảo 18 (năng lực 0.92)  minigame 88% · Flashcard 100% · trồng 78%
+  ✓ HS ảo 19 (năng lực 0.93)  minigame — · Flashcard — · trồng —  — bot không chơi
+  ✓ HS ảo 20 (năng lực 0.96)  minigame — · Flashcard — · trồng —  — bot không chơi
+
+2) Cả lớp
+  ✓ Số học sinh: 20
+  ✓ Học sinh đã chơi: 18
+  ✓ Hoạt động trong 7 ngày: 16
+  ✓ Độ chính xác minigame TB: 64%
+  ✓ Cổng Phân Loại TB: 63%
+  ✓ Lều ném rác TB: 66%
+  ✓ Điểm Flashcard TB: 73%
+  ✓ Tỉ lệ trồng cây TB: 52%
+  ✓ Món hay nhầm: Túi nilon bẩn (40), Lá khô (36), Vỏ chuối (31), Báo cũ (29)…
+  ✓ Xu hướng 5 tuần: 10-19 78% · 10-26 66% · 11-02 52% · 11-09 60% · 11-16 64%
+
+3) Trường hợp biên
+  ✓ Lớp rỗng và bot không chơi cho "—" (null), không chia cho 0
+  ✓ Sự kiện tới không theo thứ tự thời gian vẫn tính đúng
+
+Tổng: 633 phép so khớp, 0 sai lệch.
+Số liệu web tính ra khớp hoàn toàn với số bot tự đếm. Không có lỗi.
+Đã ghi Minh chứng kiểm thử\Bot_AI_20_HS_ao\du_lieu_20_bot.json
