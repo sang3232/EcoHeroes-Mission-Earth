@@ -1,22 +1,22 @@
-# BIÊN BẢN KIỂM THỬ & NGHIỆM THU SẢN PHẨM GIÁO DỤC
+# BÁO CÁO KIỂM THỬ & NGHIỆM THU SẢN PHẨM GIÁO DỤC
 
-> **MẪU CHƯA KÝ — chờ giáo viên điền và ký.** Không điền thay nhận xét của giáo viên.
+**Tên sản phẩm:** Hồi Sinh Xanh.
 
-**Tên sản phẩm:** Hồi Sinh Xanh (EcoHeroes) — game giáo dục môi trường, bản web
-**Đơn vị / nhóm thực hiện:** Nhóm EcoHeroes — phụ trách chính: Trần Nguyên Bá
-**Người trình bày báo cáo:** Quách Gia Phước
+**Đơn vị / nhóm thực hiện:** Nhóm EcoHeroes.
+
+**Thành viên thực hiện:** Trần Nguyên Bá, Lê Thanh Sang, Quách Gia Phước.
 
 | Mục | Nội dung |
 |---|---|
 | Thời gian kiểm thử | …… giờ …… ngày ……/……/2026 |
 | Hình thức | ☐ Trực tiếp tại lớp ☐ Trực tuyến |
-| Người kiểm thử (GV) | …………………………………… |
-| Thành phần tham dự | …………………………………… |
+| Giáo viên kiểm thử | …………………………………… |
+| Thành viên khảo sat | …………………………………… |
 | Thiết bị sử dụng | …………………………………… |
 
 ## 1. Nội dung đã kiểm thử
 
-| # | Nội dung | Đạt | Chưa đạt | Ghi chú của giáo viên |
+| # | Nội dung | Đạt | Chưa đạt | Ghi chú |
 |---|---|---|---|---|
 | 1 | Cài đặt/mở game trên trình duyệt, vào được Màn 1 | ☐ | ☐ | |
 | 2 | Màn 2: trồng đước bắc lối, nhận xẻng | ☐ | ☐ | |
@@ -37,29 +37,23 @@
 ……………………………………………………………………………………………………………
 ……………………………………………………………………………………………………………
 
-**Đề xuất bổ sung nội dung theo chương:**
+**Ý kiến:**
 ……………………………………………………………………………………………………………
 ……………………………………………………………………………………………………………
 
 ## 3. Kết luận
 
-☐ Đạt — cho phép sử dụng trong dạy học
-☐ Đạt có điều kiện — cần sửa các mục: ……………………………………
-☐ Chưa đạt — lý do: ……………………………………
+……………………………………………………………………………………………………………
+……………………………………………………………………………………………………………
 
-## 4. Chữ ký
-
-| Giáo viên xác nhận | Ý kiến | Chữ ký |
-|---|---|---|
-| Thầy Phi | | |
-| Cô Hợp | | |
-| Cô Sương | | |
-
-*Đại diện nhóm thực hiện:* ……………………………………
+|  | *Thành phố Hồ Chí Minh, ngày…………tháng…………năm…………* |
+| **Xác nhận của giáo viên** | **Đại diện đội thi** |
+|---|---|
+|  |  |
 
 ---
 
-### Hướng dẫn nhanh cho giáo viên (không cần ký phần này)
+### Hướng dẫn 
 
 1. Mở `hoi-sinh-xanh.html` bằng trình duyệt (Chrome/Edge/Cốc Cốc).
 2. Chơi thử theo thứ tự: Màn 1 → Màn 2 → trồng đước → nhận xẻng → trồng 4 cây bần ở ô tối.
