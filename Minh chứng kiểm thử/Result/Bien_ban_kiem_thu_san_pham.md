@@ -50,11 +50,10 @@
 |:---:|:---:|
 | **Xác nhận của giáo viên/người hướng dẫn**<br>**(nếu có)** | **Đại diện đội thi**<br>*(Ký, ghi rõ họ tên)* |
 |  |  |
-|  |  |
 
 ---
 
-### Hướng dẫn 
+### Hướng dẫn
 
 1. Mở `hoi-sinh-xanh.html` bằng trình duyệt (Chrome/Edge/Cốc Cốc).
 2. Chơi thử theo thứ tự: Màn 1 → Màn 2 → trồng đước → nhận xẻng → trồng 4 cây bần ở ô tối.
