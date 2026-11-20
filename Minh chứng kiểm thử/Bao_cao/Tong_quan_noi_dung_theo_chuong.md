@@ -30,6 +30,6 @@
 
 ## 3. Ghi chú
 
-1. Nội dung trên là **mô tả cơ chế trong mã**, chưa phải giáo án.
-2. Nếu cần bổ sung/sửa một chương, ghi trực tiếp vào cột “Giáo viên xác nhận”.
-3. Sau khi duyệt, đề nghị ký vào `Result/Bien_ban_kiem_thu_san_pham.md`.
+1. Nội dung trên là **mô tả cơ chế trong mã**.
+2. Nếu cần bổ sung/sửa một chương, ghi trực tiếp vào cột ghi chú.
+3. Sau khi duyệt, vào phần `Result/Bien_ban_kiem_thu_san_pham.md`.
