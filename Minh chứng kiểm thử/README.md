@@ -1,18 +1,19 @@
 # Minh chứng kiểm thử — Hồi Sinh Xanh (EcoHeroes)
 
-Ngày kiểm thử: 18/11/2026.
+Ngày kiểm thử: 18/11/2026. Cập nhật 20/11/2026: biểu đồ xu hướng trên bảng thống kê giáo viên đổi sang
+**theo ngày**, có video bảng thống kê mới; mã nguồn có giấy phép MIT (`LICENSE`).
 
 ## Cách đọc nhanh
 
 | Thư mục | Nội dung |
 |---|---|
 | `Bao_cao/` | Báo cáo kiểm thử đầy đủ (+ PDF), tổng quan nội dung theo chương, banner nháp. |
-| `Test/video/` | Video quy trình kiểm thử 5 bước (26 giây) + video tính năng đặc biệt (1:13). |
-| `Test/images/` | 5 ảnh minh chứng từng bước B1–B5. |
+| `Test/video/` | Video quy trình kiểm thử 5 bước (26 giây) + video tính năng đặc biệt (1:13) + video bảng thống kê theo ngày với 20 bot (18 giây). |
+| `Test/images/` | 5 ảnh minh chứng từng bước B1–B5 + 1 ảnh bảng thống kê theo ngày (20 bot). |
 | `User/Học sinh`, `User/Giáo viên` | Giao diện đăng nhập. |
 | `UX-UI/` | 11 ảnh giao diện desktop + mobile. |
 | `Result/` | `thong-ke-kiem-thu.xlsx` (6 sheet), báo cáo kết quả, biên bản nghiệm thu. |
-| `Bot_AI_20_HS_ao/` | Kiểm thử tính đúng đắn số liệu trên web bằng **20 học sinh ảo (bot) do AI tạo** — ảnh, file Excel/PDF web xuất ra, kết quả chạy. |
+| `Bot_AI_20_HS_ao/` | Kiểm thử tính đúng đắn số liệu trên web bằng **20 học sinh ảo (bot) do AI tạo** — ảnh, file Excel/PDF web xuất ra, kết quả chạy (bản 18/11, biểu đồ còn theo tuần). |
 
 ## Tính xác thực
 
@@ -46,4 +47,5 @@ node kiem_tra/m2_puzzle.js
 node kiem_tra/tai_khoan.js
 node kiem_tra/bot_lop_hoc.js          # 20 bot AI, số liệu web
 node kiem_tra/bot_lop_hoc_web.mjs      # 20 bot AI, trang web thật (cần Edge + playwright-core)
+node kiem_tra/bot_lop_hoc_web.mjs --ra $env:TEMP\bot20 --video "Minh chứng kiểm thử/Test/video/bang-thong-ke-theo-ngay-20-bot-ai.mp4"   # quay lại video (cần ffmpeg)
 ```

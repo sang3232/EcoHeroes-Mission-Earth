@@ -560,6 +560,7 @@ details p { color: var(--muc-2); margin: 12px 0 0; }
 .chu-giai li { display: inline-flex; align-items: center; gap: 7px; }
 .chu-giai i { width: 16px; height: 3px; border-radius: 2px; background: var(--mau); }
 .bieu-do { position: relative; height: 290px; }
+.the-bd .ghi-bd { color: var(--muc-2); font-size: 13px; line-height: 1.5; margin: 8px 0 0; }
 .ds-sai { list-style: none; padding: 0; margin: 8px 0 14px; }
 .ds-sai li { display: grid; grid-template-columns: 38px 1fr auto; gap: 10px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--vien-2); }
 .ds-sai li:last-child { border-bottom: 0; }

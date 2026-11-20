@@ -4,7 +4,7 @@
 
 **Phạm vi đợt này:** Màn 2 — Rừng Ngập Mặn, trọng tâm là tính năng đặc biệt *Đom đóm về & Cổng Rừng*.
 
-**Ngày kiểm thử:** 18/11/2026.
+**Ngày kiểm thử:** 18/11/2026. **Cập nhật:** 20/11/2026 (biểu đồ xu hướng theo ngày, video bảng thống kê mới, giấy phép MIT cho mã nguồn).
 
 **Thành viên thực hiện:** Trần Nguyên Bá, Quách Gia Phước.
 
@@ -16,11 +16,13 @@
 |---|---|
 | Quy trình 5 bước Màn 2 (B1–B5) | **Đạt 5/5** |
 | Kiểm thử hồi quy tự động (quests, đường đi, puzzle M2, đăng nhập/đăng ký) | **Đạt 4/4** |
-| Tính đúng đắn số liệu trên web — **20 bot kiểm thử** | **Đạt** (633 phép so khớp + 55 kiểm tra trên web thật, 0 lỗi — mục 7) |
+| Tính đúng đắn số liệu trên web — **20 bot kiểm thử** | **Đạt** (712 phép so khớp + 55 kiểm tra trên web thật, 0 lỗi — mục 7) |
+| Biểu đồ xu hướng **theo ngày** trên bảng thống kê giáo viên (cập nhật 20/11/2026) | **Đạt** (29 ngày, từng điểm khớp — mục 7.1) |
 | Video tính năng đặc biệt (đom đóm + cổng rừng) | **Đạt** (1:13, đúng 1–3 phút) |
 | Video quy trình kiểm thử | **Đạt** (26s, đúng 10–30 giây) |
+| Video bảng thống kê mới, 20 bot (20/11/2026) | **Đạt** (17,9 giây, 5 bước — mục 7.1) |
 | Ảnh minh chứng UX/UI | **Đạt** (11 màn desktop + mobile) |
-| Bảng thống kê `.xlsx` | **Đã xuất** (5 sheet, số liệu repo/test thật) |
+| Bảng thống kê `.xlsx` | **Đã xuất** (6 sheet, số liệu repo/test thật) |
 | Dữ liệu người dùng thật | **Đang thực hiện** (xem mục 10) |
 
 > **Kết quả thực hiện:** Toàn bộ video và ảnh trong gói này được ghi bằng kịch bản tự động
@@ -38,10 +40,11 @@
 2. **Hồi quy:** hệ nhiệm vụ, đường đi 10 phòng, hai bước giải Cổng Rừng.
 3. **UX/UI:** trang chủ, đăng nhập học sinh/giáo viên, ôn tập, thống kê, HUD trong game,
    hội thoại, menu tạm dừng, giao diện mobile 390px.
-4. **Minh chứng đa phương tiện:** 2 video + 5 ảnh quy trình + 11 ảnh UX/UI + 1 file `.xlsx`.
+4. **Minh chứng đa phương tiện:** 3 video + 6 ảnh trong `Test/` + 11 ảnh UX/UI + 1 file `.xlsx`.
 5. **Đăng nhập / đăng ký:** kiểm tra tự động mã `js/web/tai_khoan.js` (không tạo tài khoản thật).
 6. **Tính đúng đắn số liệu trên web (20 bot AI):** bot gửi kết quả lên lớp, trang học sinh, bảng điều
    khiển giáo viên, file Excel/PDF xuất ra.
+7. **Biểu đồ xu hướng theo ngày (cập nhật 20/11/2026):** số liệu từng ngày, giới hạn 30 ngày, ngày trống, video bảng thống kê mới.
 
 **Đang thực hiện:** đăng nhập bằng tài khoản Supabase thật, xuất số liệu lớp học
 thật và khảo sát người dùng thật.
@@ -116,7 +119,7 @@ Cổng chỉ mở sau khi cảnh đom đóm ở Cửa Rừng chạy xong. Ngư�
 | `node kiem_tra/m2_puzzle.js` | Cống nước + Đom đóm + Cổng Rừng | “Cống nước: 300 lần xáo đều giải được… Cổng Rừng giải được ở cả hai bước. Không có lỗi.” | Đạt |
 | `node kiem_tra/thu_trong_trang.js` | Bảng trồng cây | `ReferenceError: window is not defined` | Không chạy được (lỗi có sẵn từ trước — tệp này cần môi trường trình duyệt, không liên quan thay đổi cổng rừng) |
 | `node kiem_tra/tai_khoan.js` | Đăng nhập HS, đăng ký GV, quên / đổi mật khẩu, đăng xuất | 25/25 ✓ — “Đăng nhập / đăng ký chạy đúng. Không có lỗi.” | Đạt |
-| `node kiem_tra/bot_lop_hoc.js` | Số liệu web với **20 bot AI** | “Tổng: 633 phép so khớp, 0 sai lệch.” | Đạt |
+| `node kiem_tra/bot_lop_hoc.js` | Số liệu web với **20 bot AI** | “Tổng: 712 phép so khớp, 0 sai lệch.” (20/11/2026; lần 18/11 là 633, thêm so khớp theo ngày và trường hợp biên) | Đạt |
 | `node kiem_tra/bot_lop_hoc_web.mjs` | Trang web thật với **20 bot AI** | “Tổng: 55 kiểm tra Đạt, 0 không Đạt.” | Đạt |
 
 Ngoài ra `node --check` đã chạy sạch trên cả 6 tệp thay đổi của commit `d69fa01`.
@@ -142,15 +145,15 @@ Ngoài ra `node --check` đã chạy sạch trên cả 6 tệp thay đổi của
    chỉ máy chủ Supabase được thay bằng cơ sở dữ liệu giả trong máy. Mọi yêu cầu tới Supabase thật bị chặn
    và đếm: **0 yêu cầu**.
 
-**Kết quả** (lần chạy 18/11/2026, Edge 157.0.4341.60 (headless))
+**Kết quả** (chạy 18/11/2026, chạy lại 20/11/2026 sau khi đổi biểu đồ theo ngày; Edge 157.0.4341.60 (headless))
 
 | Kiểm tra | Kết quả |
 |---|---|
-| Số liệu web so với số bot tự đếm (Tự đánh giá xu hướng, món hay nhầm) | 633 phép so khớp, 0 sai lệch |
+| Số liệu web so với số bot tự đếm (xu hướng theo ngày, món hay nhầm) | 712 phép so khớp, 0 sai lệch (lần 18/11, biểu đồ theo tuần: 633) |
 | Bot gửi kết quả bằng `js/web/dong_bo.js` | 18 bot gửi đủ 468/468 kết quả; gửi lại không bị trùng; các kết quả khác trên cùng máy không bị gửi nhầm |
 | Trang Thống kê của từng học sinh | 18 trang × 7 ô số khớp |
 | Tên lớp không bị lặp “Lớp Lớp” (trang học sinh, tab Lớp học) — sau khi sửa UX-7 | Đạt |
-| Bảng điều khiển giáo viên: tab Lớp học, ô số, bảng từng bot, 2 biểu đồ | Khớp |
+| Bảng điều khiển giáo viên: tab Lớp học, ô số, bảng từng bot, 2 biểu đồ (xu hướng theo ngày, món hay nhầm) | Khớp |
 | File Excel xuất từ web (Tổng hợp, Từng học sinh 280 ô, Lượt chơi 468 dòng, Món hay nhầm) | Khớp từng ô |
 | File PDF xuất từ web | Tạo được, 2 trang |
 | Lỗi JavaScript trên trang | 0 |
@@ -170,6 +173,32 @@ Số liệu cả lớp của 20 bot (chỉ dùng để đối chiếu): 18/20 bo
 
 **Kết quả thực hiện**: thư mục `Bot_AI_20_HS_ao/` (4 ảnh, file Excel và PDF xuất từ web, dữ liệu bot `du_lieu_20_bot.json`,
 kết quả `ket_qua_node.txt`, `ket_qua_web.txt`) và sheet “Kiem thu 20 bot AI” trong `Result/thong-ke-kiem-thu.xlsx`.
+
+### 7.1. Cập nhật 20/11/2026 — biểu đồ xu hướng theo ngày
+
+**Thay đổi:** trên bảng điều khiển giáo viên, biểu đồ “Xu hướng theo tuần” đổi thành **“Xu hướng theo ngày (% đúng)”**.
+Mỗi điểm là tỉ lệ đúng minigame / Flashcard của cả lớp trong một ngày. Biểu đồ hiện tối đa 30 ngày liền nhau, tính tới
+ngày lớp chơi gần nhất; ngày không ai chơi để trống, rê chuột lên điểm thấy ngày đầy đủ (dd/mm/yyyy). Mã sửa:
+`js/web/tinh_so_lieu.js` (số liệu `cacNgay` thay cho `cacTuan`), `js/web/phan_tich.js` (biểu đồ `bd-ngay`, cũng dùng cho file PDF xuất ra).
+
+**Kiểm thử lại** (20/11/2026, Edge 157.0.4341.60 (headless), cùng 20 bot, hạt giống 2027):
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Đáp án theo ngày bot tự tính (viết riêng, không dùng mã web) so với web | 29 ngày × 3 giá trị khớp; tổng **712 phép so khớp, 0 sai lệch** |
+| Trường hợp biên: lớp chơi rải 45 ngày | Chỉ hiện 30 ngày cuối, đúng ngày đầu/cuối, ngày không chơi để trống |
+| Trường hợp biên: chơi đúng 1 ngày / lớp chưa chơi | 1 điểm / không có biểu đồ, hiện “Chưa có số liệu theo ngày.” |
+| Trang web thật: dữ liệu sau biểu đồ “Xu hướng theo ngày” | 29 ngày liền nhau, từng điểm minigame/Flashcard khớp |
+| Toàn bộ bài thử trên web thật | **55 Đạt, 0 Không đạt**, 0 yêu cầu tới Supabase thật, 0 lỗi JavaScript |
+| Hồi quy `quests`, `duong_di`, `m2_puzzle`, `tai_khoan` | Đạt |
+
+**Video bảng thống kê mới:** `Test/video/bang-thong-ke-theo-ngay-20-bot-ai.mp4` (17,9 giây, 1280×720, H.264), quay tự động bằng
+`node kiem_tra/bot_lop_hoc_web.mjs --video <tệp.mp4>`, đi qua 5 bước: tab Lớp học → tab Phân tích dữ liệu →
+rê chuột trên biểu đồ theo ngày → món rác hay nhầm → bảng từng học sinh và nút xuất Excel/PDF. Dải chữ đỏ ở đáy
+khung hình ghi rõ dữ liệu là của 20 học sinh ảo (bot). Ảnh tĩnh: `Test/images/06_bang_thong_ke_theo_ngay_20_bot_ai.png`.
+
+> Thư mục `Bot_AI_20_HS_ao/` giữ nguyên bản ngày 18/11/2026 (biểu đồ còn theo tuần, 633 phép so khớp).
+> Kết quả cho biểu đồ theo ngày là video và ảnh mới trong `Test/` nêu trên.
 
 ---
 
@@ -204,6 +233,7 @@ kết quả `ket_qua_node.txt`, `ket_qua_web.txt`) và sheet “Kiem thu 20 bot 
 | Tệp thay đổi trong commit tính năng | 6 |
 | Số phòng đã dựng | Màn 1: 13 phòng · Màn 2: 10 phòng |
 | Số chương trong bản đồ thế giới | 8 (m1–m2 đã chơi được, m3–m8 “sắp ra mắt”) |
+| Giấy phép mã nguồn | MIT, file `LICENSE` (thêm 20/11/2026). Ảnh, truyện tranh, tài nguyên khác **không** thuộc MIT (xem mục “Giấy phép” trong `README.md`) |
 
 ---
 
@@ -231,14 +261,16 @@ Minh chứng kiểm thử/
 │   └── banner_nhap.png            (bản nháp thiết kế)
 ├── Test/
 │   ├── images/01..05_*.png        (5 bước quy trình)
+│   ├── images/06_bang_thong_ke_theo_ngay_20_bot_ai.png  (bảng thống kê mới, 20 bot)
 │   └── video/
 │       ├── quy-trinh-kiem-thu-man-2.webm          (26,2 giây)
-│       └── tinh-nang-dac-biet-dom-dom-cong-rung.webm (1 phút 13 giây)
+│       ├── tinh-nang-dac-biet-dom-dom-cong-rung.webm (1 phút 13 giây)
+│       └── bang-thong-ke-theo-ngay-20-bot-ai.mp4  (17,9 giây, 20 bot)
 ├── User/
 │   ├── Học sinh/01_dang_nhap_hoc_sinh.png   (màn đăng nhập — Chưa có tài khoản thật)
 │   └── Giáo viên/01_dang_nhap_giao_vien.png (màn đăng nhập — Chưa có tài khoản thật)
 ├── UX-UI/01..11_*.png             (11 màn desktop + mobile)
-├── Bot_AI_20_HS_ao/              (kiểm thử số liệu web bằng 20 bot AI)
+├── Bot_AI_20_HS_ao/              (kiểm thử số liệu web bằng 20 bot AI, bản 18/11)
 │   ├── gv_tab_lop_hoc.png, gv_tab_phan_tich.png, hs_ao_10_trang_thong_ke.png, hs_bot_khong_choi.png
 │   ├── xuat_tu_web_bao_cao_lop_20_bot.xlsx/.pdf   (file web xuất ra với dữ liệu bot)
 │   ├── du_lieu_20_bot.json        (dữ liệu bot)
@@ -264,6 +296,9 @@ node kiem_tra/bot_lop_hoc.js
 # Trang web thật với 20 bot AI (cần Microsoft Edge và playwright-core)
 npm i -D playwright-core
 node kiem_tra/bot_lop_hoc_web.mjs
+
+# Quay lại video bảng thống kê (cần ffmpeg; ghi ảnh/file vào thư mục tạm để không đè Bot_AI_20_HS_ao/)
+node kiem_tra/bot_lop_hoc_web.mjs --ra $env:TEMP\bot20 --video "Minh chứng kiểm thử/Test/video/bang-thong-ke-theo-ngay-20-bot-ai.mp4"
 
 # Mở game để tự kiểm tra bằng tay
 # Dùng một server tĩnh bất kỳ tại thư mục repo, ví dụ:

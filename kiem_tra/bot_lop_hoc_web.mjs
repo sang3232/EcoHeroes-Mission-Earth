@@ -339,12 +339,12 @@ if (saiBang.length) saiBang.slice(0, 5).forEach((x) => console.log('      ' + x)
 
 // Dữ liệu sau biểu đồ (Chart.js)
 const bd = await p.evaluate(() => {
-  const a = window.Chart && Chart.getChart('bd-tuan'), m = window.Chart && Chart.getChart('bd-mon');
-  return { tuan: a ? { nhan: a.data.labels, mg: a.data.datasets[0].data, qz: a.data.datasets[1].data } : null, mon: m ? { nhan: m.data.labels, so: m.data.datasets[0].data } : null };
+  const a = window.Chart && Chart.getChart('bd-ngay'), m = window.Chart && Chart.getChart('bd-mon');
+  return { ngay: a ? { nhan: a.data.labels, mg: a.data.datasets[0].data, qz: a.data.datasets[1].data } : null, mon: m ? { nhan: m.data.labels, so: m.data.datasets[0].data } : null };
 });
-const tuanDung = bd.tuan && bd.tuan.nhan.length === dap.cacTuan.length && dap.cacTuan.every((w, i) =>
-  bd.tuan.nhan[i] === 'Tuần ' + w.tuan.slice(8, 10) + '/' + w.tuan.slice(5, 7) && bd.tuan.mg[i] === (w.minigame === null ? null : Math.round(w.minigame * 100)) && bd.tuan.qz[i] === (w.quiz === null ? null : Math.round(w.quiz * 100)));
-dong(kq(tuanDung, 'Biểu đồ tuần: ' + JSON.stringify(bd.tuan)), 'Biểu đồ "Xu hướng theo tuần": ' + (bd.tuan ? bd.tuan.nhan.length : 0) + ' tuần, từng điểm minigame/Flashcard khớp');
+const ngayDung = bd.ngay && dap.cacNgay.length > 0 && bd.ngay.nhan.length === dap.cacNgay.length && dap.cacNgay.every((w, i) =>
+  bd.ngay.nhan[i] === w.ngay.slice(8, 10) + '/' + w.ngay.slice(5, 7) && bd.ngay.mg[i] === (w.minigame === null ? null : Math.round(w.minigame * 100)) && bd.ngay.qz[i] === (w.quiz === null ? null : Math.round(w.quiz * 100)));
+dong(kq(ngayDung, 'Biểu đồ ngày: ' + JSON.stringify(bd.ngay)), 'Biểu đồ "Xu hướng theo ngày": ' + (bd.ngay ? bd.ngay.nhan.length : 0) + ' ngày liền nhau, từng điểm minigame/Flashcard khớp');
 const monDap = Object.entries(dap.monSai).sort((a, b) => b[1] - a[1]);
 const nguong = monDap.length > 8 ? monDap[7][1] : 0;
 const monDung = bd.mon && bd.mon.nhan.length === Math.min(8, monDap.length) &&
@@ -396,6 +396,99 @@ dong(kq(pdf.slice(0, 4).toString() === '%PDF' && pdf.length > 20000, 'PDF'), 'T�
 await ctxGv.close();
 
 // ---------------- An toàn của bài thử ----------------
+// --video <tệp.mp4>: quay video bảng thống kê giáo viên với dữ liệu 20 bot (dải chữ đỏ luôn hiện ở đáy khung hình).
+// Quay bằng CDP Page.startScreencast rồi ghép bằng ffmpeg (đặt HSX_FFMPEG=<đường dẫn ffmpeg.exe>, mặc định lấy ffmpeg trong PATH).
+const VIDEO = lay('--video');
+if (VIDEO) {
+  const ctxV = await trinh.newContext({ viewport: { width: 1280, height: 720 }, locale: 'vi-VN' });
+  await ctxV.route('**/@supabase/supabase-js@*/**', (r) => r.fulfill({ contentType: 'application/javascript', body: SUPA_GIA }));
+  await ctxV.route(/^https?:\/\/[^/]*supabase\.co\//, (r) => { goiMayThat++; return r.abort(); });
+  await ctxV.addInitScript((k) => { try { Object.keys(k).forEach((x) => localStorage.setItem(x, JSON.stringify(k[x]))); } catch (e) { /* */ } },
+    { 'hoi-sinh-xanh-tai-khoan': gv, 'hoi-sinh-xanh-phien': phien(gv.id, gv.email) });
+  const v = await trang(ctxV);
+  await v.goto(GOC_URL + '/thong-ke.html');
+  await v.waitForSelector('[data-tab="phan_tich"]');
+  const KHUNG = path.join(RA, '_video_tam');
+  fs.rmSync(KHUNG, { recursive: true, force: true });
+  fs.mkdirSync(KHUNG, { recursive: true });
+  const cdp = await ctxV.newCDPSession(v), mocKhung = [];
+  cdp.on('Page.screencastFrame', (f) => {
+    fs.writeFileSync(path.join(KHUNG, 'k' + String(mocKhung.length).padStart(5, '0') + '.jpg'), Buffer.from(f.data, 'base64'));
+    mocKhung.push(f.metadata.timestamp);
+    cdp.send('Page.screencastFrameAck', { sessionId: f.sessionId }).catch(() => {});
+  });
+  await v.evaluate(() => {
+    const d = document.createElement('div');
+    d.innerHTML = '<div id="__buoc" style="font:600 17px/1.35 system-ui,sans-serif;padding:7px 16px 3px"></div>' +
+      '<div style="font:700 13px/1.35 system-ui,sans-serif;padding:0 16px 7px;opacity:.95">VIDEO KIỂM THỬ TỰ ĐỘNG · 20 học sinh ảo (bot) do AI tạo và chạy · KHÔNG phải học sinh thật · máy chủ giả trong bộ nhớ</div>';
+    Object.assign(d.style, { position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 99999, background: 'rgba(179,38,30,.94)', color: '#fff', textAlign: 'center', pointerEvents: 'none' });
+    document.body.appendChild(d);
+    const t = document.createElement('div');
+    t.id = '__tro';
+    t.innerHTML = '<svg width="26" height="31" viewBox="0 0 34 40"><path d="M3 2 L3 31 L11 24 L16.5 37 L22 34.5 L16.5 22 L27 22 Z" fill="#fff" stroke="#11312A" stroke-width="2.6" stroke-linejoin="round"/></svg>';
+    Object.assign(t.style, { position: 'fixed', left: '-40px', top: '-40px', zIndex: 100000, pointerEvents: 'none', filter: 'drop-shadow(0 2px 2px rgba(0,0,0,.3))' });
+    document.body.appendChild(t);
+    addEventListener('mousemove', (e) => { t.style.left = e.clientX - 3 + 'px'; t.style.top = e.clientY - 2 + 'px'; }, true);
+  });
+  const buoc = (s) => v.evaluate((x) => { document.getElementById('__buoc').textContent = x; }, s);
+  const cuon = (y) => v.evaluate((y) => new Promise((ok) => {
+    const y0 = scrollY, t0 = performance.now(), ms = 900;
+    const f = (t) => { const k = Math.min(1, (t - t0) / ms), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; scrollTo(0, y0 + (y - y0) * e); k < 1 ? requestAnimationFrame(f) : ok(); };
+    requestAnimationFrame(f);
+  }), y);
+  const toaDo = (css) => v.evaluate((c) => { const r = document.querySelector(c).getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, top: r.top + scrollY }; }, css);
+  await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 90, maxWidth: 1280, maxHeight: 720 });
+  await v.mouse.move(900, 500);
+  await buoc('Bước 1/5 · Giáo viên mở trang Thống kê: tab Lớp học có 20 học sinh ảo');
+  await cho(2200);
+  const tab = await toaDo('[data-tab="phan_tich"]');
+  await v.mouse.move(tab.x + tab.w / 2, tab.y + tab.h / 2, { steps: 20 });
+  await cho(300);
+  await v.click('[data-tab="phan_tich"]');
+  await v.waitForSelector('#bd-ngay');
+  await buoc('Bước 2/5 · Tab Phân tích dữ liệu: 4 ô số của cả lớp');
+  await cho(2400);
+  const bdN = await toaDo('#bd-ngay');
+  await cuon(bdN.top - 150);
+  await buoc('Bước 3/5 · Biểu đồ MỚI: xu hướng theo NGÀY (% đúng), rê chuột xem từng ngày');
+  await cho(500);
+  const n = await toaDo('#bd-ngay');
+  for (const k of [0.08, 0.3, 0.52, 0.74, 0.95]) {
+    await v.mouse.move(n.x + n.w * k, n.y + n.h * 0.45, { steps: 18 });
+    await cho(850);
+  }
+  const m = await toaDo('#bd-mon');
+  await buoc('Bước 4/5 · Món rác cả lớp hay nhầm, xếp từ nhiều tới ít');
+  await v.mouse.move(m.x + m.w * 0.45, m.y + m.h * 0.22, { steps: 22 });
+  await cho(1800);
+  const bang = await toaDo('#bang-hs');
+  await buoc('Bước 5/5 · Bảng từng học sinh và nút xuất Excel / PDF');
+  await cuon(bang.top - 120);
+  await cho(1600);
+  const xuat = await toaDo('#xuat-xlsx');
+  await cuon(xuat.top - 200);
+  const x2 = await toaDo('#xuat-xlsx');
+  await v.mouse.move(x2.x + x2.w / 2, x2.y + x2.h / 2, { steps: 20 });
+  await cho(900);
+  const p2 = await toaDo('#xuat-pdf');
+  await v.mouse.move(p2.x + p2.w / 2, p2.y + p2.h / 2, { steps: 12 });
+  await cho(1500);
+  await cdp.send('Page.stopScreencast');
+  await cho(300);
+  await ctxV.close();
+  // ghép theo mốc thời gian thật của từng khung, ra 30 khung/giây đều
+  const ten = (i) => path.join(KHUNG, 'k' + String(i).padStart(5, '0') + '.jpg').split(path.sep).join('/');
+  const ds = mocKhung.map((t, i) => "file '" + ten(i) + "'\nduration " + Math.max(0.001, (mocKhung[i + 1] ?? t + 0.5) - t).toFixed(4));
+  ds.push("file '" + ten(mocKhung.length - 1) + "'");
+  fs.writeFileSync(path.join(KHUNG, 'ds.txt'), ds.join('\n'));
+  fs.mkdirSync(path.dirname(path.resolve(VIDEO)), { recursive: true });
+  const { spawnSync } = await import('node:child_process');
+  const r = spawnSync(process.env.HSX_FFMPEG || 'ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(KHUNG, 'ds.txt'),
+    '-vf', 'scale=1280:720:flags=lanczos,fps=30,format=yuv420p', '-c:v', 'libx264', '-crf', '20', '-preset', 'medium', '-movflags', '+faststart', path.resolve(VIDEO)], { encoding: 'utf8' });
+  fs.rmSync(KHUNG, { recursive: true, force: true });
+  console.log(r.status === 0 ? '  Video: ' + path.resolve(VIDEO) + ' (' + mocKhung.length + ' khung, ' + (mocKhung[mocKhung.length - 1] - mocKhung[0]).toFixed(1) + ' giây)' : '  Không ghép được video: ' + (r.error ? r.error.message : r.stderr.slice(-300)));
+}
+
 console.log('\n4) Phạm vi của bài thử');
 dong(kq(goiMayThat === 0, 'Có ' + goiMayThat + ' yêu cầu tới supabase.co'), 'Không có yêu cầu nào tới máy chủ Supabase thật (' + goiMayThat + ')');
 dong(kq(loiTrang.length === 0, 'Lỗi JavaScript trên trang: ' + loiTrang.join(' | ')), 'Không có lỗi JavaScript trên trang (' + loiTrang.length + ')');

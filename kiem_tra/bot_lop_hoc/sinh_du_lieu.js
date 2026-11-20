@@ -83,13 +83,13 @@ function sinh(opts) {
     const hs = { id, ho_ten: 'HS ảo ' + so, ten_dang_nhap: tenDn, email: MA_LOP.toLowerCase() + '.' + tenDn + '@' + MIEN, nang_luc: Math.round(nangLuc * 100) / 100 };
     const ev = [];
     const da = { cong: { luot: 0, dung: 0, tong: 0 }, leu: { dung: 0, tong: 0 }, quiz: { luot: 0, dung: 0, tong: 0, theoChuDe: {} },
-      trongLan: 0, daoLan: 0, monSai: {}, cuoi: null, soSuKien: 0, saoCao: 0, theoTuan: [] };
+      trongLan: 0, daoLan: 0, monSai: {}, cuoi: null, soSuKien: 0, saoCao: 0, theoNgay: [] };
     const ghi = (loai, dung, tong, du, luc) => {
       ev.push({ ma_su_kien: uuid(), loai, dung, tong, du_lieu: du, luc: new Date(luc).toISOString(), nguoi: id });
       da.soSuKien++;
       const iso = new Date(luc).toISOString();
       if (!da.cuoi || iso > da.cuoi) da.cuoi = iso;
-      if (loai === 'cong_phan_loai' || loai === 'leu_nem_rac' || loai === 'quiz') da.theoTuan.push({ luc: iso, quiz: loai === 'quiz', dung, tong });
+      if (loai === 'cong_phan_loai' || loai === 'leu_nem_rac' || loai === 'quiz') da.theoNgay.push({ luc: iso, quiz: loai === 'quiz', dung, tong });
     };
     const sai = (ten) => { da.monSai[ten] = (da.monSai[ten] || 0) + 1; };
 
@@ -194,11 +194,10 @@ function sinh(opts) {
 
 // ---------- Đáp án cả lớp, tính theo định nghĩa trong README ("Cách diễn giải các chỉ số") ----------
 function tiLe(d, t) { return t > 0 ? d / t : null; }
-function dauTuanDocLap(iso) {   // Thứ Hai đầu tuần theo giờ máy, viết lại độc lập với js/web/tinh_so_lieu.js
-  const d = new Date(iso);
-  const thu = d.getDay() === 0 ? 7 : d.getDay();
-  const t = new Date(d.getFullYear(), d.getMonth(), d.getDate() - (thu - 1));
-  return [t.getFullYear(), String(t.getMonth() + 1).padStart(2, '0'), String(t.getDate()).padStart(2, '0')].join('-');
+const SO_NGAY = 30;   // README: biểu đồ xu hướng hiện tối đa 30 ngày liền nhau, tính tới ngày lớp chơi gần nhất
+function ngayDocLap(d) {   // ngày theo giờ máy, viết lại độc lập với js/web/tinh_so_lieu.js
+  d = new Date(d);
+  return [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-');
 }
 function dapAnHocSinh(b) {
   const a = b.dapAn, t = a.tienDo || {};
@@ -217,11 +216,22 @@ function dapAnLop(du, bayGio) {
   const tb = (k) => { const v = hs.map((x) => x[k]).filter((x) => x !== null); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
   const monSai = {};
   hs.forEach((x) => Object.entries(x.monSai).forEach(([m, n]) => { monSai[m] = (monSai[m] || 0) + n; }));
-  const tuan = {};
-  du.bots.forEach((b) => b.dapAn.theoTuan.forEach((e) => {
-    const w = tuan[dauTuanDocLap(e.luc)] = tuan[dauTuanDocLap(e.luc)] || { mgD: 0, mgT: 0, qzD: 0, qzT: 0 };
+  const ngay = {};
+  du.bots.forEach((b) => b.dapAn.theoNgay.forEach((e) => {
+    const w = ngay[ngayDocLap(e.luc)] = ngay[ngayDocLap(e.luc)] || { mgD: 0, mgT: 0, qzD: 0, qzT: 0 };
     if (e.quiz) { w.qzD += e.dung; w.qzT += e.tong; } else { w.mgD += e.dung; w.mgT += e.tong; }
   }));
+  // dãy ngày liền nhau: lùi từng ngày từ ngày chơi gần nhất, dừng ở ngày chơi đầu tiên hoặc đủ 30 ngày
+  const co = Object.keys(ngay).sort(), cacNgay = [];
+  if (co.length) {
+    const [y, m, d] = co[co.length - 1].split('-').map(Number);
+    for (let i = 0; i < SO_NGAY; i++) {
+      const k = ngayDocLap(new Date(y, m - 1, d - i, 12));
+      if (k < co[0]) break;
+      const w = ngay[k] || { mgD: 0, mgT: 0, qzD: 0, qzT: 0 };
+      cacNgay.unshift({ ngay: k, minigame: tiLe(w.mgD, w.mgT), quiz: tiLe(w.qzD, w.qzT) });
+    }
+  }
   return {
     hocSinh: hs,
     soHocSinh: hs.length,
@@ -229,7 +239,7 @@ function dapAnLop(du, bayGio) {
     soHoatDong7Ngay: hs.filter((x) => x.cuoi && (bayGio || Date.now()) - Date.parse(x.cuoi) < 7 * 86400000).length,
     tbMinigame: tb('chinhXacMinigame'), tbCong: tb('chinhXacCong'), tbLeu: tb('chinhXacLeu'), tbQuiz: tb('diemQuiz'), tbTrongCay: tb('tiLeTrongCay'),
     monSai,
-    cacTuan: Object.keys(tuan).sort().slice(-10).map((k) => ({ tuan: k, minigame: tiLe(tuan[k].mgD, tuan[k].mgT), quiz: tiLe(tuan[k].qzD, tuan[k].qzT) })),
+    cacNgay,
   };
 }
 

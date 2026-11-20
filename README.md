@@ -38,7 +38,7 @@ Luật Bảo vệ môi trường 2020 (Điều 75) yêu cầu hộ gia đình, c
 - Giúp học sinh phân loại rác sinh hoạt đúng ba nhóm theo Luật Bảo vệ môi trường 2020 và hướng dẫn kỹ thuật năm 2023 của Bộ Tài nguyên và Môi trường, qua thao tác chọn thùng và ném rác trong game.
 - Giúp học sinh hiểu vai trò của rừng ngập mặn (chắn sóng, giữ đất, nơi sống của loài vật) qua việc tự tay trồng đước, trồng bần và thấy loài vật quay về.
 - Tạo động lực bằng phản hồi trực quan: dọn rác thì cảnh vật sáng lên, loài vật trở về, người chơi thấy ngay kết quả việc mình làm.
-- Cho giáo viên số liệu định lượng (độ chính xác phân loại, món hay nhầm, tiến bộ theo tuần) và bản tóm tắt AI để chọn nội dung ôn tập và thảo luận cho tiết sau.
+- Cho giáo viên số liệu định lượng (độ chính xác phân loại, món hay nhầm, tiến bộ theo ngày) và bản tóm tắt AI để chọn nội dung ôn tập và thảo luận cho tiết sau.
 
 Định vị ngắn gọn của sản phẩm: **Game hành động giúp học sinh học bảo vệ môi trường bằng cách tự tay làm, kèm số liệu học tập cho giáo viên.**
 
@@ -84,7 +84,7 @@ Bã cà phê và lá khô làm vườn xếp vào rác thải khác theo hướn
 | Tỉ lệ trồng cây | Số ô đã trồng cây trên tổng số ô trồng được trong game |
 | Điểm Flashcard | Tỉ lệ câu trả lời đúng trong các bài kiểm tra 10 câu |
 | Món cả lớp hay nhầm | Các món rác bị bỏ sai thùng nhiều lần nhất, xếp từ nhiều tới ít |
-| Xu hướng theo tuần | Độ chính xác minigame và điểm Flashcard của lớp qua từng tuần |
+| Xu hướng theo ngày | Độ chính xác minigame và điểm Flashcard của lớp qua từng ngày: tối đa 30 ngày liền nhau, tính tới ngày lớp chơi gần nhất; ngày không ai chơi để trống |
 
 Các chỉ số này phản ánh lựa chọn trong game, không phải thang đo năng lực chuẩn hoá.
 
@@ -572,4 +572,22 @@ Mầm (37 khung hoạt ảnh cắt từ bảng khung), ba boss (Vua Túi Nilon 2
 
 ## Giấy phép
 
-Repo hiện chưa khai báo giấy phép cho mã nguồn. Ảnh trong game sinh bằng Qwen-Image-2.1, model này chỉ được dùng **phi thương mại**: muốn bán game hoặc kiếm tiền từ game thì phải đổi model hoặc xin giấy phép thương mại. Ảnh truyện tranh và các tài nguyên khác cũng cần kiểm tra quyền sử dụng riêng trước khi phát hành thương mại.
+### Quyền truy cập repo
+
+Repo [sang3232/EcoHeroes-Mission-Earth](https://github.com/sang3232/EcoHeroes-Mission-Earth) để **công khai**: ai cũng xem, tải về (clone) và chơi thử được. Chỉ thành viên nhóm có quyền đẩy mã (push) lên nhánh `main`; người ngoài muốn góp ý hoặc sửa thì mở Issue hoặc gửi Pull Request.
+
+### Mã nguồn: giấy phép MIT
+
+Mã nguồn (HTML, CSS, JavaScript, SQL, các bài kiểm thử) phát hành theo giấy phép **MIT**, xem file [LICENSE](LICENSE). Bạn được dùng, sửa, chia sẻ, kể cả dùng thương mại, miễn giữ lại dòng bản quyền và lời giấy phép. Mã được cung cấp “nguyên trạng”, không kèm bảo hành.
+
+### Ảnh, truyện tranh và tài nguyên khác: không thuộc MIT
+
+| Tài nguyên | Điều kiện dùng |
+|---|---|
+| Ảnh trong game (`assets/`, sinh bằng Qwen-Image-2.1) | Chỉ **phi thương mại**: muốn bán game hoặc kiếm tiền từ game thì phải đổi model hoặc xin giấy phép thương mại |
+| Ảnh truyện tranh và tài nguyên khác | Cần kiểm tra quyền sử dụng riêng trước khi phát hành thương mại |
+| Ảnh, video trong `Minh chứng kiểm thử/` | Minh chứng của nhóm, không cấp phép dùng lại |
+
+### Thư viện bên ngoài (nạp từ CDN, theo giấy phép riêng)
+
+Chart.js 4.4.1 (MIT) · supabase-js 2.115.0 (MIT) · SheetJS xlsx 0.18.5 (Apache-2.0) · jsPDF 2.5.1 và jspdf-autotable 3.8.2 (MIT) · phông Be Vietnam Pro (SIL Open Font License 1.1).

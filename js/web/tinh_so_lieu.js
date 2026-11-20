@@ -8,12 +8,17 @@
   function tiLe(d, t) { return t > 0 ? d / t : null; }
   function phanTram(x) { return x === null || x === undefined || isNaN(x) ? '—' : Math.round(x * 100) + '%'; }
 
-  // Thứ Hai đầu tuần (giờ máy) dạng YYYY-MM-DD
-  function dauTuan(iso) {
+  var SO_NGAY_XU_HUONG = 30;   // biểu đồ xu hướng: tối đa 30 ngày, tính tới ngày có số liệu gần nhất
+
+  // Ngày (giờ máy) dạng YYYY-MM-DD
+  function ngayMay(iso) {
     var d = new Date(iso);
-    d.setHours(0, 0, 0, 0);
-    d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  // Ngày YYYY-MM-DD cộng thêm n ngày (theo lịch, không lệch khi đổi giờ)
+  function congNgay(k, n) {
+    var p = k.split('-');
+    return ngayMay(new Date(+p[0], +p[1] - 1, +p[2] + n, 12));
   }
 
   // Số liệu của MỘT học sinh từ danh sách sự kiện của em đó + tiến độ (có thể null)
@@ -72,16 +77,22 @@
       var v = ds.map(function (x) { return x[truong]; }).filter(function (x) { return x !== null && x !== undefined; });
       return v.length ? v.reduce(function (a, b) { return a + b; }, 0) / v.length : null;
     }
-    // xu hướng theo tuần
-    var tuan = {};
+    // xu hướng theo ngày: các ngày liền nhau (ngày không ai chơi để trống), tối đa SO_NGAY_XU_HUONG ngày
+    var theoNgay = {};
     (suKien || []).forEach(function (e) {
       if (e.loai !== 'cong_phan_loai' && e.loai !== 'leu_nem_rac' && e.loai !== 'quiz') return;
-      var k = dauTuan(e.luc), w = tuan[k] = tuan[k] || { mgD: 0, mgT: 0, qzD: 0, qzT: 0 };
+      var k = ngayMay(e.luc), w = theoNgay[k] = theoNgay[k] || { mgD: 0, mgT: 0, qzD: 0, qzT: 0 };
       if (e.loai === 'quiz') { w.qzD += e.dung; w.qzT += e.tong; } else { w.mgD += e.dung; w.mgT += e.tong; }
     });
-    var cacTuan = Object.keys(tuan).sort().slice(-10).map(function (k) {
-      return { tuan: k, minigame: tiLe(tuan[k].mgD, tuan[k].mgT), quiz: tiLe(tuan[k].qzD, tuan[k].qzT) };
-    });
+    var cacNgayCo = Object.keys(theoNgay).sort(), cacNgay = [];
+    if (cacNgayCo.length) {
+      var cuoiNgay = cacNgayCo[cacNgayCo.length - 1], k = congNgay(cuoiNgay, 1 - SO_NGAY_XU_HUONG);
+      if (k < cacNgayCo[0]) k = cacNgayCo[0];
+      for (; k <= cuoiNgay; k = congNgay(k, 1)) {
+        var w = theoNgay[k] || { mgD: 0, mgT: 0, qzD: 0, qzT: 0 };
+        cacNgay.push({ ngay: k, minigame: tiLe(w.mgD, w.mgT), quiz: tiLe(w.qzD, w.qzT) });
+      }
+    }
     var monSai = {};
     ds.forEach(function (x) { Object.keys(x.monSai).forEach(function (m) { monSai[m] = (monSai[m] || 0) + x.monSai[m]; }); });
     var bayGio = Date.now();
@@ -92,7 +103,7 @@
       soDaChoi: ds.filter(function (x) { return x.soSuKien > 0; }).length,
       tbMinigame: tb('chinhXacMinigame'), tbCong: tb('chinhXacCong'), tbLeu: tb('chinhXacLeu'),
       tbQuiz: tb('diemQuiz'), tbTrongCay: tb('tiLeTrongCay'),
-      cacTuan: cacTuan,
+      cacNgay: cacNgay,
       monSai: Object.keys(monSai).map(function (m) { return { ten: m, lan: monSai[m] }; }).sort(function (a, b) { return b.lan - a.lan; }),
     };
   }
@@ -110,5 +121,5 @@
   function phut(giay) { return giay ? Math.round(giay / 60) + ' phút' : '—'; }
 
   window.HSXSoLieu = { motHocSinh: motHocSinh, caLop: caLop, phanTram: phanTram, tiLe: tiLe, ngay: ngay, luc: luc, phut: phut,
-    TEN_LOAI: TEN_LOAI, TEN_CHU_DE: TEN_CHU_DE, dauTuan: dauTuan };
+    TEN_LOAI: TEN_LOAI, TEN_CHU_DE: TEN_CHU_DE, ngayMay: ngayMay, SO_NGAY_XU_HUONG: SO_NGAY_XU_HUONG };
 })();

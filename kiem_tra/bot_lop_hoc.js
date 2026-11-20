@@ -100,16 +100,18 @@ const giam = web.monSai.every((m, i) => i === 0 || web.monSai[i - 1].lan >= m.la
 if (giam) dat++; else { khong++; loi.push('Món hay nhầm không xếp giảm dần'); }
 console.log('  ' + (khong === t0 ? '✓' : '✗') + ' Món hay nhầm: ' + web.monSai.slice(0, 4).map((m) => m.ten + ' (' + m.lan + ')').join(', ') + '…');
 
-// Xu hướng theo tuần
+// Xu hướng theo ngày
 t0 = khong;
-so('Lớp số tuần', web.cacTuan.length, dap.cacTuan.length);
-dap.cacTuan.forEach((w, i) => {
-  const x = web.cacTuan[i] || {};
-  so('Tuần ' + w.tuan + ' ngày', x.tuan, w.tuan);
-  so('Tuần ' + w.tuan + ' minigame', x.minigame, w.minigame);
-  so('Tuần ' + w.tuan + ' quiz', x.quiz, w.quiz);
+so('Lớp số ngày', web.cacNgay.length, dap.cacNgay.length);
+dap.cacNgay.forEach((w, i) => {
+  const x = web.cacNgay[i] || {};
+  so('Ngày ' + w.ngay, x.ngay, w.ngay);
+  so('Ngày ' + w.ngay + ' minigame', x.minigame, w.minigame);
+  so('Ngày ' + w.ngay + ' quiz', x.quiz, w.quiz);
 });
-console.log('  ' + (khong === t0 ? '✓' : '✗') + ' Xu hướng ' + web.cacTuan.length + ' tuần: ' + web.cacTuan.map((w) => w.tuan.slice(5) + ' ' + SL.phanTram(w.minigame)).join(' · '));
+const coSo = web.cacNgay.filter((w) => w.minigame !== null || w.quiz !== null);
+console.log('  ' + (khong === t0 ? '✓' : '✗') + ' Xu hướng ' + web.cacNgay.length + ' ngày (' + coSo.length + ' ngày có người chơi): ' +
+  (web.cacNgay[0] || {}).ngay + ' → ' + (web.cacNgay[web.cacNgay.length - 1] || {}).ngay);
 
 // 3) Dữ liệu sai/lạ không làm hỏng số liệu
 console.log('\n3) Trường hợp biên');
@@ -127,6 +129,19 @@ const daoLon = SL.motHocSinh(du.bots[0].suKien.slice().reverse(), du.bots[0].tie
 so('Đảo thứ tự sự kiện: minigame', daoLon.chinhXacMinigame, dap.hocSinh[0].chinhXacMinigame);
 so('Đảo thứ tự sự kiện: lần cuối', daoLon.cuoi, dap.hocSinh[0].cuoi);
 console.log('  ' + (khong === t0 ? '✓' : '✗') + ' Sự kiện tới không theo thứ tự thời gian vẫn tính đúng');
+t0 = khong;
+// Biểu đồ theo ngày: lớp chơi rải 45 ngày thì chỉ hiện 30 ngày cuối; chơi đúng 1 ngày thì hiện 1 điểm
+const motBai = (ngay, dung) => ({ hoc_sinh_id: 'x', loai: 'leu_nem_rac', dung, tong: 1, du_lieu: {}, luc: new Date(2026, 8, ngay, 9).toISOString() });
+const dai = SL.caLop([{ id: 'x' }], [motBai(1, 1), motBai(20, 0), motBai(20, 1), motBai(45, 1)], []).cacNgay;
+so('45 ngày → số ngày hiện', dai.length, 30);
+so('45 ngày → ngày đầu', dai[0].ngay, '2026-09-16');
+so('45 ngày → ngày cuối', dai[29].ngay, '2026-10-15');
+so('45 ngày → ngày 20/9 (1 đúng / 2)', dai[4].minigame, 0.5);
+so('45 ngày → ngày không chơi để trống', dai[5].minigame, null);
+const mot = SL.caLop([{ id: 'x' }], [motBai(3, 1)], []).cacNgay;
+so('1 ngày → 1 điểm', mot.length, 1);
+so('Lớp rỗng → không có ngày', trong.cacNgay.length, 0);
+console.log('  ' + (khong === t0 ? '✓' : '✗') + ' Biểu đồ theo ngày: tối đa 30 ngày liền nhau, ngày không chơi để trống');
 
 console.log('\nTổng: ' + dat + ' phép so khớp, ' + khong + ' sai lệch.');
 if (loi.length) { console.log('Sai lệch:'); loi.slice(0, 30).forEach((x) => console.log('  - ' + x)); }

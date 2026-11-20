@@ -38,8 +38,9 @@
       tro.oSo('Điểm Flashcard trung bình', SL.phanTram(s.tbQuiz), 'Trung bình các bài kiểm tra 10 câu', s.tbQuiz) +
       '</div>' +
       '<div class="hai-cot">' +
-      '<div class="the the-bd"><div class="tieu-bd"><b>Xu hướng theo tuần (% đúng)</b>' + tro.chuGiai(cot2) + '</div>' +
-      (s.cacTuan.length ? '<div class="bieu-do"><canvas id="bd-tuan" role="img" aria-label="Biểu đồ đường: tỉ lệ đúng minigame và Flashcard của lớp theo từng tuần"></canvas></div>' : '<p class="trong">Chưa có số liệu theo tuần.</p>') + '</div>' +
+      '<div class="the the-bd"><div class="tieu-bd"><b>Xu hướng theo ngày (% đúng)</b>' + tro.chuGiai(cot2) + '</div>' +
+      (s.cacNgay.length ? '<div class="bieu-do"><canvas id="bd-ngay" role="img" aria-label="Biểu đồ đường: tỉ lệ đúng minigame và Flashcard của lớp theo từng ngày, ' + s.cacNgay.length + ' ngày gần nhất"></canvas></div>' +
+        '<p class="ghi-bd">' + s.cacNgay.length + ' ngày, tính tới ngày lớp chơi gần nhất (' + s.cacNgay[s.cacNgay.length - 1].ngay.slice(8, 10) + '/' + s.cacNgay[s.cacNgay.length - 1].ngay.slice(5, 7) + ')' + (s.cacNgay.length >= SL.SO_NGAY_XU_HUONG ? ', tối đa ' + SL.SO_NGAY_XU_HUONG + ' ngày' : '') + '. Ngày không ai chơi để trống.</p>' : '<p class="trong">Chưa có số liệu theo ngày.</p>') + '</div>' +
       '<div class="the the-bd"><div class="tieu-bd"><b>Món rác cả lớp hay nhầm (số lần)</b></div>' +
       (s.monSai.length ? '<div class="bieu-do" style="height:' + Math.max(180, Math.min(8, s.monSai.length) * 34 + 40) + 'px"><canvas id="bd-mon" role="img" aria-label="Biểu đồ thanh: các món rác cả lớp hay phân loại nhầm, xếp từ nhiều tới ít"></canvas></div>' : '<p class="trong">Lớp chưa nhầm món nào.</p>') + '</div>' +
       '</div>' +
@@ -53,21 +54,23 @@
 
     // Biểu đồ
     var phanTramTruc = { min: 0, max: 100, ticks: { stepSize: 25, callback: function (v) { return v + '%'; } } };
-    if (s.cacTuan.length) tro.bieuDo(document.getElementById('bd-tuan'), {
+    if (s.cacNgay.length) tro.bieuDo(document.getElementById('bd-ngay'), {
       type: 'line',
       data: {
-        labels: s.cacTuan.map(function (w) { return 'Tuần ' + w.tuan.slice(8, 10) + '/' + w.tuan.slice(5, 7); }),
+        labels: s.cacNgay.map(function (w) { return w.ngay.slice(8, 10) + '/' + w.ngay.slice(5, 7); }),
         datasets: [
-          { label: 'Minigame', data: s.cacTuan.map(function (w) { return w.minigame === null ? null : Math.round(w.minigame * 100); }),
-            borderColor: tro.MAU.la, backgroundColor: tro.MAU.la, pointBackgroundColor: tro.MAU.la, spanGaps: true, clip: 8 },
-          { label: 'Flashcard', data: s.cacTuan.map(function (w) { return w.quiz === null ? null : Math.round(w.quiz * 100); }),
-            borderColor: tro.MAU.lam, backgroundColor: tro.MAU.lam, pointBackgroundColor: tro.MAU.lam, spanGaps: true, clip: 8 },
+          { label: 'Minigame', data: s.cacNgay.map(function (w) { return w.minigame === null ? null : Math.round(w.minigame * 100); }),
+            borderColor: tro.MAU.la, backgroundColor: tro.MAU.la, pointBackgroundColor: tro.MAU.la, pointRadius: 3, spanGaps: true, clip: 8 },
+          { label: 'Flashcard', data: s.cacNgay.map(function (w) { return w.quiz === null ? null : Math.round(w.quiz * 100); }),
+            borderColor: tro.MAU.lam, backgroundColor: tro.MAU.lam, pointBackgroundColor: tro.MAU.lam, pointRadius: 3, spanGaps: true, clip: 8 },
         ],
       },
       options: {
         interaction: { mode: 'index', intersect: false },
-        scales: { y: phanTramTruc, x: { grid: { display: false } } },
-        plugins: { tooltip: { callbacks: { label: function (c) { return ' ' + c.dataset.label + ': ' + c.parsed.y + '%'; } } } },
+        scales: { y: phanTramTruc, x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 10, maxRotation: 0 } } },
+        plugins: { tooltip: { callbacks: {
+          title: function (c) { var k = s.cacNgay[c[0].dataIndex].ngay; return 'Ngày ' + k.slice(8, 10) + '/' + k.slice(5, 7) + '/' + k.slice(0, 4); },
+          label: function (c) { return ' ' + c.dataset.label + ': ' + c.parsed.y + '%'; } } } },
       },
     });
     var mon = s.monSai.slice(0, 8);
@@ -152,7 +155,7 @@
     }
     document.getElementById('xuat-xlsx').addEventListener('click', function () { xuat(this, function () { return window.HSXXuat.excelLop(tt, aiChu()); }); });
     document.getElementById('xuat-pdf').addEventListener('click', function () {
-      var anh = ['bd-tuan', 'bd-mon'].map(function (id) {
+      var anh = ['bd-ngay', 'bd-mon'].map(function (id) {
         var c = document.getElementById(id);
         return c ? { img: c, rong: c.width, cao: c.height } : null;
       }).filter(Boolean);
